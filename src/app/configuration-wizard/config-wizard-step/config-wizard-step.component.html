@@ -1,0 +1,36 @@
+<!--
+  Copyright since 2025 Mifos Initiative
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+@if (step() != null && totalSteps() != null) {
+  <p class="wizard-step-progress">
+    {{ 'labels.text.Wizard step of total' | translate: { current: step(), total: totalSteps() } }}
+  </p>
+}
+
+<h2>{{ heading() | translate }}</h2>
+<p [class]="descriptionClass()">{{ description() | translate }}</p>
+
+<div class="wizard-actions">
+  <mifosx-m3-button variant="text" size="compact" [label]="'labels.buttons.Close' | translate" (clicked)="onClose()" />
+  <div class="wizard-actions-primary">
+    <mifosx-m3-button
+      variant="outlined"
+      size="compact"
+      icon="arrow_back"
+      [label]="'labels.buttons.Back' | translate"
+      (clicked)="onBack()"
+    />
+    <mifosx-m3-button
+      variant="filled"
+      size="compact"
+      trailingIcon="arrow_forward"
+      [label]="'labels.buttons.Next' | translate"
+      (clicked)="onNext()"
+    />
+  </div>
+</div>

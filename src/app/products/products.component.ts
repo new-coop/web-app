@@ -7,25 +7,15 @@
  */
 
 /** Angular Imports */
-import {
-  ChangeDetectionStrategy,
-  AfterViewInit,
-  Component,
-  ElementRef,
-  TemplateRef,
-  ViewChild,
-  inject
-} from '@angular/core';
+import { ChangeDetectionStrategy, AfterViewInit, Component, TemplateRef, ViewChild, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 /** Custom Services */
 import { ConfigurationWizardService } from '../configuration-wizard/configuration-wizard.service';
 import { PopoverService } from '../configuration-wizard/popover/popover.service';
-import { MatNavList, MatListItem } from '@angular/material/list';
-import { MatIcon } from '@angular/material/icon';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MatLine } from '@angular/material/grid-list';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
+import { NavHubComponent, NavHubSection } from '../shared/nav-hub/nav-hub.component';
+import { ConfigWizardStepComponent } from '../configuration-wizard/config-wizard-step/config-wizard-step.component';
 
 /**
  * Products component.
@@ -36,11 +26,8 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   styleUrls: ['./products.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    MatNavList,
-    MatListItem,
-    MatIcon,
-    FaIconComponent,
-    MatLine
+    NavHubComponent,
+    ConfigWizardStepComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -49,71 +36,155 @@ export class ProductsComponent implements AfterViewInit {
   private configurationWizardService = inject(ConfigurationWizardService);
   private popoverService = inject(PopoverService);
 
-  /* Reference of charges */
-  @ViewChild('charges') charges: ElementRef<any>;
   /* Template for popover on charges */
   @ViewChild('templateCharges') templateCharges: TemplateRef<any>;
-  /* Reference of loan products */
-  @ViewChild('loanProducts') loanProducts: ElementRef<any>;
   /* Template for popover on loan products */
   @ViewChild('templateLoanProducts') templateLoanProducts: TemplateRef<any>;
-  /* Reference of saving products */
-  @ViewChild('savingsProducts') savingsProducts: ElementRef<any>;
   /* Template for popover on savings products */
   @ViewChild('templateSavingsProducts') templateSavingsProducts: TemplateRef<any>;
-  /* Reference of share products */
-  @ViewChild('shareProducts') shareProducts: ElementRef<any>;
   /* Template for popover on share products */
   @ViewChild('templateShareProducts') templateShareProducts: TemplateRef<any>;
-  /* Reference of fixed deposit products */
-  @ViewChild('fixedDepositProducts') fixedDepositProducts: ElementRef<any>;
   /* Template for popover on fixed deposit products */
   @ViewChild('templateFixedDepositProducts') templateFixedDepositProducts: TemplateRef<any>;
-  /* Reference of recurring deposit products */
-  @ViewChild('recurringDepositProducts') recurringDepositProducts: ElementRef<any>;
   /* Template for popover on recurring deposit products */
   @ViewChild('templateRecurringDepositProducts') templateRecurringDepositProducts: TemplateRef<any>;
-  // Initialize an array of 13 boolean values, all set to false
-  arrowBooleans: boolean[] = new Array(13).fill(false);
+
+  readonly sections: NavHubSection[] = [
+    {
+      label: 'labels.heading.Loans',
+      items: [
+        {
+          label: 'labels.heading.Loan Products',
+          description: 'labels.text.Add new loan product or modify or inactivate loan product',
+          icon: 'request_quote',
+          link: '/products/loan-products',
+          queryParams: { productType: 'loan' },
+          permission: 'READ_LOANPRODUCT',
+          anchorId: 'wizard-loan-products'
+        },
+        {
+          label: 'labels.heading.Collateral Management',
+          description: 'labels.text.Define collaterals for Collateral Management',
+          icon: 'diamond',
+          link: '/products/collaterals'
+        },
+        {
+          label: 'labels.heading.Delinquency Buckets',
+          description: 'labels.text.Define delinquency day ranges and bucket set for loan products',
+          icon: 'stacked_bar_chart',
+          link: '/products/delinquency-bucket-configurations',
+          permission: 'READ_DELINQUENCY_BUCKET'
+        },
+        {
+          label: 'labels.heading.Breach Configuration',
+          description: 'labels.text.Define breaches for working capital products',
+          icon: 'warning',
+          link: '/products/breach-configurations',
+          permission: 'READ_WORKINGCAPITALBREACH'
+        },
+        {
+          label: 'labels.heading.Near Breach Configuration',
+          description: 'labels.text.Define near breaches for working capital products',
+          icon: 'notification_important',
+          link: '/products/near-breach-configurations',
+          permission: 'READ_WORKINGCAPITALNEARBREACH'
+        }
+      ]
+    },
+    {
+      label: 'labels.heading.Deposits and Shares',
+      items: [
+        {
+          label: 'labels.heading.Savings Products',
+          description: 'labels.text.Add new savings product or modify or inactivate savings product',
+          icon: 'savings',
+          link: '/products/saving-products',
+          permission: 'READ_SAVINGSPRODUCT',
+          anchorId: 'wizard-savings-products'
+        },
+        {
+          label: 'labels.heading.Fixed Deposit Products',
+          description: 'labels.text.Add, modify or inactivate a Fixed deposit product',
+          icon: 'lock_clock',
+          link: '/products/fixed-deposit-products',
+          permission: 'READ_FIXEDDEPOSITPRODUCT',
+          anchorId: 'wizard-fixed-deposit-products'
+        },
+        {
+          label: 'labels.heading.Recurring Deposit Products',
+          description: 'labels.text.Add, modify or inactivate a Recurring Deposit product',
+          icon: 'autorenew',
+          link: '/products/recurring-deposit-products',
+          permission: 'READ_RECURRINGDEPOSITPRODUCT',
+          anchorId: 'wizard-recurring-deposit-products'
+        },
+        {
+          label: 'labels.heading.Share Products',
+          description: 'labels.text.Add new share product or modify or inactivate share product',
+          icon: 'pie_chart',
+          link: '/products/share-products',
+          permission: 'READ_SHAREPRODUCT',
+          anchorId: 'wizard-share-products'
+        }
+      ]
+    },
+    {
+      label: 'labels.heading.Pricing and Rules',
+      items: [
+        {
+          label: 'labels.heading.Charges',
+          description: 'labels.text.Define charges/penalties for loan products, savings and deposit products',
+          icon: 'receipt_long',
+          link: '/products/charges',
+          permission: 'READ_CHARGE',
+          anchorId: 'wizard-charges'
+        },
+        {
+          label: 'labels.heading.Floating Rates',
+          description: 'labels.text.Define floating rates for loan products',
+          icon: 'percent',
+          link: '/products/floating-rates',
+          permission: 'READ_FLOATINGRATE'
+        },
+        {
+          label: 'labels.heading.Manage Tax Configurations',
+          description: 'labels.text.Define Tax components and Tax groups',
+          icon: 'calculate',
+          link: '/products/tax-configurations',
+          permission: 'READ_TAXGROUP'
+        },
+        {
+          label: 'labels.heading.Products Mix',
+          description: 'labels.text.Defines rules for taking multiple rules',
+          icon: 'shuffle',
+          link: '/products/products-mix',
+          permission: 'READ_PRODUCTMIX'
+        }
+      ]
+    }
+  ];
 
   /**
-   * To show popover.
+   * Configuration wizard popovers, anchored to the hub cards by element id.
    */
   ngAfterViewInit() {
     if (this.configurationWizardService.showCharges) {
-      setTimeout(() => {
-        this.showPopover(this.templateCharges, this.charges.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateCharges, 'wizard-charges');
     }
     if (this.configurationWizardService.showLoanProducts) {
-      setTimeout(() => {
-        this.showPopover(this.templateLoanProducts, this.loanProducts.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateLoanProducts, 'wizard-loan-products');
     }
     if (this.configurationWizardService.showSavingsProducts) {
-      setTimeout(() => {
-        this.showPopover(this.templateSavingsProducts, this.savingsProducts.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateSavingsProducts, 'wizard-savings-products');
     }
     if (this.configurationWizardService.showShareProducts) {
-      setTimeout(() => {
-        this.showPopover(this.templateShareProducts, this.shareProducts.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateShareProducts, 'wizard-share-products');
     }
     if (this.configurationWizardService.showFixedDepositProducts) {
-      setTimeout(() => {
-        this.showPopover(this.templateFixedDepositProducts, this.fixedDepositProducts.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateFixedDepositProducts, 'wizard-fixed-deposit-products');
     }
     if (this.configurationWizardService.showRecurringDepositProducts) {
-      setTimeout(() => {
-        this.showPopover(
-          this.templateRecurringDepositProducts,
-          this.recurringDepositProducts.nativeElement,
-          'bottom',
-          true
-        );
-      });
+      this.showWizardPopover(this.templateRecurringDepositProducts, 'wizard-recurring-deposit-products');
     }
   }
 
@@ -123,15 +194,22 @@ export class ProductsComponent implements AfterViewInit {
    * @param target HTMLElement | ElementRef<any>.
    * @param position String.
    * @param backdrop Boolean.
-   * @param arrowNumber - The index of the boolean value to toggle.
    */
-  showPopover(
-    template: TemplateRef<any>,
-    target: HTMLElement | ElementRef<any>,
-    position: string,
-    backdrop: boolean
-  ): void {
+  showPopover(template: TemplateRef<any>, target: HTMLElement, position: string, backdrop: boolean): void {
     setTimeout(() => this.popoverService.open(template, target, position, backdrop, {}), 200);
+  }
+
+  closeConfigWizard(): void {
+    this.configurationWizardService.closeConfigWizard();
+  }
+
+  private showWizardPopover(template: TemplateRef<any>, anchorId: string): void {
+    setTimeout(() => {
+      const target = document.getElementById(anchorId);
+      if (target) {
+        this.showPopover(template, target, 'bottom', true);
+      }
+    });
   }
 
   /**
@@ -240,10 +318,5 @@ export class ProductsComponent implements AfterViewInit {
     this.configurationWizardService.showRecurringDepositProducts = false;
     this.configurationWizardService.showFixedDepositProductsList = true;
     this.router.navigate(['/products/fixed-deposit-products']);
-  }
-
-  arrowBooleansToggle(arrowNumber: number) {
-    // Toggle the boolean value at the given index
-    this.arrowBooleans[arrowNumber] = !this.arrowBooleans[arrowNumber];
   }
 }

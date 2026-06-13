@@ -34,8 +34,8 @@
     </div>
 
     <div class="progress-section">
-      <h3 class="progress-label">{{ 'labels.heading.Progress Bar' | translate }}: 0%</h3>
-      <mat-progress-bar mode="determinate" value="0"></mat-progress-bar>
+      <h3 class="progress-label">{{ 'labels.heading.Progress Bar' | translate }}: {{ setupProgress }}%</h3>
+      <mat-progress-bar mode="determinate" [value]="setupProgress"></mat-progress-bar>
     </div>
   </mat-dialog-content>
 

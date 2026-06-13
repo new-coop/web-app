@@ -42,7 +42,7 @@ import {
   PaymentAllocationOrder,
   PaymentAllocationTransactionType
 } from '../payment-allocation-model';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 import { LoanProductService } from 'app/products/loan-products/services/loan-product.service';
 

@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ProductsService } from 'app/products/products.service';
 import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 import { DelinquencyBucketBaseComponent } from '../../delinquency-base.component';
 import { FormatNumberPipe } from '@pipes/format-number.pipe';

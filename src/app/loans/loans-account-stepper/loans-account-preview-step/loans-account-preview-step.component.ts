@@ -33,7 +33,7 @@ import { CurrencyPipe } from '@angular/common';
 import { ExternalIdentifierComponent } from '../../../shared/external-identifier/external-identifier.component';
 import { MatDivider } from '@angular/material/divider';
 import { MatStepperPrevious } from '@angular/material/stepper';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { FindPipe } from '../../../pipes/find.pipe';
 import { DateFormatPipe } from '../../../pipes/date-format.pipe';
 import { FormatNumberPipe } from '../../../pipes/format-number.pipe';

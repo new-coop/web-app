@@ -9,6 +9,8 @@
 /** Angular Imports */
 import { Injectable } from '@angular/core';
 
+const SETUP_PROGRESS_KEY = 'mifosXConfigWizardProgress';
+
 /**
  * Configuration Wizard service.
  */
@@ -203,6 +205,25 @@ export class ConfigurationWizardService {
   showManageReports: boolean = false;
 
   constructor() {}
+
+  /** Highest setup-tour progress percentage recorded for this browser (0–100). */
+  getSetupProgress(): number {
+    try {
+      const raw = localStorage.getItem(SETUP_PROGRESS_KEY);
+      const value = raw ? Number(raw) : 0;
+      return Number.isFinite(value) ? Math.min(100, Math.max(0, value)) : 0;
+    } catch {
+      return 0;
+    }
+  }
+
+  /** Persists setup progress when a tour step completes (keeps the highest value). */
+  recordSetupProgress(percent: number): void {
+    const next = Math.min(100, Math.max(0, percent));
+    if (next > this.getSetupProgress()) {
+      localStorage.setItem(SETUP_PROGRESS_KEY, String(next));
+    }
+  }
 
   /**
    * Set all variables to false.

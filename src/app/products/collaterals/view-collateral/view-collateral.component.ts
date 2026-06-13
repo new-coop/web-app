@@ -16,7 +16,7 @@ import { ProductsService } from 'app/products/products.service';
 /** Custom Components */
 import { TranslateService } from '@ngx-translate/core';
 import { DeleteDialogComponent } from '../../../shared/delete-dialog/delete-dialog.component';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**

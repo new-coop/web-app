@@ -11,5 +11,5 @@
  * This module exports all Material Design 3 components for easy importing.
  */
 
-export { M3ButtonComponent, M3ButtonVariant } from './m3-button/m3-button.component';
+export { M3ButtonComponent, M3ButtonVariant, M3ButtonTone, M3ButtonSize } from './m3-button/m3-button.component';
 export { M3IconComponent, M3IconStyle } from './m3-icon/m3-icon.component';

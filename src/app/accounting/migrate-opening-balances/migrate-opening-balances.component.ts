@@ -200,6 +200,11 @@ export class MigrateOpeningBalancesComponent implements OnInit, AfterViewInit {
    * if successful redirects to view created transaction.
    */
   submit() {
+    if (this.openingBalancesForm.invalid) {
+      this.openingBalancesForm.markAllAsTouched();
+      return;
+    }
+
     if (this.amountsAreOK()) {
       const openingBalances = this.openingBalancesForm.value;
       openingBalances.locale = this.settingsService.language.code;

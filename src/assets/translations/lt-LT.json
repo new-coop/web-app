@@ -764,7 +764,8 @@
       "DONE": "Atlikta",
       "Submitting": "Pateikiama",
       "OK": "Gerai",
-      "undo_account_transfer": "Atšaukti sąskaitos pervedimą"
+      "undo_account_transfer": "Atšaukti sąskaitos pervedimą",
+      "View all results": "Rodyti visus rezultatus"
     },
     "catalogs": {
       "Interest payment waiver": "Palūkanų mokėjimo atsisakymas",
@@ -1560,7 +1561,23 @@
       "identifier id": "identifikatoriaus id",
       "savings-transaction-datatable-tab works": "taupymo-operacijų-duomenų lentelės-skirtukas veikia",
       "successfully select option": "sėkmingai. Jei norite tęsti, pasirinkite iš toliau pateiktų parinkčių.",
-      "undo_account_transfer": "Atšaukti sąskaitos pervedimą"
+      "undo_account_transfer": "Atšaukti sąskaitos pervedimą",
+      "Quick Actions": "Quick Actions",
+      "Search": "Paieška",
+      "Customization": "Pritaikymas",
+      "Security and Oversight": "Sauga ir priežiūra",
+      "Automation and Integrations": "Automatizavimas ir integracijos",
+      "Configuration": "Konfigūracija",
+      "About": "Apie",
+      "Structure and Staff": "Struktūra ir darbuotojai",
+      "Loans and Funds": "Paskolos ir fondai",
+      "Payments and Cash": "Mokėjimai ir kasa",
+      "Tools": "Įrankiai",
+      "Loans": "Paskolos",
+      "Deposits and Shares": "Indėliai ir akcijos",
+      "Pricing and Rules": "Kainos ir taisyklės",
+      "Ledger Setup": "Didžiosios knygos sąranka",
+      "Period Operations": "Laikotarpio operacijos"
     },
     "inputs": {
       "# Remittance": "# Pervedimas",
@@ -3143,6 +3160,7 @@
       "Clients": "Klientai",
       "Close": "Uždaryti",
       "Close (as Rescheduled)": "Uždaryti (kaip suplanuota)",
+      "Collapse Sidebar": "Sutraukti šoninę juostą",
       "Collection Sheet": "Kolekcijos lapas",
       "Configuration Wizard": "Konfigūracijos vedlys",
       "Contract Termination": "Sutarties nutraukimas",
@@ -3156,6 +3174,7 @@
       "Disburse to Savings": "Išmokėkite santaupoms",
       "Discount Fee": "Nuolaidų mokestis",
       "Edit Repayment Schedule": "Redaguoti grąžinimo grafiką",
+      "Expand Sidebar": "Išskleisti šoninę juostą",
       "Foreclosure": "Uždarymas",
       "Frequent Postings": "Dažni skelbimai",
       "Frequently Accessed": "Dažnai prieinama",
@@ -3236,7 +3255,10 @@
       "Tasks": "Užduotys",
       "Remittances": "Pervedimai",
       "Process Remittance": "Apdoroti pervedimą",
-      "Undo Write-off": "Atšaukti nurašymą"
+      "Undo Write-off": "Atšaukti nurašymą",
+      "Home": "Pradžia",
+      "Operations": "Operacijos",
+      "Administration": "Administravimas"
     },
     "placeholders": {
       "Add new server": "Pridėti naują serverį",
@@ -4033,7 +4055,20 @@
       "username": "Vartotojo vardas",
       "withhold tax for this account": "išskaičiuoti mokesčius už šią sąskaitą",
       "withoutCategory": "Bez kategorijos",
-      "“Maker-Checker” principle requires every tasks": "„Maker-Checker“ principas reikalauja, kad kiekvieną užduotį atliktų du žmonės, kad būtų sumažinta klaidų ir netinkamo naudojimo galimybė. Vienas asmuo pradeda procesą, o antrasis jį užbaigia."
+      "“Maker-Checker” principle requires every tasks": "„Maker-Checker“ principas reikalauja, kad kiekvieną užduotį atliktų du žmonės, kad būtų sumažinta klaidų ir netinkamo naudojimo galimybė. Vienas asmuo pradeda procesą, o antrasis jį užbaigia.",
+      "Good Morning": "Good Morning",
+      "Good Afternoon": "Good Afternoon",
+      "Good Evening": "Good Evening",
+      "No results found": "Rezultatų nerasta",
+      "Search settings": "Ieškoti nustatymų",
+      "No settings match your search": "Jokie nustatymai neatitinka jūsų paieškos",
+      "Configure data, security, automation and platform behavior": "Konfigūruokite duomenis, saugą, automatizavimą ir platformos veikimą",
+      "Manage your organization structure, staff, funds and tools": "Valdykite organizacijos struktūrą, darbuotojus, fondus ir įrankius",
+      "Define and maintain the products your institution offers": "Apibrėžkite ir prižiūrėkite jūsų įstaigos siūlomus produktus",
+      "Record, search and automate journal entries across your ledger": "Registruokite, ieškokite ir automatizuokite žurnalo įrašus didžiojoje knygoje",
+      "Run portfolio, financial and organization reports": "Vykdykite portfelio, finansines ir organizacijos ataskaitas",
+      "Search reports": "Ieškoti ataskaitų",
+      "No reports match your search": "Jokios ataskaitos neatitinka jūsų paieškos"
     },
     "permissions": {
       "actions": {

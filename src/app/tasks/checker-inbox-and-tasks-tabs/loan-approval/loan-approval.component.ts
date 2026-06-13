@@ -44,7 +44,8 @@ import { TasksService } from '../../tasks.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { Dates } from 'app/core/utils/dates';
 import { TranslateService } from '@ngx-translate/core';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
+import { TableNameCellComponent } from '../../../shared/ui/table-name-cell/table-name-cell.component';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { FormatNumberPipe } from '../../../pipes/format-number.pipe';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
@@ -74,7 +75,8 @@ interface OfficeNode {
     MatRowDef,
     MatRow,
     MatPaginator,
-    FormatNumberPipe
+    FormatNumberPipe,
+    TableNameCellComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

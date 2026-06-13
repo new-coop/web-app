@@ -13,97 +13,99 @@
   </button>
 </div>
 
-<div class="container">
-  <mat-card>
-    <form [formGroup]="centerEditMeetingForm">
-      <mat-card-content>
-        <div class="layout-column">
-          <mat-form-field>
-            <mat-label>{{ 'labels.inputs.Repetition Frequency' | translate }}</mat-label>
-            <mat-select formControlName="frequency">
-              @for (option of frequencyOptions; track option) {
-                <mat-option [value]="option.id">
-                  {{ option.value }}
-                </mat-option>
-              }
-            </mat-select>
-            @if (centerEditMeetingForm.controls.frequency.hasError('repeatsOnDay')) {
-              <mat-error>
-                {{ 'labels.inputs.Repetition Frequency' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>{{ 'labels.inputs.Repetition Interval' | translate }}</mat-label>
-            <mat-select formControlName="interval">
-              @for (interval of repetitionIntervals; track interval) {
-                <mat-option [value]="interval">
-                  {{ interval }}
-                </mat-option>
-              }
-            </mat-select>
-            @if (centerEditMeetingForm.controls.interval.hasError('repeatsOnDay')) {
-              <mat-error>
-                {{ 'labels.inputs.Repetition Interval' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
-
-          @if (centerEditMeetingForm.contains('repeatsOnDay')) {
+<div class="container form-page form-page--narrow">
+  <mifosx-form-workspace eyebrow="labels.heading.Centers" title="labels.heading.Edit Center Meeting">
+    <form [formGroup]="centerEditMeetingForm" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
             <mat-form-field>
-              <mat-label>{{ 'labels.inputs.Repeats on Day' | translate }}</mat-label>
-              <mat-select formControlName="repeatsOnDay" required>
-                @for (day of repeatsOnDays; track day) {
-                  <mat-option [value]="day.id">
-                    {{ day.value }}
+              <mat-label>{{ 'labels.inputs.Repetition Frequency' | translate }}</mat-label>
+              <mat-select formControlName="frequency">
+                @for (option of frequencyOptions; track option) {
+                  <mat-option [value]="option.id">
+                    {{ option.value }}
                   </mat-option>
                 }
               </mat-select>
-              @if (centerEditMeetingForm.controls.repeatsOnDay.hasError('repeatsOnDay')) {
+              @if (centerEditMeetingForm.controls.frequency.hasError('repeatsOnDay')) {
                 <mat-error>
-                  {{ 'labels.inputs.At least' | translate }} <strong>{{ 'labels.inputs.one' | translate }}</strong>
-                  {{ 'labels.inputs.day must be selected' | translate }}
+                  {{ 'labels.inputs.Repetition Frequency' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
                 </mat-error>
               }
             </mat-form-field>
-          }
 
-          <mat-form-field class="m-b-5" (click)="startDatePicker.open()">
-            <mat-label>{{ 'labels.inputs.Above Changes are Effective from' | translate }}</mat-label>
-            <input
-              matInput
-              [min]="minDate"
-              [max]="maxDate"
-              [matDatepicker]="startDatePicker"
-              required
-              formControlName="startDate"
-            />
-            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #startDatePicker></mat-datepicker>
-            @if (centerEditMeetingForm.controls.startDate.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Changes Affection Date' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Repetition Interval' | translate }}</mat-label>
+              <mat-select formControlName="interval">
+                @for (interval of repetitionIntervals; track interval) {
+                  <mat-option [value]="interval">
+                    {{ interval }}
+                  </mat-option>
+                }
+              </mat-select>
+              @if (centerEditMeetingForm.controls.interval.hasError('repeatsOnDay')) {
+                <mat-error>
+                  {{ 'labels.inputs.Repetition Interval' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
+
+            @if (centerEditMeetingForm.contains('repeatsOnDay')) {
+              <mat-form-field>
+                <mat-label>{{ 'labels.inputs.Repeats on Day' | translate }}</mat-label>
+                <mat-select formControlName="repeatsOnDay" required>
+                  @for (day of repeatsOnDays; track day) {
+                    <mat-option [value]="day.id">
+                      {{ day.value }}
+                    </mat-option>
+                  }
+                </mat-select>
+                @if (centerEditMeetingForm.controls.repeatsOnDay.hasError('repeatsOnDay')) {
+                  <mat-error>
+                    {{ 'labels.inputs.At least' | translate }} <strong>{{ 'labels.inputs.one' | translate }}</strong>
+                    {{ 'labels.inputs.day must be selected' | translate }}
+                  </mat-error>
+                }
+              </mat-form-field>
             }
-            <mat-hint>
-              {{ "labels.text.Repeats' and 'Repeats every" | translate }}
-            </mat-hint>
-          </mat-form-field>
-        </div>
-      </mat-card-content>
 
-      <mat-card-actions class="layout-row align-center gap-5px responsive-column">
+            <mat-form-field class="m-b-5" (click)="startDatePicker.open()">
+              <mat-label>{{ 'labels.inputs.Above Changes are Effective from' | translate }}</mat-label>
+              <input
+                matInput
+                [min]="minDate"
+                [max]="maxDate"
+                [matDatepicker]="startDatePicker"
+                required
+                formControlName="startDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #startDatePicker></mat-datepicker>
+              @if (centerEditMeetingForm.controls.startDate.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Changes Affection Date' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+              <mat-hint>
+                {{ "labels.text.Repeats' and 'Repeats every" | translate }}
+              </mat-hint>
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
+      <footer class="form-workspace-footer">
         <button type="button" mat-raised-button [routerLink]="['../../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button mat-raised-button color="primary" [disabled]="!centerEditMeetingForm.valid" (click)="submit()">
+        <button mat-raised-button color="primary" (click)="submit()" type="submit">
           {{ 'labels.buttons.Submit' | translate }}
         </button>
-      </mat-card-actions>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>

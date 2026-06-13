@@ -5,3 +5,90 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table.mat-mdc-table {
+  width: 100%;
+
+  --mat-table-background-color: transparent;
+  --mat-table-row-item-outline-color: rgb(15 23 42 / 6%);
+  --mat-table-header-headline-color: #64748b;
+
+  th.mat-mdc-header-cell {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  td.mat-mdc-cell {
+    font-size: 0.875rem;
+    color: #1e293b;
+  }
+
+  .r-amount {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  tr.mat-mdc-row {
+    transition: background-color 150ms ease;
+
+    &:hover {
+      background: rgb(15 23 42 / 3%);
+    }
+  }
+
+  tr.summary-total-row {
+    font-weight: 600;
+    background: rgb(15 23 42 / 2%);
+
+    td.mat-mdc-cell:first-child {
+      font-weight: 600;
+    }
+  }
+
+  td.cell-overdue {
+    color: #dc2626;
+    font-weight: 600;
+  }
+
+  td.mat-mdc-cell:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: inherit;
+    font-weight: 500;
+  }
+}
+
+:host-context(.dark-theme) {
+  table.mat-mdc-table {
+    --mat-table-row-item-outline-color: rgb(255 255 255 / 8%);
+
+    th.mat-mdc-header-cell {
+      color: #a1a1aa;
+    }
+
+    td.mat-mdc-cell {
+      color: #e4e4e7;
+    }
+
+    tr.mat-mdc-row:hover {
+      background: rgb(255 255 255 / 4%);
+    }
+
+    tr.summary-total-row {
+      background: rgb(255 255 255 / 4%);
+    }
+
+    td.cell-overdue {
+      color: #f87171;
+    }
+  }
+}

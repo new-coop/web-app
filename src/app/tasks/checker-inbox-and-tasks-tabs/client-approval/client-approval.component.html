@@ -8,8 +8,8 @@
 
 @if (showData) {
   <div class="tab-container mat-typography">
-    <div class="tasks-header">
-      <mat-form-field class="tasks-search-field">
+    <div class="table-toolbar">
+      <mat-form-field class="toolbar-search tasks-search-field">
         <input
           #filterInput
           matInput
@@ -17,65 +17,90 @@
           (keyup)="applyFilter(filterInput.value)"
         />
       </mat-form-field>
-      <button
-        mat-raised-button
-        color="success"
-        *mifosxHasPermission="'ACTIVATE_CLIENT'"
-        (click)="approveClients()"
-        class="tasks-action-btn"
-      >
-        <fa-icon icon="check" class="m-r-10"></fa-icon>{{ 'labels.buttons.Approve' | translate }}
-      </button>
+      <div class="toolbar-actions">
+        <button
+          mat-raised-button
+          color="success"
+          *mifosxHasPermission="'ACTIVATE_CLIENT'"
+          (click)="approveClients()"
+          class="tasks-action-btn"
+        >
+          <fa-icon icon="check" class="m-r-10"></fa-icon>{{ 'labels.buttons.Approve' | translate }}
+        </button>
+      </div>
     </div>
     @for (client of groupedClientEntries; track client.key) {
-      <h3>{{ client.key }}</h3>
-      @if (client.value.length > 0 && groupedClientDataSources[client.key]) {
-        <table mat-table [dataSource]="groupedClientDataSources[client.key]">
-          <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox
-                (change)="$event ? masterToggle(groupedClientDataSources[client.key].filteredData) : null"
-                [checked]="selection.hasValue() && isAllSelected(groupedClientDataSources[client.key].filteredData)"
-                [indeterminate]="
-                  selection.hasValue() && !isAllSelected(groupedClientDataSources[client.key].filteredData)
-                "
-                [aria-label]="checkboxLabel(groupedClientDataSources[client.key].filteredData)"
-              >
-              </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let row">
-              <mat-checkbox
-                (click)="$event.stopPropagation()"
-                (change)="$event ? selection.toggle(row) : null"
-                [checked]="selection.isSelected(row)"
-                [aria-label]="checkboxLabel(row)"
-              >
-              </mat-checkbox>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.name' | translate }}</th>
-            <td mat-cell *matCellDef="let element" class="view-details" [routerLink]="['../../clients', element.id]">
-              {{ element.displayName }}
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="accountNumber">
-            <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Account Number' | translate }}</th>
-            <td mat-cell *matCellDef="let element" class="view-details" [routerLink]="['../../clients', element.id]">
-              {{ element.accountNo }}
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="staff">
-            <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Staff' | translate }}</th>
-            <td mat-cell *matCellDef="let element" class="view-details" [routerLink]="['../../clients', element.id]">
-              {{ element.staffName }}
-            </td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
-        </table>
-        <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
-      }
+      <div class="table-card m-b-20">
+        <div class="table-card-header">
+          <h3 class="table-card-title">{{ client.key }}</h3>
+        </div>
+        @if (client.value.length > 0 && groupedClientDataSources[client.key]) {
+          <div class="table-scroll">
+            <table mat-table [dataSource]="groupedClientDataSources[client.key]">
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox
+                    (change)="$event ? masterToggle(groupedClientDataSources[client.key].filteredData) : null"
+                    [checked]="selection.hasValue() && isAllSelected(groupedClientDataSources[client.key].filteredData)"
+                    [indeterminate]="
+                      selection.hasValue() && !isAllSelected(groupedClientDataSources[client.key].filteredData)
+                    "
+                    [aria-label]="checkboxLabel(groupedClientDataSources[client.key].filteredData)"
+                  >
+                  </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-checkbox
+                    (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)"
+                    [aria-label]="checkboxLabel(row)"
+                  >
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.name' | translate }}</th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  class="view-details"
+                  [routerLink]="['../../clients', element.id]"
+                >
+                  <mifosx-table-name-cell [name]="element.displayName" />
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="accountNumber">
+                <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Account Number' | translate }}</th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  class="view-details"
+                  [routerLink]="['../../clients', element.id]"
+                >
+                  {{ element.accountNo }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="staff">
+                <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Staff' | translate }}</th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  class="view-details"
+                  [routerLink]="['../../clients', element.id]"
+                >
+                  @if (element.staffName) {
+                    <mifosx-table-name-cell [name]="element.staffName" [size]="28" />
+                  }
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
+            </table>
+          </div>
+          <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+        }
+      </div>
     }
   </div>
 }

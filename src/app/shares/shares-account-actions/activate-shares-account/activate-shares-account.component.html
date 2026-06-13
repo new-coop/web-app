@@ -6,39 +6,43 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-card>
-    <form [formGroup]="activateSharesAccountForm" (ngSubmit)="submit()">
-      <mat-card-content>
-        <mat-form-field class="flex-fill" (click)="activatedDatePicker.open()">
-          <mat-label>{{ 'labels.inputs.Activated On Date' | translate }}</mat-label>
-          <input
-            matInput
-            [min]="minDate"
-            [max]="maxDate"
-            [matDatepicker]="activatedDatePicker"
-            required
-            formControlName="activatedDate"
-          />
-          <mat-datepicker-toggle matSuffix [for]="activatedDatePicker"></mat-datepicker-toggle>
-          <mat-datepicker #activatedDatePicker></mat-datepicker>
-          @if (activateSharesAccountForm.controls.activatedDate.hasError('required')) {
-            <mat-error>
-              {{ 'labels.inputs.Activated On Date' | translate }} {{ 'labels.commons.is' | translate }}
-              <strong>{{ 'labels.commons.required' | translate }}</strong>
-            </mat-error>
-          }
-        </mat-form-field>
-      </mat-card-content>
-
-      <mat-card-actions class="layout-row align-center gap-5px responsive-column">
+<div class="container form-page form-page--narrow">
+  <mifosx-form-workspace eyebrow="labels.heading.Shares" title="labels.heading.Activate Shares Account">
+    <form [formGroup]="activateSharesAccountForm" (ngSubmit)="submit()" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
+            <mat-form-field (click)="activatedDatePicker.open()">
+              <mat-label>{{ 'labels.inputs.Activated On Date' | translate }}</mat-label>
+              <input
+                matInput
+                [min]="minDate"
+                [max]="maxDate"
+                [matDatepicker]="activatedDatePicker"
+                required
+                formControlName="activatedDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="activatedDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #activatedDatePicker></mat-datepicker>
+              @if (activateSharesAccountForm.controls.activatedDate.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Activated On Date' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
+      <footer class="form-workspace-footer">
         <button type="button" mat-raised-button [routerLink]="['../../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button mat-raised-button color="primary" [disabled]="!activateSharesAccountForm.valid">
+        <button mat-raised-button color="primary" type="submit">
           {{ 'labels.buttons.Submit' | translate }}
         </button>
-      </mat-card-actions>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>

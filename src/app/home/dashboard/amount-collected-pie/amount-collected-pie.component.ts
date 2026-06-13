@@ -7,19 +7,30 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, OnInit, inject, DestroyRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  inject,
+  DestroyRef
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 /** Custom Services */
 import { HomeService } from '../../home.service';
 import { ThemingService } from 'app/shared/theme-toggle/theming.service';
+import { getDoughnutSegmentStyle, getMifosChartPalette, getSeriesStyle } from 'app/core/utils/chart-colors';
 
 /** Charting Imports */
 import { Chart, registerables } from 'chart.js';
 import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { NgStyle } from '@angular/common';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
@@ -46,6 +57,15 @@ export class AmountCollectedPieComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private themingService = inject(ThemingService);
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+
+  /** Offices from parent or route resolver */
+  @Input() set offices(value: any) {
+    if (value) {
+      this.officeData = value;
+      this.cdr.markForCheck();
+    }
+  }
 
   /** Current theme */
   private currentTheme = 'light-theme';
@@ -68,7 +88,10 @@ export class AmountCollectedPieComponent implements OnInit {
    */
   constructor() {
     this.route.data.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((data: { offices: any }) => {
-      this.officeData = data.offices;
+      if (data.offices) {
+        this.officeData = data.offices;
+        this.cdr.markForCheck();
+      }
     });
   }
 
@@ -93,17 +116,28 @@ export class AmountCollectedPieComponent implements OnInit {
    */
   getChartData() {
     this.officeId.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value: number) => {
-      this.homeService.getCollectedAmount(value).subscribe((response: any) => {
-        const data = Object.entries(response[0]).map((entry) => entry[1]);
-        if (!(data[0] === 0 && data[1] === 0)) {
-          this.setChart(data);
-          this.hideOutput = false;
-          this.showFallback = false;
-        } else {
-          this.showFallback = true;
-          this.hideOutput = true;
-        }
-      });
+      this.homeService
+        .getCollectedAmount(value)
+        .pipe(catchError(() => of([])))
+        .subscribe((response: any) => {
+          const row = response?.[0];
+          if (!row) {
+            this.showFallback = true;
+            this.hideOutput = true;
+            this.cdr.markForCheck();
+            return;
+          }
+          const data = Object.entries(row).map((entry) => entry[1]);
+          if (!(data[0] === 0 && data[1] === 0)) {
+            this.setChart(data);
+            this.showFallback = false;
+            this.hideOutput = false;
+          } else {
+            this.showFallback = true;
+            this.hideOutput = true;
+          }
+          this.cdr.markForCheck();
+        });
     });
   }
 
@@ -113,7 +147,9 @@ export class AmountCollectedPieComponent implements OnInit {
    * @param {any} data Chart Data.
    */
   setChart(data: any) {
-    const legendColor = this.getLegendColor();
+    const isDark = this.currentTheme === 'dark-theme';
+    const palette = getMifosChartPalette(isDark);
+    const doughnut = getDoughnutSegmentStyle(isDark);
 
     if (!this.chart) {
       this.chart = new Chart('collection-pie', {
@@ -125,19 +161,24 @@ export class AmountCollectedPieComponent implements OnInit {
           ],
           datasets: [
             {
-              backgroundColor: [
-                'dodgerblue',
-                'red'
-              ],
+              backgroundColor: doughnut.backgroundColor,
+              borderColor: doughnut.borderColor,
+              borderWidth: doughnut.borderWidth,
               data: data
             }
           ]
         },
         options: {
+          cutout: '62%',
+          spacing: doughnut.spacing,
           plugins: {
             legend: {
+              position: 'bottom',
               labels: {
-                color: legendColor
+                color: palette.legend,
+                usePointStyle: true,
+                pointStyle: 'circle',
+                padding: 16
               }
             }
           },
@@ -156,21 +197,27 @@ export class AmountCollectedPieComponent implements OnInit {
   }
 
   /**
-   * Gets the legend color based on the current theme.
-   */
-  private getLegendColor(): string {
-    return this.currentTheme === 'dark-theme' ? 'white' : '#666';
-  }
-
-  /**
    * Updates chart colors based on the current theme.
    */
   updateChartColors() {
-    const legendColor = this.getLegendColor();
+    const isDark = this.currentTheme === 'dark-theme';
+    const palette = getMifosChartPalette(isDark);
+    const doughnut = getDoughnutSegmentStyle(isDark);
+
+    if (this.chart?.data?.datasets?.[0]) {
+      this.chart.data.datasets[0].backgroundColor = doughnut.backgroundColor;
+      this.chart.data.datasets[0].borderColor = doughnut.borderColor;
+      this.chart.data.datasets[0].borderWidth = doughnut.borderWidth;
+    }
 
     if (this.chart?.options?.plugins?.legend?.labels) {
-      this.chart.options.plugins.legend.labels.color = legendColor;
-      this.chart.update();
+      this.chart.options.plugins.legend.labels.color = palette.legend;
     }
+
+    if (this.chart?.options) {
+      this.chart.options.spacing = doughnut.spacing;
+    }
+
+    this.chart?.update();
   }
 }

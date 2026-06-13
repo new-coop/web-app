@@ -7,26 +7,15 @@
  */
 
 /** Angular Imports */
-import {
-  ChangeDetectionStrategy,
-  AfterViewInit,
-  Component,
-  ElementRef,
-  TemplateRef,
-  ViewChild,
-  inject
-} from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, AfterViewInit, Component, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 /** Custom Services */
 import { ConfigurationWizardService } from '../configuration-wizard/configuration-wizard.service';
 import { PopoverService } from '../configuration-wizard/popover/popover.service';
-import { MatNavList, MatListItem } from '@angular/material/list';
-import { MatIcon } from '@angular/material/icon';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MatLine } from '@angular/material/grid-list';
-import { NgClass } from '@angular/common';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
+import { NavHubComponent, NavHubSection } from '../shared/nav-hub/nav-hub.component';
+import { ConfigWizardStepComponent } from '../configuration-wizard/config-wizard-step/config-wizard-step.component';
 
 @Component({
   selector: 'mifosx-system',
@@ -34,12 +23,8 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   styleUrls: ['./system.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    MatNavList,
-    MatListItem,
-    MatIcon,
-    FaIconComponent,
-    MatLine,
-    NgClass
+    NavHubComponent,
+    ConfigWizardStepComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -48,37 +33,153 @@ export class SystemComponent implements AfterViewInit {
   private configurationWizardService = inject(ConfigurationWizardService);
   private popoverService = inject(PopoverService);
 
-  /* Reference of manage datatables */
-  @ViewChild('datatables') datatables: ElementRef<any>;
   /* Template for popover on manage datables */
   @ViewChild('templateDatatables') templateDatatables: TemplateRef<any>;
-  /* Reference of manage codes */
-  @ViewChild('codes') codes: ElementRef<any>;
   /* Template for popover on manage codes */
   @ViewChild('templateCodes') templateCodes: TemplateRef<any>;
-  /* Reference of roles and permission */
-  @ViewChild('rolesandpermission') rolesandpermission: ElementRef<any>;
   /* Template for popover on roles and permission */
   @ViewChild('templateRolesandPermission') templateRolesandPermission: TemplateRef<any>;
-  /* Reference of makerchecker tasks */
-  @ViewChild('makerCheckerTable') makerCheckerTable: ElementRef<any>;
   /* Template for popover on maker checker tasks */
   @ViewChild('templateMakerCheckerTable') templateMakerCheckerTable: TemplateRef<any>;
-  /* Reference of global configurations */
-  @ViewChild('configurations') configurations: ElementRef<any>;
   /* Template for popover on configurations */
   @ViewChild('templateConfigurations') templateConfigurations: TemplateRef<any>;
-  /* Reference of scheduler jobs */
-  @ViewChild('schedulerJobs') schedulerJobs: ElementRef<any>;
   /* Template for popover on scheduler jobs */
   @ViewChild('templateSchedulerJobs') templateSchedulerJobs: TemplateRef<any>;
-  /* Reference of manage reports */
-  @ViewChild('manageReports') manageReports: ElementRef<any>;
   /* Template for popover on manage reports */
   @ViewChild('templateManageReports') templateManageReports: TemplateRef<any>;
-  // Initialize an array of 17 boolean values, all set to false
-  isDisabled: boolean = true;
-  arrowBooleans: boolean[] = new Array(17).fill(false);
+
+  readonly sections: NavHubSection[] = [
+    {
+      label: 'labels.heading.Customization',
+      items: [
+        {
+          label: 'labels.heading.Manage Data tables',
+          description: 'labels.text.Add new extra fields to any entity',
+          icon: 'table',
+          link: '/system/data-tables',
+          anchorId: 'wizard-datatables'
+        },
+        {
+          label: 'labels.heading.Manage Codes',
+          description: 'labels.text.Codes are used to define drop down values',
+          icon: 'format_list_bulleted',
+          link: '/system/codes',
+          anchorId: 'wizard-codes'
+        },
+        {
+          label: 'labels.heading.Entity to Entity Mapping',
+          description: 'labels.text.Define or modify entity to entity mappings',
+          icon: 'account_tree',
+          link: '/system/entity-to-entity-mapping'
+        },
+        {
+          label: 'labels.heading.Manage Surveys',
+          description: 'labels.text.Manage Surveys',
+          icon: 'assignment',
+          link: '/system/surveys',
+          disabled: true
+        }
+      ]
+    },
+    {
+      label: 'labels.heading.Security and Oversight',
+      items: [
+        {
+          label: 'labels.heading.Manage Roles and Permissions',
+          description: 'labels.text.Define or modify roles and associated permissions',
+          icon: 'admin_panel_settings',
+          link: '/system/roles-and-permissions',
+          anchorId: 'wizard-roles-and-permissions'
+        },
+        {
+          label: 'labels.heading.Configure Maker Checker Tasks',
+          description: 'labels.text.Define or modify Maker Checker tasks',
+          icon: 'rule',
+          link: '/system/configure-mc-tasks',
+          anchorId: 'wizard-mc-tasks'
+        },
+        {
+          label: 'labels.heading.Audit Trails',
+          description: 'labels.text.Audit logs of all the activities',
+          icon: 'history',
+          link: '/system/audit-trails'
+        }
+      ]
+    },
+    {
+      label: 'labels.heading.Automation and Integrations',
+      items: [
+        {
+          label: 'labels.heading.Manage Jobs',
+          description: 'labels.text.Manage Schedule and Workflow jobs, modify jobs',
+          icon: 'schedule',
+          link: '/system/manage-jobs',
+          anchorId: 'wizard-scheduler-jobs'
+        },
+        {
+          label: 'labels.heading.Manage Hooks',
+          description: 'labels.text.Define Hooks',
+          icon: 'webhook',
+          link: '/system/hooks'
+        },
+        {
+          label: 'labels.heading.Manage External Events',
+          description: 'labels.text.External Events configuration, to enable or disable',
+          icon: 'bolt',
+          link: '/system/external-events',
+          permission: 'READ_EXTERNAL_EVENT_CONFIGURATION'
+        },
+        {
+          label: 'labels.heading.External Services',
+          description: 'labels.text.External Services Configuration',
+          icon: 'cloud',
+          link: '/system/external-services'
+        }
+      ]
+    },
+    {
+      label: 'labels.heading.Configuration',
+      items: [
+        {
+          label: 'labels.heading.Configurations',
+          description: 'labels.text.Global configurations, Cache and Business Date',
+          icon: 'tune',
+          link: '/system/configurations',
+          anchorId: 'wizard-configurations'
+        },
+        {
+          label: 'labels.heading.Account Number Preferences',
+          description: 'labels.text.Preferences for generating account numbers for client',
+          icon: 'tag',
+          link: '/system/account-number-preferences'
+        },
+        {
+          label: 'labels.heading.Manage Reports',
+          description: 'labels.text.Add new report and classify reports',
+          icon: 'summarize',
+          link: '/system/reports',
+          anchorId: 'wizard-manage-reports'
+        }
+      ]
+    },
+    {
+      label: 'labels.heading.About',
+      items: [
+        {
+          label: 'labels.heading.System Information',
+          description: 'labels.text.View system version, server and licensing information',
+          icon: 'info',
+          link: '/system/system-information'
+        },
+        {
+          label: 'labels.heading.About Us',
+          description: 'labels.text.Learn about the Mifos Initiative and our mission',
+          icon: 'groups',
+          link: '/system/about-us'
+        }
+      ]
+    }
+  ];
 
   /**
    * Popover function
@@ -86,56 +187,49 @@ export class SystemComponent implements AfterViewInit {
    * @param target HTMLElement | ElementRef<any>.
    * @param position String.
    * @param backdrop Boolean.
-   * @param arrowNumber - The index of the boolean value to toggle.
    */
-  showPopover(
-    template: TemplateRef<any>,
-    target: HTMLElement | ElementRef<any>,
-    position: string,
-    backdrop: boolean
-  ): void {
+  showPopover(template: TemplateRef<any>, target: HTMLElement, position: string, backdrop: boolean): void {
     setTimeout(() => this.popoverService.open(template, target, position, backdrop, {}), 200);
   }
 
+  closeConfigWizard(): void {
+    this.configurationWizardService.closeConfigWizard();
+  }
+
   /**
-   * To show popover.
+   * Configuration wizard popovers, anchored to the hub cards by element id.
    */
   ngAfterViewInit() {
     if (this.configurationWizardService.showDatatables) {
-      setTimeout(() => {
-        this.showPopover(this.templateDatatables, this.datatables.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateDatatables, 'wizard-datatables');
     }
     if (this.configurationWizardService.showSystemCodes) {
-      setTimeout(() => {
-        this.showPopover(this.templateCodes, this.codes.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateCodes, 'wizard-codes');
     }
     if (this.configurationWizardService.showRolesandPermission) {
-      setTimeout(() => {
-        this.showPopover(this.templateRolesandPermission, this.rolesandpermission.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateRolesandPermission, 'wizard-roles-and-permissions');
     }
     if (this.configurationWizardService.showMakerCheckerTable) {
-      setTimeout(() => {
-        this.showPopover(this.templateMakerCheckerTable, this.makerCheckerTable.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateMakerCheckerTable, 'wizard-mc-tasks');
     }
     if (this.configurationWizardService.showConfigurations) {
-      setTimeout(() => {
-        this.showPopover(this.templateConfigurations, this.configurations.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateConfigurations, 'wizard-configurations');
     }
     if (this.configurationWizardService.showSchedulerJobs) {
-      setTimeout(() => {
-        this.showPopover(this.templateSchedulerJobs, this.schedulerJobs.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateSchedulerJobs, 'wizard-scheduler-jobs');
     }
     if (this.configurationWizardService.showManageReports) {
-      setTimeout(() => {
-        this.showPopover(this.templateManageReports, this.manageReports.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateManageReports, 'wizard-manage-reports');
     }
+  }
+
+  private showWizardPopover(template: TemplateRef<any>, anchorId: string): void {
+    setTimeout(() => {
+      const target = document.getElementById(anchorId);
+      if (target) {
+        this.showPopover(template, target, 'bottom', true);
+      }
+    });
   }
 
   /**
@@ -260,10 +354,5 @@ export class SystemComponent implements AfterViewInit {
     this.configurationWizardService.showManageReports = false;
     this.configurationWizardService.showManageFunds = true;
     this.router.navigate(['/organization/manage-funds']);
-  }
-
-  arrowBooleansToggle(arrowNumber: number) {
-    // Toggle the boolean value at the given index
-    this.arrowBooleans[arrowNumber] = !this.arrowBooleans[arrowNumber];
   }
 }

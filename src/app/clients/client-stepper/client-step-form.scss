@@ -7,7 +7,7 @@
  */
 
 form {
-  padding: 16px 0;
+  padding: 0;
 
   .layout-row-wrap {
     gap: 8px !important;
@@ -16,10 +16,6 @@ form {
 
 mat-form-field {
   margin-bottom: 8px;
-}
-
-mat-divider {
-  margin: 16px 0;
 }
 
 .margin-v {
@@ -45,30 +41,7 @@ mat-divider {
     &.last-name {
       flex: 1.2;
     }
-
-    &.middle-name {
-      flex: 1;
-    }
   }
-}
-
-@media (width <= 768px) {
-  .name-fields-row {
-    flex-direction: column;
-    gap: 4px;
-
-    .name-field {
-      width: 100%;
-      min-width: unset;
-      flex: none;
-    }
-  }
-}
-
-.name-fields-row + mat-form-field,
-.name-fields-row + mat-divider,
-.name-fields-row + div {
-  margin-top: 8px;
 }
 
 .layout-row.align-center {
@@ -93,43 +66,9 @@ mat-checkbox {
   }
 }
 
-@media (width <= 768px) {
-  form {
-    padding: 12px 0;
-
-    .layout-row-wrap {
-      gap: 6px !important;
-    }
-  }
-
-  mat-form-field {
-    margin-bottom: 6px;
-  }
-
-  mat-divider {
-    margin: 12px 0;
-  }
-
-  .layout-row.align-center {
-    padding-top: 12px;
-    margin-top: 8px;
-    flex-direction: column;
-    gap: 8px;
-
-    button {
-      width: 100%;
-      margin: 2px 0;
-    }
-  }
-}
-
 .external-id-status {
   font-size: 12px;
   font-weight: 500;
-
-  &.loading {
-    color: #1976d2;
-  }
 
   &.success {
     color: #388e3c;
@@ -140,12 +79,27 @@ mat-checkbox {
   }
 }
 
-@media (width <= 480px) {
+@media (width <= 768px) {
   form {
-    padding: 8px 0;
+    padding: 12px 0;
+  }
 
-    .layout-row-wrap {
-      gap: 4px !important;
+  .name-fields-row {
+    flex-direction: column;
+
+    .name-field {
+      width: 100%;
+      min-width: unset;
+      flex: none;
+    }
+  }
+
+  .layout-row.align-center {
+    flex-direction: column;
+    gap: 8px;
+
+    button {
+      width: 100%;
     }
   }
 }

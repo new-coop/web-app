@@ -297,6 +297,10 @@ export class SettingsService {
   }
 
   get themeDarkEnabled(): boolean {
-    return JSON.parse(localStorage.getItem('mifosXThemeDarkEnabled'));
+    const stored = localStorage.getItem('mifosXThemeDarkEnabled');
+    if (stored === null) {
+      return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+    }
+    return JSON.parse(stored);
   }
 }

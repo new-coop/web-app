@@ -28,7 +28,7 @@ import { ResolvedAddress } from 'app/shared/models/postal-code-lookup.model';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { of, Subscription } from 'rxjs';
 import { ClientsService } from '../../clients.service';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import {
   MatAccordion,
   MatExpansionPanel,

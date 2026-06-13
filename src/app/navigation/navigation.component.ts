@@ -146,11 +146,17 @@ export class NavigationComponent implements OnInit {
         this.clientData = null;
         this.selectedItem = this.employeeData.find((employee: any) => employee.id === employeeId);
         this.selectedItem.itemType = 'employee';
-        this.navigationService.getCentersFromStaffId(employeeId).subscribe((centers: any) => {
-          this.centerData = centers;
-          if (this.centerData.length) {
-            this.centerSelector.enable();
-          } else {
+        this.navigationService.getCentersFromStaffId(employeeId).subscribe({
+          next: (centers: any) => {
+            this.centerData = centers;
+            if (this.centerData.length) {
+              this.centerSelector.enable();
+            } else {
+              this.centerSelector.disable();
+            }
+          },
+          error: () => {
+            this.centerData = [];
             this.centerSelector.disable();
           }
         });

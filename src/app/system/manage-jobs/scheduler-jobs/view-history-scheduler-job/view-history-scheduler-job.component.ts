@@ -26,7 +26,7 @@ import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from 'app/shared/error-dialog/error-dialog.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { DatetimeFormatPipe } from '../../../../pipes/datetime-format.pipe';

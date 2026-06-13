@@ -19,6 +19,7 @@ import {
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
+import { ConfigurationWizardService } from '../configuration-wizard.service';
 
 /**
  * Next Step Dialog Component.
@@ -41,6 +42,7 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 export class NextStepDialogComponent {
   dialogRef = inject<MatDialogRef<NextStepDialogComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
+  private configurationWizardService = inject(ConfigurationWizardService);
 
   /* Step Percentage */
   stepPercentage: number;
@@ -49,14 +51,12 @@ export class NextStepDialogComponent {
   /* Previous Step Name*/
   previousStepName: string;
 
-  /**
-   * @param {MatDialogRef<NextStepDialogComponent>} dialogRef MatDialogRef<NextStepDialogComponent>.
-   */
   constructor() {
     const data = this.data;
 
     this.stepPercentage = data.stepPercentage;
     this.nextStepName = data.nextStepName;
     this.previousStepName = data.previousStepName;
+    this.configurationWizardService.recordSetupProgress(this.stepPercentage);
   }
 }

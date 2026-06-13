@@ -6,33 +6,76 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 <div [class]="containerClasses">
-  @if (variant === 'filled') {
-    <md-filled-button [type]="type" [disabled]="disabled" (click)="onClick($event)">
-      {{ label }}<ng-content></ng-content>
-    </md-filled-button>
-  }
-
-  @if (variant === 'outlined') {
-    <md-outlined-button [type]="type" [disabled]="disabled" (click)="onClick($event)">
-      {{ label }}<ng-content></ng-content>
-    </md-outlined-button>
-  }
-
-  @if (variant === 'elevated') {
-    <md-elevated-button [type]="type" [disabled]="disabled" (click)="onClick($event)">
-      {{ label }}<ng-content></ng-content>
-    </md-elevated-button>
-  }
-
-  @if (variant === 'text') {
-    <md-text-button [type]="type" [disabled]="disabled" (click)="onClick($event)">
-      {{ label }}<ng-content></ng-content>
-    </md-text-button>
-  }
-
-  @if (variant === 'tonal') {
-    <md-filled-tonal-button [type]="type" [disabled]="disabled" (click)="onClick($event)">
-      {{ label }}<ng-content></ng-content>
-    </md-filled-tonal-button>
+  @switch (variant) {
+    @case ('filled') {
+      <md-filled-button
+        [type]="type"
+        [disabled]="isDisabled"
+        [attr.aria-busy]="loading || null"
+        [attr.aria-label]="ariaLabel || null"
+        (click)="onClick($event)"
+      >
+        <ng-container *ngTemplateOutlet="buttonInner" />
+      </md-filled-button>
+    }
+    @case ('outlined') {
+      <md-outlined-button
+        [type]="type"
+        [disabled]="isDisabled"
+        [attr.aria-busy]="loading || null"
+        [attr.aria-label]="ariaLabel || null"
+        (click)="onClick($event)"
+      >
+        <ng-container *ngTemplateOutlet="buttonInner" />
+      </md-outlined-button>
+    }
+    @case ('elevated') {
+      <md-elevated-button
+        [type]="type"
+        [disabled]="isDisabled"
+        [attr.aria-busy]="loading || null"
+        [attr.aria-label]="ariaLabel || null"
+        (click)="onClick($event)"
+      >
+        <ng-container *ngTemplateOutlet="buttonInner" />
+      </md-elevated-button>
+    }
+    @case ('text') {
+      <md-text-button
+        [type]="type"
+        [disabled]="isDisabled"
+        [attr.aria-busy]="loading || null"
+        [attr.aria-label]="ariaLabel || null"
+        (click)="onClick($event)"
+      >
+        <ng-container *ngTemplateOutlet="buttonInner" />
+      </md-text-button>
+    }
+    @case ('tonal') {
+      <md-filled-tonal-button
+        [type]="type"
+        [disabled]="isDisabled"
+        [attr.aria-busy]="loading || null"
+        [attr.aria-label]="ariaLabel || null"
+        (click)="onClick($event)"
+      >
+        <ng-container *ngTemplateOutlet="buttonInner" />
+      </md-filled-tonal-button>
+    }
   }
 </div>
+
+<ng-template #buttonInner>
+  @if (loading) {
+    <span class="m3-button-spinner" aria-hidden="true"></span>
+  } @else if (icon) {
+    <mifosx-m3-icon [name]="icon" [size]="iconSize" class="m3-button-icon-leading" />
+  }
+  @if (label) {
+    <span class="m3-button-label">{{ label }}</span>
+  }
+  <ng-content />
+  @if (trailingIcon && !loading) {
+    <mifosx-m3-icon [name]="trailingIcon" [size]="iconSize" class="m3-button-icon-trailing" />
+  }
+</ng-template>

@@ -6,26 +6,75 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <div class="layout-row gap-20px">
-    <mat-form-field class="flex-fill">
-      <mat-label>{{ 'labels.inputs.Filter' | translate }}</mat-label>
-      <input matInput (keyup)="applyFilter($event.target.value)" />
-    </mat-form-field>
+<div class="container reports-page">
+  <!-- Header: title plus search, mirrors the nav-hub pages -->
+  <header class="reports-header">
+    <div class="reports-heading">
+      <p class="reports-subtitle">{{ 'labels.text.Run portfolio, financial and organization reports' | translate }}</p>
+    </div>
+
+    <div class="reports-search">
+      <mifosx-m3-icon name="search" [size]="20" class="reports-search-icon" />
+      <input
+        type="text"
+        class="reports-search-input"
+        [value]="searchText"
+        (input)="applyFilter($any($event.target).value)"
+        [placeholder]="'labels.text.Search reports' | translate"
+        [attr.aria-label]="'labels.text.Search reports' | translate"
+      />
+      @if (searchText) {
+        <button
+          type="button"
+          class="reports-search-clear"
+          (click)="applyFilter('')"
+          [attr.aria-label]="'labels.buttons.Clear' | translate"
+        >
+          <mifosx-m3-icon name="close" [size]="18" />
+        </button>
+      }
+    </div>
+  </header>
+
+  <!-- Category chips -->
+  <div class="reports-chips" role="group">
+    <button
+      type="button"
+      class="reports-chip"
+      [class.active]="!selectedCategory"
+      [attr.aria-pressed]="!selectedCategory"
+      (click)="selectCategory(null)"
+    >
+      {{ 'labels.text.All' | translate }}
+    </button>
+    @for (category of categories; track category) {
+      <button
+        type="button"
+        class="reports-chip"
+        [class.active]="selectedCategory === category"
+        [attr.aria-pressed]="selectedCategory === category"
+        (click)="selectCategory(category)"
+      >
+        {{ cleanTranslatedCategory(getCategoryKey(category) | translate) }}
+      </button>
+    }
   </div>
 
-  <div class="mat-elevation-z8">
+  <!-- Reports table -->
+  <div class="reports-table-card">
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="reportName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ 'labels.text.BIRT' | translate }}
+          {{ 'labels.inputs.Name' | translate }}
         </th>
-        <td mat-cell *matCellDef="let report">{{ report.reportName }}</td>
+        <td mat-cell *matCellDef="let report" class="report-name-cell">{{ report.reportName }}</td>
       </ng-container>
 
       <ng-container matColumnDef="reportType">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'labels.inputs.Type' | translate }}</th>
-        <td mat-cell *matCellDef="let report">{{ 'labels.text.' + report.reportType | translate }}</td>
+        <td mat-cell *matCellDef="let report">
+          <span class="report-type-badge">{{ 'labels.text.' + report.reportType | translate }}</span>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="reportCategory">
@@ -44,6 +93,13 @@
         [queryParams]="{ type: row.reportType, id: row.id }"
       ></tr>
     </table>
+
+    @if (dataSource.filteredData.length === 0) {
+      <div class="reports-empty">
+        <mifosx-m3-icon name="search_off" [size]="32" />
+        <p>{{ 'labels.text.No reports match your search' | translate }}</p>
+      </div>
+    }
 
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
   </div>

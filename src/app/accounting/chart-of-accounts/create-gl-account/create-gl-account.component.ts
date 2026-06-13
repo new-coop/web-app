@@ -180,6 +180,7 @@ export class CreateGlAccountComponent implements OnInit, AfterViewInit {
    */
   submit() {
     if (this.glAccountForm.invalid) {
+      this.glAccountForm.markAllAsTouched();
       return;
     }
     this.accountingService.createGlAccount(this.glAccountForm.value).subscribe((response: any) => {

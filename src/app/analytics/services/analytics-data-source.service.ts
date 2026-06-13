@@ -8,24 +8,32 @@
 
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { TranslateService } from '@ngx-translate/core';
 
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
 
+import { Dates } from 'app/core/utils/dates';
+
 import {
+  AnalyticsDetailItem,
   AnalyticsFilters,
   AnalyticsTimescale,
   AnalyticsWidgetDefinition,
   AnalyticsWidgetState
 } from '../models/analytics-dashboard.model';
+import { getChartAccentColors, getMifosChartPalette } from 'app/core/utils/chart-colors';
+
+const CHART = getMifosChartPalette(false);
+const ACCENT = getChartAccentColors(false);
+const PENDING_SEGMENT_COLOR = ACCENT.pending;
+const COMPLETE_SEGMENT_COLOR = ACCENT.complete;
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalyticsDataSourceService {
   private http = inject(HttpClient);
-  private translateService = inject(TranslateService);
+  private dates = inject(Dates);
 
   private reportCache = new Map<string, Observable<any>>();
   /** Potentially better formatting? */
@@ -108,34 +116,36 @@ export class AnalyticsDataSourceService {
         ]) => ({
           loading: false,
           empty: clients.every((value) => value === 0) && loans.every((value) => value === 0),
-          labels: this.getTimescaleLabels(filters.timescale),
+          labels: this.getTimescaleDisplayLabels(filters.timescale),
           translateLabels: false,
           datasets: [
             {
               labelKey: 'labels.inputs.Clients',
               data: clients,
-              backgroundColor: '#1565c0',
-              borderColor: '#1565c0',
+              backgroundColor: CHART.clients,
+              borderColor: CHART.clients,
               borderWidth: 1
             },
             {
               labelKey: 'labels.menus.Loans',
               data: loans,
-              backgroundColor: '#2e7d32',
-              borderColor: '#2e7d32',
+              backgroundColor: CHART.loans,
+              borderColor: CHART.loans,
               borderWidth: 1
             }
           ],
-          details: [
+          details: this.withDetailShares([
             {
               labelKey: 'labels.inputs.Clients',
-              value: clients.reduce((sum, value) => sum + value, 0)
+              value: clients.reduce((sum, value) => sum + value, 0),
+              color: ACCENT.clients
             },
             {
               labelKey: 'labels.menus.Loans',
-              value: loans.reduce((sum, value) => sum + value, 0)
+              value: loans.reduce((sum, value) => sum + value, 0),
+              color: ACCENT.loans
             }
-          ]
+          ])
         })
       ),
       catchError(() =>
@@ -160,9 +170,10 @@ export class AnalyticsDataSourceService {
         ] = this.extractAmountPair(response, reportName);
         const pendingAmount = Math.max(0, pending);
         const completeAmount = Math.max(0, complete);
+        const total = pendingAmount + completeAmount;
         return {
           loading: false,
-          empty: pendingAmount === 0 && completeAmount === 0,
+          empty: total === 0,
           labels: [
             'labels.status.Pending',
             completeLabelKey
@@ -176,22 +187,24 @@ export class AnalyticsDataSourceService {
                 completeAmount
               ],
               backgroundColor: [
-                '#1e88e5',
-                '#d32f2f'
+                PENDING_SEGMENT_COLOR,
+                COMPLETE_SEGMENT_COLOR
               ],
               borderWidth: 0
             }
           ],
-          details: [
+          details: this.withDetailShares([
             {
               labelKey: 'labels.status.Pending',
-              value: pendingAmount
+              value: pendingAmount,
+              color: PENDING_SEGMENT_COLOR
             },
             {
               labelKey: completeLabelKey,
-              value: completeAmount
+              value: completeAmount,
+              color: COMPLETE_SEGMENT_COLOR
             }
-          ]
+          ])
         };
       }),
       catchError(() =>
@@ -205,13 +218,13 @@ export class AnalyticsDataSourceService {
 
   private loadTrendSeries(filters: AnalyticsFilters, type: 'client' | 'loan'): Observable<number[]> {
     const reportName = this.getTrendReportName(filters.timescale, type);
-    const labels = this.getTimescaleLabels(filters.timescale);
+    const matchLabels = this.getTimescaleMatchLabels(filters.timescale);
     const valueField = type === 'client' ? 'count' : 'lcount';
 
     return this.runReport(reportName, this.buildReportParams(filters)).pipe(
       map((response: any[]) =>
-        labels.map((label) => {
-          const entry = response.find((item) => this.resolveTrendLabel(item, filters.timescale) === label);
+        matchLabels.map((label) => {
+          const entry = response.find((item) => this.matchesTrendLabel(item, label, filters.timescale));
           return Number(entry?.[valueField] || 0);
         })
       )
@@ -267,32 +280,51 @@ export class AnalyticsDataSourceService {
       )
       .filter((entry) => !Number.isNaN(entry.value));
 
-    // Match by report field names first so we do not depend on raw object value ordering
-    const pendingValue = this.findValueByKeys(numericEntries, [
-      'pending',
-      'awaiting',
-      'demand'
-    ]);
-    const completeValue = this.findValueByKeys(
-      numericEntries,
-      reportName === 'Demand Vs Collection' ? [
-            'collection',
-            'collected'
-          ] : [
-            'disburs',
-            'disbursement',
-            'disbursal'
-          ]
-    );
+    if (reportName === 'Demand Vs Collection') {
+      const pendingValue = this.findValueByKeys(numericEntries, [
+        'amountdue',
+        'due',
+        'pending',
+        'awaiting',
+        'demand'
+      ]);
+      const completeValue = this.findValueByKeys(numericEntries, [
+        'amountpaid',
+        'paid',
+        'collection',
+        'collected'
+      ]);
 
-    if (pendingValue !== undefined && completeValue !== undefined) {
-      return [
-        pendingValue,
-        completeValue
-      ];
+      if (pendingValue !== undefined && completeValue !== undefined) {
+        return [
+          pendingValue,
+          completeValue
+        ];
+      }
     }
 
-    // Keep a small numeric fallback for unexpected report shapes.
+    if (reportName === 'Disbursal Vs Awaitingdisbursal') {
+      const pendingValue = this.findValueByKeys(numericEntries, [
+        'amounttobedisburse',
+        'tobedisburse',
+        'awaiting',
+        'pending'
+      ]);
+      const completeValue = this.findValueByKeys(numericEntries, [
+        'disbursedamount',
+        'disbursed',
+        'disburs',
+        'disbursement'
+      ]);
+
+      if (pendingValue !== undefined && completeValue !== undefined) {
+        return [
+          pendingValue,
+          completeValue
+        ];
+      }
+    }
+
     const values = numericEntries.map((entry) => entry.value).slice(0, 2);
 
     return [
@@ -313,17 +345,31 @@ export class AnalyticsDataSourceService {
   private resolveTrendLabel(entry: any, timescale: AnalyticsTimescale): string {
     switch (timescale) {
       case 'Day':
-        return this.formatDayLabel(entry?.days);
+        return this.dates.formatDate(entry?.days, 'd/M');
       case 'Week':
-        return `${entry?.Weeks ?? ''}`;
+        return `${Number(entry?.Weeks ?? entry?.weeks ?? '')}`;
       case 'Month':
-        return `${entry?.Months ?? ''}`;
+        return `${entry?.Months ?? entry?.months ?? ''}`.trim();
       default:
         return '';
     }
   }
 
-  private getTimescaleLabels(timescale: AnalyticsTimescale): string[] {
+  private matchesTrendLabel(entry: any, label: string, timescale: AnalyticsTimescale): boolean {
+    const resolved = this.resolveTrendLabel(entry, timescale);
+
+    switch (timescale) {
+      case 'Week':
+        return Number(resolved) === Number(label);
+      case 'Month':
+        return resolved.toLowerCase() === label.toLowerCase();
+      default:
+        return resolved === label;
+    }
+  }
+
+  /** Labels used to match API report rows (English month names from the database). */
+  private getTimescaleMatchLabels(timescale: AnalyticsTimescale): string[] {
     const labels: string[] = [];
     const cursor = new Date();
 
@@ -331,7 +377,7 @@ export class AnalyticsDataSourceService {
       case 'Day':
         while (labels.length < 12) {
           cursor.setDate(cursor.getDate() - 1);
-          labels.push(this.formatDayLabel(cursor));
+          labels.push(this.dates.formatDate(cursor, 'd/M'));
         }
         break;
       case 'Week':
@@ -342,7 +388,7 @@ export class AnalyticsDataSourceService {
         break;
       case 'Month':
         while (labels.length < 12) {
-          labels.push(cursor.toLocaleString(this.getActiveLocale(), { month: 'long' }));
+          labels.push(cursor.toLocaleString('en-US', { month: 'long' }));
           cursor.setMonth(cursor.getMonth() - 1);
         }
         break;
@@ -351,17 +397,33 @@ export class AnalyticsDataSourceService {
     return labels.reverse();
   }
 
-  private formatDayLabel(value: any): string {
-    if (!value) {
-      return '';
+  /** Localized labels shown on trend charts. */
+  private getTimescaleDisplayLabels(timescale: AnalyticsTimescale): string[] {
+    const labels: string[] = [];
+    const cursor = new Date();
+
+    switch (timescale) {
+      case 'Day':
+        while (labels.length < 12) {
+          cursor.setDate(cursor.getDate() - 1);
+          labels.push(this.dates.formatDate(cursor, 'd/M'));
+        }
+        break;
+      case 'Week':
+        while (labels.length < 12) {
+          cursor.setDate(cursor.getDate() - 7);
+          labels.push(`${this.getWeekNumber(cursor)}`);
+        }
+        break;
+      case 'Month':
+        while (labels.length < 12) {
+          labels.push(this.dates.formatDate(cursor, 'MMMM'));
+          cursor.setMonth(cursor.getMonth() - 1);
+        }
+        break;
     }
 
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) {
-      return '';
-    }
-
-    return `${date.getDate()}/${date.getMonth() + 1}`;
+    return labels.reverse();
   }
 
   private getWeekNumber(date: Date): number {
@@ -369,9 +431,16 @@ export class AnalyticsDataSourceService {
     return Math.ceil(((date.getTime() - firstDay.getTime()) / 86400000 + firstDay.getDay() + 1) / 7);
   }
 
-  private getActiveLocale(): string {
-    // Reuse the active month labels to follow the selected translation locale
-    return this.translateService.currentLang || this.translateService.defaultLang || 'en-US';
+  private withDetailShares(details: AnalyticsDetailItem[]): AnalyticsDetailItem[] {
+    const total = details.reduce((sum, item) => sum + item.value, 0);
+    if (total <= 0) {
+      return details;
+    }
+
+    return details.map((item) => ({
+      ...item,
+      share: ((item.value / total) * 100).toFixed(1)
+    }));
   }
 
   private getTimescaleKey(timescale: AnalyticsTimescale): string {

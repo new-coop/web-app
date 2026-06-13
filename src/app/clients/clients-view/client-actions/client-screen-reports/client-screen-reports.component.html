@@ -6,40 +6,44 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container m-b-20">
-  <mat-card>
-    <form [formGroup]="clientScreenReportForm" (ngSubmit)="generate()">
-      <mat-card-content>
-        <div>
-          <mat-form-field class="flex-fill">
-            <mat-label>{{ 'labels.inputs.Client Screen Reports' | translate }}</mat-label>
-            <mat-select formControlName="templateId">
-              @for (template of templatesData; track template) {
-                <mat-option [value]="template.id">
-                  {{ template.name }}
-                </mat-option>
-              }
-            </mat-select>
-            @if (clientScreenReportForm.controls.templateId.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Screen Report' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
-        </div>
-      </mat-card-content>
-
-      <mat-card-actions class="layout-row align-center gap-5px actions-spacing responsive-column">
+<div class="container form-page form-page--narrow m-b-20">
+  <mifosx-form-workspace eyebrow="labels.heading.Clients" title="labels.heading.Client Screen Reports">
+    <form [formGroup]="clientScreenReportForm" (ngSubmit)="generate()" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
+            <div>
+              <mat-form-field>
+                <mat-label>{{ 'labels.inputs.Client Screen Reports' | translate }}</mat-label>
+                <mat-select formControlName="templateId">
+                  @for (template of templatesData; track template) {
+                    <mat-option [value]="template.id">
+                      {{ template.name }}
+                    </mat-option>
+                  }
+                </mat-select>
+                @if (clientScreenReportForm.controls.templateId.hasError('required')) {
+                  <mat-error>
+                    {{ 'labels.inputs.Screen Report' | translate }} {{ 'labels.commons.is' | translate }}
+                    <strong>{{ 'labels.commons.required' | translate }}</strong>
+                  </mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+        </section>
+      </div>
+      <footer class="form-workspace-footer">
         <button type="button" mat-raised-button [routerLink]="['../../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button mat-raised-button color="primary" [disabled]="!clientScreenReportForm.valid">
+        <button mat-raised-button color="primary" type="submit">
           <fa-icon icon="cogs" size="sm" class="m-r-10"></fa-icon>{{ 'labels.buttons.Generate Report' | translate }}
         </button>
-      </mat-card-actions>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>
 
 <div #output class="container m-t-20">

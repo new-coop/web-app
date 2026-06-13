@@ -32,7 +32,7 @@ import { ConfigurationWizardService } from '../../configuration-wizard/configura
 import { NextStepDialogComponent } from '../../configuration-wizard/next-step-dialog/next-step-dialog.component';
 import { GlAccountSelectorComponent } from '../../shared/accounting/gl-account-selector/gl-account-selector.component';
 import { MatIconButton, MatButton } from '@angular/material/button';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 /**
@@ -217,6 +217,11 @@ export class CreateJournalEntryComponent implements OnInit, AfterViewInit {
    * if successful redirects to view created transaction.
    */
   submit() {
+    if (this.journalEntryForm.invalid) {
+      this.journalEntryForm.markAllAsTouched();
+      return;
+    }
+
     const journalEntry = this.journalEntryForm.value;
     // TODO: Update once language and date settings are setup
     journalEntry.locale = this.settingsService.language.code;

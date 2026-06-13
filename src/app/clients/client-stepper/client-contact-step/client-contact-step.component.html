@@ -1,0 +1,48 @@
+<!--
+  Copyright since 2025 Mifos Initiative
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<form [formGroup]="clientContactForm">
+  <div class="layout-row-wrap gap-2px responsive-column">
+    <mat-form-field class="flex-48">
+      <mat-label>{{ 'labels.inputs.Mobile No' | translate }}</mat-label>
+      <input matInput type="text" formControlName="mobileNo" />
+    </mat-form-field>
+
+    <mat-form-field class="flex-48">
+      <mat-label>{{ 'labels.inputs.Email Address' | translate }}</mat-label>
+      <input matInput formControlName="emailAddress" />
+      @if (clientContactForm.controls.emailAddress.errors?.email) {
+        <mat-error>
+          {{ 'error.Email not valid' | translate }}
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="flex-48">
+      <mat-label>{{ 'labels.inputs.Client Type' | translate }}</mat-label>
+      <mat-select formControlName="clientTypeId">
+        @for (clientType of clientTypeOptions; track clientType) {
+          <mat-option [value]="clientType.id">
+            {{ clientType.name }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="flex-48">
+      <mat-label>{{ 'labels.inputs.Client Classification' | translate }}</mat-label>
+      <mat-select formControlName="clientClassificationId">
+        @for (clientClassification of clientClassificationTypeOptions; track clientClassification) {
+          <mat-option [value]="clientClassification.id">
+            {{ clientClassification.name }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>

@@ -24,7 +24,7 @@ import {
   MatRowDef,
   MatRow
 } from '@angular/material/table';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatDivider } from '@angular/material/divider';
 import { DecimalPipe } from '@angular/common';
 import { MatTooltip } from '@angular/material/tooltip';

@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angu
 import { Clipboard } from '@angular/cdk/clipboard';
 import { AlertService } from 'app/core/alert/alert.service';
 import { TranslateService } from '@ngx-translate/core';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 import { ExternalIdentifierPipe } from '@pipes/external-identifier.pipe';
 

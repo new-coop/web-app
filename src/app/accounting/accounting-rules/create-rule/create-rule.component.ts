@@ -132,6 +132,11 @@ export class CreateRuleComponent implements OnInit {
    * if successful redirects to view created rule.
    */
   submit() {
+    if (this.accountingRuleForm.invalid) {
+      this.accountingRuleForm.markAllAsTouched();
+      return;
+    }
+
     const accountingRule = this.accountingRuleForm.value;
     if (accountingRule.debitRuleType === 'fixedAccount') {
       delete accountingRule.debitTags;

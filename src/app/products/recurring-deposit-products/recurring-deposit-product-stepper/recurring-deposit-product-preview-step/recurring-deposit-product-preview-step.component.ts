@@ -34,7 +34,7 @@ import {
   MatRowDef,
   MatRow
 } from '@angular/material/table';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { ViewSavingsAccountingDetailsComponent } from '../../../../shared/accounting/view-savings-accounting-details/view-savings-accounting-details.component';
 import { MatStepperPrevious } from '@angular/material/stepper';
 import { FindPipe } from '../../../../pipes/find.pipe';

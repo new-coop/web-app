@@ -6,10 +6,207 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-table {
-  width: 100%;
+.reports-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 16px);
+  padding: var(--space-4, 16px) 0 var(--space-8, 32px);
+}
 
-  .select-row:hover {
+// ---- Header (same voice as the nav-hub pages) ----
+.reports-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4, 16px);
+  flex-wrap: wrap;
+}
+
+.reports-heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 4px);
+}
+
+.reports-title {
+  margin: 0;
+  font-size: var(--text-xl, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--mifos-text-primary, #18181b);
+}
+
+.reports-subtitle {
+  margin: 0;
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--mifos-surface-500, #71717a);
+}
+
+// ---- Search ----
+.reports-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  width: 320px;
+  max-width: 100%;
+  padding: 0 var(--space-3, 12px);
+  background: var(--mifos-surface-0, #fff);
+  border: 1px solid var(--mifos-surface-200, #e4e4e7);
+  border-radius: var(--radius-md, 8px);
+  transition: border-color var(--motion-fast, 150ms) var(--ease-enter, ease-out);
+
+  &:focus-within {
+    border-color: var(--mifos-surface-950, #09090b);
+  }
+
+  .reports-search-icon ::ng-deep .m3-icon {
+    color: var(--mifos-surface-400, #a1a1aa);
+  }
+}
+
+.reports-search-input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--mifos-surface-900, #18181b);
+
+  &::placeholder {
+    color: var(--mifos-surface-400, #a1a1aa);
+  }
+}
+
+.reports-search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--mifos-surface-500, #71717a);
+  cursor: pointer;
+  transition: background-color var(--motion-fast, 150ms) var(--ease-enter, ease-out);
+
+  &:hover {
+    background: var(--mifos-surface-100, #f4f4f5);
+    color: var(--mifos-surface-900, #18181b);
+  }
+}
+
+// ---- Category chips ----
+.reports-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2, 8px);
+}
+
+.reports-chip {
+  padding: var(--space-1, 4px) var(--space-3, 12px);
+  border: 1px solid var(--mifos-surface-200, #e4e4e7);
+  border-radius: 999px;
+  background: var(--mifos-surface-0, #fff);
+  color: var(--mifos-surface-600, #52525b);
+  font-family: inherit;
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 500;
+  line-height: 1.6;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast, 150ms) var(--ease-enter, ease-out),
+    border-color var(--motion-fast, 150ms) var(--ease-enter, ease-out),
+    color var(--motion-fast, 150ms) var(--ease-enter, ease-out);
+
+  &:hover {
+    background: var(--mifos-surface-100, #f4f4f5);
+    color: var(--mifos-surface-900, #18181b);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mifos-surface-950, #09090b);
+    outline-offset: 2px;
+  }
+
+  // Noir signature: solid accent active chip
+  &.active {
+    background: var(--mifos-accent-bg, #09090b);
+    border-color: var(--mifos-accent-bg, #09090b);
+    color: var(--mifos-accent-fg, #fff);
+    font-weight: 600;
+  }
+}
+
+// ---- Table card ----
+.reports-table-card {
+  background: var(--mifos-surface-0, #fff);
+  border: 1px solid var(--mifos-surface-200, #e4e4e7);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgb(9 9 11 / 4%));
+  overflow: hidden;
+
+  table {
+    width: 100%;
+  }
+
+  .select-row {
     cursor: pointer;
+    transition: background-color var(--motion-fast, 150ms) var(--ease-enter, ease-out);
+
+    &:hover {
+      background: var(--mifos-surface-50, #fafafa);
+    }
+  }
+}
+
+.report-name-cell {
+  font-weight: 500;
+  color: var(--mifos-text-primary, #18181b);
+}
+
+.report-type-badge {
+  display: inline-block;
+  padding: 2px var(--space-2, 8px);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--mifos-surface-100, #f4f4f5);
+  color: var(--mifos-surface-700, #3f3f46);
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 500;
+}
+
+// ---- Empty state ----
+.reports-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  padding: var(--space-12, 48px) var(--space-4, 16px);
+  color: var(--mifos-surface-500, #71717a);
+
+  p {
+    margin: 0;
+    font-size: var(--text-sm, 0.875rem);
+  }
+
+  ::ng-deep .m3-icon {
+    color: var(--mifos-surface-400, #a1a1aa);
+  }
+}
+
+:host-context(.dark-theme) {
+  .reports-table-card {
+    box-shadow: none;
+
+    .select-row:hover {
+      background: var(--mifos-surface-100, #2a2a30);
+    }
+  }
+
+  .report-type-badge {
+    background: var(--mifos-surface-100, #2a2a30);
+    color: var(--mifos-text-secondary, rgb(196 198 208 / 90%));
   }
 }

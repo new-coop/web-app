@@ -764,7 +764,8 @@
       "DONE": "Imekamilika",
       "Submitting": "Inatuma",
       "OK": "Sawa",
-      "undo_account_transfer": "Futa uhamisho wa akaunti"
+      "undo_account_transfer": "Futa uhamisho wa akaunti",
+      "View all results": "Tazama matokeo yote"
     },
     "catalogs": {
       "Interest payment waiver": "Msamaha wa Malipo ya Riba",
@@ -1558,7 +1559,23 @@
       "identifier id": "kitambulisho",
       "savings-transaction-datatable-tab works": "Savings-transaction-datatable-tab inafanya kazi",
       "successfully select option": "kwa mafanikio. Tafadhali chagua kutoka kwa chaguo zilizo hapa chini ili kuendelea zaidi.",
-      "undo_account_transfer": "Futa uhamisho wa akaunti"
+      "undo_account_transfer": "Futa uhamisho wa akaunti",
+      "Quick Actions": "Quick Actions",
+      "Search": "Tafuta",
+      "Customization": "Ubinafsishaji",
+      "Security and Oversight": "Usalama na usimamizi",
+      "Automation and Integrations": "Otomatiki na miunganisho",
+      "Configuration": "Usanidi",
+      "About": "Kuhusu",
+      "Structure and Staff": "Muundo na wafanyakazi",
+      "Loans and Funds": "Mikopo na fedha",
+      "Payments and Cash": "Malipo na fedha taslimu",
+      "Tools": "Zana",
+      "Loans": "Mikopo",
+      "Deposits and Shares": "Amana na hisa",
+      "Pricing and Rules": "Bei na sheria",
+      "Ledger Setup": "Usanidi wa leja",
+      "Period Operations": "Shughuli za kipindi"
     },
     "inputs": {
       "# Remittance": "# Uhawilishaji",
@@ -3141,6 +3158,7 @@
       "Close": "Funga",
       "Close (as Rescheduled)": "Funga (Kama Ilivyoratibiwa Upya)",
       "Configuration Wizard": "Mchawi wa Usanidi",
+      "Collapse Sidebar": "Kunja upau wa kando",
       "Collection Sheet": "Karatasi ya Mkusanyiko",
       "Contract Termination": "Kusitishwa kwa Mkataba",
       "Create Guarantor": "Unda Mdhamini",
@@ -3153,6 +3171,7 @@
       "Disburse to Savings": "Lipa kwa Akiba",
       "Discount Fee": "Ada ya Punguzo",
       "Edit Repayment Schedule": "Badilisha Ratiba ya Ulipaji",
+      "Expand Sidebar": "Panua upau wa kando",
       "Foreclosure": "Kukamata Mali",
       "Frequent Postings": "Machapisho ya Mara kwa Mara",
       "Frequently Accessed": "Zinazofikiwa mara kwa mara",
@@ -3233,7 +3252,10 @@
       "Tasks": "Kazi",
       "Remittances": "Uhawilishaji",
       "Process Remittance": "Chakata uhawilishaji",
-      "Undo Write-off": "Futa Kuandika-mbali"
+      "Undo Write-off": "Futa Kuandika-mbali",
+      "Home": "Mwanzo",
+      "Operations": "Operesheni",
+      "Administration": "Usimamizi"
     },
     "placeholders": {
       "Add new server": "Ongeza seva mpya",
@@ -4029,7 +4051,20 @@
       "username": "jina la mtumiaji",
       "withhold tax for this account": "zuio la ushuru kwa akaunti hii",
       "withoutCategory": "Bila Kitengo",
-      "“Maker-Checker” principle requires every tasks": "Kanuni ya \"Mtengenezaji-Kikagua\" inahitaji kila kazi kukamilishwa na watu wawili ili kupunguza uwezekano wa makosa na matumizi mabaya. Mtu mmoja anaanzisha mchakato na wa pili anakamilisha."
+      "“Maker-Checker” principle requires every tasks": "Kanuni ya \"Mtengenezaji-Kikagua\" inahitaji kila kazi kukamilishwa na watu wawili ili kupunguza uwezekano wa makosa na matumizi mabaya. Mtu mmoja anaanzisha mchakato na wa pili anakamilisha.",
+      "Good Morning": "Good Morning",
+      "Good Afternoon": "Good Afternoon",
+      "Good Evening": "Good Evening",
+      "No results found": "Hakuna matokeo",
+      "Search settings": "Tafuta mipangilio",
+      "No settings match your search": "Hakuna mipangilio inayolingana na utafutaji wako",
+      "Configure data, security, automation and platform behavior": "Sanidi data, usalama, otomatiki na tabia ya jukwaa",
+      "Manage your organization structure, staff, funds and tools": "Dhibiti muundo wa shirika lako, wafanyakazi, fedha na zana",
+      "Define and maintain the products your institution offers": "Fafanua na dumisha bidhaa zinazotolewa na taasisi yako",
+      "Record, search and automate journal entries across your ledger": "Rekodi, tafuta na otomatisha maingizo ya jarida katika leja yako",
+      "Run portfolio, financial and organization reports": "Endesha ripoti za jalada la mikopo, fedha na shirika",
+      "Search reports": "Tafuta ripoti",
+      "No reports match your search": "Hakuna ripoti inayolingana na utafutaji wako"
     },
     "permissions": {
       "actions": {

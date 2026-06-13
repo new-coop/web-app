@@ -68,7 +68,7 @@ p:not(:first-of-type) {
 
       .mdc-radio--selected .mdc-radio__outer-circle,
       .mdc-radio--selected .mdc-radio__inner-circle {
-        border-color: var(--md-sys-color-primary, #1074b9);
+        border-color: var(--md-sys-color-primary, #18181b);
       }
     }
   }
@@ -81,34 +81,14 @@ p:not(:first-of-type) {
     [matPrefix] {
       padding-left: 1rem;
 
-      fa-icon {
+      mifosx-m3-icon {
         margin-right: 0.75rem;
       }
     }
 
-    ::ng-deep {
-      .mat-mdc-text-field-wrapper {
-        border-radius: 12px 12px 0 0;
-      }
-
-      .mat-mdc-form-field-focus-overlay {
-        border-radius: 12px 12px 0 0;
-        background-color: var(--md-sys-color-on-surface, #1a1c1e);
-        opacity: 0.04;
-      }
-
-      .mdc-line-ripple::after {
-        border-bottom-color: var(--md-sys-color-primary, #1074b9);
-      }
-
-      .mat-mdc-form-field-hint-wrapper {
-        padding: 0.5rem 1rem;
-      }
-
-      mat-hint {
-        font-size: 0.75rem;
-        color: var(--md-sys-color-on-surface-variant, #44474e);
-      }
+    ::ng-deep mat-hint {
+      font-size: 0.75rem;
+      color: var(--md-sys-color-on-surface-variant, #44474e);
     }
   }
 
@@ -131,7 +111,7 @@ p:not(:first-of-type) {
   }
 
   [mat-raised-button] {
-    background: var(--md-sys-color-primary, #1074b9);
+    background: var(--md-sys-color-primary, #18181b);
     color: var(--md-sys-color-on-primary, #fff);
     box-shadow:
       0 1px 2px rgb(0 0 0 / 30%),
@@ -150,7 +130,7 @@ p:not(:first-of-type) {
   }
 
   [mat-button] {
-    color: var(--md-sys-color-primary, #1074b9);
+    color: var(--md-sys-color-primary, #18181b);
     background: transparent;
 
     &:hover:not([disabled]) {

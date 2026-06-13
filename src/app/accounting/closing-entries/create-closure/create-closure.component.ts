@@ -91,6 +91,11 @@ export class CreateClosureComponent implements OnInit {
    * if successful redirects to view created closure.
    */
   submit() {
+    if (this.accountingClosureForm.invalid) {
+      this.accountingClosureForm.markAllAsTouched();
+      return;
+    }
+
     const accountingClosure = this.accountingClosureForm.value;
     // TODO: Update once language and date settings are setup
     accountingClosure.locale = this.settingsService.language.code;

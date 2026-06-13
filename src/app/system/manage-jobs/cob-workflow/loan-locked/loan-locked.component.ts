@@ -30,7 +30,7 @@ import { ErrorDialogComponent } from 'app/shared/error-dialog/error-dialog.compo
 import { SystemService } from 'app/system/system.service';
 import { TasksService } from 'app/tasks/tasks.service';
 import { MatButton, MatIconButton } from '@angular/material/button';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTooltip } from '@angular/material/tooltip';
 import { DatetimeFormatPipe } from '../../../../pipes/datetime-format.pipe';

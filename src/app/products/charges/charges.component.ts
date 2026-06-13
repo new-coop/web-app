@@ -43,7 +43,7 @@ import { ConfigurationWizardService } from '../../configuration-wizard/configura
 import { Charges } from 'app/core/utils/charges';
 import { OptionData } from 'app/shared/models/option-data.model';
 import { Charge } from './models/charge.model';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FormatNumberPipe } from '../../pipes/format-number.pipe';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';

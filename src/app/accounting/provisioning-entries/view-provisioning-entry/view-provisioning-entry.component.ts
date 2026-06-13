@@ -32,7 +32,7 @@ import { startWith, map, debounceTime, distinctUntilChanged, tap } from 'rxjs/op
 /** Custom Services */
 import { AccountingService } from '../../accounting.service';
 import { AsyncPipe } from '@angular/common';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 

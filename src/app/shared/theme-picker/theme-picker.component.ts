@@ -17,7 +17,7 @@ import { ThemeStorageService } from './theme-storage.service';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
@@ -50,8 +50,8 @@ export class ThemePickerComponent implements OnInit {
   /** Default theme for the application. */
   currentTheme: Theme = {
     href: 'denim-yellowgreen.css',
-    primary: '#1074B9',
-    accent: '#B4D575',
+    primary: '#18181b',
+    accent: '#52525b',
     isDark: false,
     isDefault: true
   };
@@ -61,7 +61,7 @@ export class ThemePickerComponent implements OnInit {
     {
       href: 'pictonblue-yellowgreen.css',
       primary: '#1DAEEC',
-      accent: '#B4D575',
+      accent: '#52525b',
       isDark: false
     },
     {

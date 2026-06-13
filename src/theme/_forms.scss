@@ -1,0 +1,584 @@
+/**
+ * Copyright since 2025 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+/**
+ * Modern form layer — Noir ledger: flat hub-style cells (no Material outline box),
+ * workspace shells, and accounting ledger layouts.
+ * Applies globally; no per-template changes required.
+ */
+
+/* stylelint-disable selector-class-pattern */
+
+// ============================================================
+// Noir flat fields — same language as hub-search, not M3 outline
+// ============================================================
+
+html {
+  --mdc-outlined-text-field-focus-outline-color: var(--mifos-surface-950, #09090b);
+  --mdc-outlined-text-field-error-focus-outline-color: var(--form-error-color, #dc2626);
+  --mdc-outlined-text-field-error-outline-color: var(--form-error-color, #dc2626);
+  --mdc-outlined-text-field-container-shape: 8px;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+// Flat hub-style border via the outline (keep notch for label layout — do not display:none)
+.mdc-text-field--outlined .mat-mdc-text-field-wrapper {
+  background: var(--mifos-surface-0, #fff);
+  border-radius: var(--radius-md, 8px);
+  transition:
+    background-color var(--motion-fast, 150ms) var(--ease-enter),
+    box-shadow var(--motion-fast, 150ms) var(--ease-enter);
+}
+
+.dark-theme .mdc-text-field--outlined .mat-mdc-text-field-wrapper {
+  background: rgb(255 255 255 / 4%);
+}
+
+.mdc-notched-outline__leading,
+.mdc-notched-outline__notch,
+.mdc-notched-outline__trailing {
+  border-color: var(--mifos-surface-200, #e4e4e7) !important;
+  border-width: 1px !important;
+  transition: border-color var(--motion-fast, 150ms) var(--ease-enter);
+}
+
+.dark-theme .mdc-notched-outline__leading,
+.dark-theme .mdc-notched-outline__notch,
+.dark-theme .mdc-notched-outline__trailing {
+  border-color: rgb(255 255 255 / 14%) !important;
+}
+
+.mdc-notched-outline__leading {
+  border-radius: var(--radius-md, 8px) 0 0 var(--radius-md, 8px) !important;
+  width: var(--radius-md, 8px) !important;
+}
+
+.mdc-notched-outline__trailing {
+  border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0 !important;
+}
+
+.mdc-text-field--outlined:hover:not(.mdc-text-field--disabled) {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: var(--mifos-surface-300, #d4d4d8) !important;
+  }
+}
+
+.dark-theme .mdc-text-field--outlined:hover:not(.mdc-text-field--disabled) {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: rgb(255 255 255 / 22%) !important;
+  }
+}
+
+.mdc-text-field--outlined.mdc-text-field--focused,
+.mat-mdc-form-field.mat-focused .mdc-text-field--outlined {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: var(--mifos-surface-950, #09090b) !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    box-shadow: 0 0 0 3px rgb(9 9 11 / 7%);
+  }
+}
+
+.dark-theme .mdc-text-field--outlined.mdc-text-field--focused,
+.dark-theme .mat-mdc-form-field.mat-focused .mdc-text-field--outlined {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: rgb(255 255 255 / 85%) !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    box-shadow: 0 0 0 3px rgb(255 255 255 / 10%);
+  }
+}
+
+.mat-mdc-floating-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--mifos-surface-500, #71717a);
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: var(--mifos-surface-950, #09090b);
+}
+
+.dark-theme .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: rgb(255 255 255 / 88%);
+}
+
+.mat-mdc-input-element,
+.mat-mdc-select-value-text {
+  font-size: var(--text-base, 1rem);
+  font-weight: 500;
+  color: var(--mifos-surface-900, #18181b);
+}
+
+.dark-theme .mat-mdc-input-element,
+.dark-theme .mat-mdc-select-value-text {
+  color: var(--mifos-text-primary, #f4f4f5);
+}
+
+// Required marker
+.mat-mdc-form-field-required-marker {
+  color: #b91c1c;
+}
+
+.dark-theme .mat-mdc-form-field-required-marker {
+  color: #fca5a5;
+}
+
+// Subscript: compact errors and hints (WCAG AA contrast on hints)
+.mat-mdc-form-field-error {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--form-error-color, #dc2626);
+}
+
+// Screen readers announce inline errors (Material sets role="alert" on mat-error)
+.mat-mdc-form-field-error[role='alert'] {
+  display: block;
+}
+
+.mat-mdc-form-field-hint {
+  font-size: 0.75rem;
+  color: var(--form-hint-color, #475569);
+}
+
+.dark-theme .mat-mdc-form-field-hint {
+  color: rgb(255 255 255 / 65%);
+}
+
+// Prefix/suffix affordances
+.mat-mdc-form-field-icon-prefix,
+.mat-mdc-form-field-icon-suffix {
+  color: rgb(9 9 11 / 55%);
+}
+
+.dark-theme .mat-mdc-form-field-icon-prefix,
+.dark-theme .mat-mdc-form-field-icon-suffix {
+  color: rgb(255 255 255 / 60%);
+}
+
+.mat-mdc-form-field-icon-prefix {
+  padding: 0 4px 0 8px;
+}
+
+// Disabled
+.mat-mdc-form-field.mat-form-field-disabled {
+  opacity: 0.65;
+}
+
+// Invalid — red border on outline + subtle tint
+.mat-mdc-form-field.mat-form-field-invalid {
+  .mdc-text-field--outlined .mat-mdc-text-field-wrapper {
+    background: rgb(220 38 38 / 3%);
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: var(--form-error-color, #dc2626) !important;
+  }
+}
+
+.dark-theme .mat-mdc-form-field.mat-form-field-invalid .mdc-text-field--outlined .mat-mdc-text-field-wrapper {
+  background: rgb(248 113 113 / 8%);
+}
+
+// Textareas — auto height (fixed 48px container clips content)
+.mat-mdc-form-field:has(textarea.mat-mdc-input-element) {
+  .mdc-text-field--outlined {
+    --mdc-outlined-text-field-container-height: auto;
+  }
+
+  .mat-mdc-form-field-infix {
+    padding-top: var(--space-3, 12px);
+    padding-bottom: var(--space-3, 12px);
+  }
+}
+
+// GL account selector + suffix clear buttons inside flat cells
+.form-array-row mifosx-gl-account-selector,
+.form-grid mifosx-gl-account-selector {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+// Workspace forms — consistent vertical rhythm between fields
+.form-workspace-form {
+  .form-grid mat-form-field,
+  .form-grid .mat-mdc-form-field,
+  .form-array-row mat-form-field,
+  .form-array-row .mat-mdc-form-field {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    margin-top: var(--space-1, 4px);
+  }
+}
+
+// Consistent control height (h-10 equivalent at back-office density)
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-height: var(--input-height, 48px);
+}
+
+// Interactive affordances: pointer cursor on toggles and selects
+mat-select,
+.mat-mdc-select-trigger,
+.mat-datepicker-toggle,
+.mat-mdc-checkbox,
+.mat-mdc-radio-button,
+.mat-mdc-slide-toggle {
+  cursor: pointer;
+}
+
+// Readonly inputs inside fields
+.mat-mdc-input-element:read-only:not([disabled]) {
+  cursor: default;
+}
+
+// Textareas: comfortable minimum height
+textarea.mat-mdc-input-element {
+  min-height: 80px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+// ============================================================
+// Selection controls — checkbox, radio, toggle
+// ============================================================
+
+.mat-mdc-checkbox,
+.mat-mdc-radio-button {
+  --mdc-checkbox-selected-focus-icon-color: var(--md-sys-color-primary, #18181b);
+  --mdc-checkbox-selected-hover-icon-color: var(--md-sys-color-primary, #18181b);
+  --mdc-checkbox-selected-icon-color: var(--md-sys-color-primary, #18181b);
+  --mdc-checkbox-selected-pressed-icon-color: var(--md-sys-color-primary, #18181b);
+}
+
+.mat-mdc-radio-button {
+  --mdc-radio-selected-focus-icon-color: var(--md-sys-color-primary, #18181b);
+  --mdc-radio-selected-hover-icon-color: var(--md-sys-color-primary, #18181b);
+  --mdc-radio-selected-icon-color: var(--md-sys-color-primary, #18181b);
+  --mdc-radio-selected-pressed-icon-color: var(--md-sys-color-primary, #18181b);
+}
+
+.mat-mdc-checkbox .mdc-label,
+.mat-mdc-radio-button .mdc-label {
+  font-size: var(--text-sm, 0.875rem);
+}
+
+// Group related toggles with breathing room
+mat-radio-group,
+mat-button-toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3, 12px);
+}
+
+.mat-button-toggle-group {
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+}
+
+// ============================================================
+// Stepper — cleaner headers, softer connectors
+// ============================================================
+
+.mat-stepper-horizontal,
+.mat-stepper-vertical {
+  background: transparent;
+  font-family: var(--font-family, 'Inter', system-ui, sans-serif);
+}
+
+.mat-step-header {
+  border-radius: var(--radius-md, 8px);
+  transition: background-color 150ms ease;
+
+  &:hover:not([aria-disabled='true']) {
+    background-color: rgb(9 9 11 / 4%);
+  }
+}
+
+.dark-theme .mat-step-header:hover:not([aria-disabled='true']) {
+  background-color: rgb(255 255 255 / 6%);
+}
+
+.mat-step-header .mat-step-label {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 500;
+}
+
+.mat-step-header .mat-step-label-selected {
+  font-weight: 600;
+}
+
+.mat-stepper-vertical .mat-vertical-content-container {
+  margin-left: 12px;
+  padding-left: 20px;
+  border-left-color: rgb(9 9 11 / 12%);
+}
+
+.dark-theme .mat-stepper-vertical .mat-vertical-content-container {
+  border-left-color: rgb(255 255 255 / 14%);
+}
+
+.mat-stepper-vertical .mat-vertical-content {
+  padding: var(--space-4, 16px) 0 var(--space-6, 24px);
+}
+
+.mat-stepper-horizontal .mat-horizontal-content-container {
+  padding: var(--space-4, 16px) var(--space-2, 8px) var(--space-6, 24px);
+}
+
+// Step icon circles
+.mat-step-icon {
+  transition: background-color 150ms ease;
+}
+
+// ============================================================
+// Card & dialog forms — consistent chrome and action bars
+// ============================================================
+
+mat-card:has(form),
+.form-workspace {
+  position: relative;
+  background: var(--mifos-surface-0, #fff);
+  border: 1px solid var(--mifos-surface-200, #e4e4e7);
+  border-radius: 14px;
+  overflow: clip;
+  box-shadow: 0 1px 3px rgb(9 9 11 / 6%);
+}
+
+.dark-theme mat-card:has(form),
+.dark-theme .form-workspace {
+  background: var(--mifos-surface-0, #1c1c21);
+  border-color: rgb(255 255 255 / 12%);
+  box-shadow: 0 4px 24px rgb(0 0 0 / 28%);
+}
+
+mat-card:has(form)::before {
+  display: none;
+}
+
+mat-card form,
+.mat-mdc-dialog-container form {
+  display: block;
+}
+
+mat-card-content form,
+.mat-mdc-dialog-content form {
+  padding-top: var(--space-2, 8px);
+}
+
+mat-card:has(form) mat-card-content {
+  padding: var(--space-6, 24px) var(--space-6, 24px) var(--space-4, 16px);
+}
+
+mat-card-actions,
+.mat-mdc-dialog-actions {
+  gap: var(--space-3, 12px);
+  padding: var(--space-4, 16px) var(--space-6, 24px) !important;
+  border-top: 1px solid rgb(9 9 11 / 8%);
+  margin-top: var(--space-2, 8px);
+  justify-content: flex-end;
+
+  // Submit feedback: clear disabled + loading affordance
+  .mat-mdc-raised-button,
+  .mat-mdc-unelevated-button {
+    min-height: var(--input-height, 48px);
+    min-width: 7rem;
+    transition:
+      background-color var(--motion-base, 200ms) var(--ease-enter),
+      opacity var(--motion-base, 200ms) var(--ease-enter),
+      box-shadow var(--motion-base, 200ms) var(--ease-enter),
+      transform var(--motion-fast, 150ms) var(--ease-enter);
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    mat-spinner,
+    .button-spinner {
+      margin-left: var(--space-2, 8px);
+    }
+  }
+
+  // Primary submit stands out in form footers
+  .mat-mdc-raised-button.mat-primary,
+  .mat-mdc-unelevated-button.mat-primary {
+    min-width: 9rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgb(9 9 11 / 14%);
+
+    &:not(:disabled):hover {
+      box-shadow: 0 4px 14px rgb(9 9 11 / 18%);
+      transform: translateY(-1px);
+    }
+  }
+
+  @media (width <= 768px) {
+    flex-direction: column-reverse;
+    align-items: stretch;
+
+    .mat-mdc-button-base {
+      width: 100%;
+      min-height: 44px;
+    }
+  }
+}
+
+mat-card:has(form) mat-card-actions,
+.form-workspace-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: var(--mifos-surface-50, #fafafa);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 -4px 16px rgb(9 9 11 / 5%);
+}
+
+.dark-theme mat-card:has(form) mat-card-actions,
+.dark-theme .form-workspace-footer {
+  background: rgb(255 255 255 / 4%);
+  box-shadow: 0 -4px 20px rgb(0 0 0 / 28%);
+}
+
+.dark-theme mat-card-actions,
+.dark-theme .mat-mdc-dialog-actions {
+  border-top-color: rgb(255 255 255 / 10%);
+}
+
+// Form fields inside flex-wrap rows: prevent overflow
+.layout-row-wrap mat-form-field,
+.layout-row mat-form-field {
+  min-width: 0;
+}
+
+// ============================================================
+// Datepicker toggle
+// ============================================================
+
+.mat-datepicker-toggle {
+  .mat-mdc-icon-button {
+    --mdc-icon-button-state-layer-size: 36px;
+  }
+}
+
+// ============================================================
+// Select & autocomplete panels — rounded overlay, clear options
+// ============================================================
+
+.mat-mdc-select-panel,
+.mat-mdc-autocomplete-panel {
+  border-radius: var(--radius-md, 8px) !important;
+  border: 1px solid rgb(9 9 11 / 10%);
+  box-shadow: var(--shadow-md, 0 4px 12px rgb(9 9 11 / 12%));
+  margin-top: 4px;
+  max-height: min(320px, 50vh);
+}
+
+.dark-theme .mat-mdc-select-panel,
+.dark-theme .mat-mdc-autocomplete-panel {
+  border-color: rgb(255 255 255 / 12%);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 40%);
+}
+
+.mat-mdc-option {
+  min-height: 44px;
+  font-size: var(--text-sm, 0.875rem);
+  transition: background-color var(--motion-fast, 150ms) ease;
+
+  &.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+    background-color: rgb(24 24 27 / 6%);
+  }
+
+  &:hover:not(.mdc-list-item--disabled) {
+    background-color: rgb(9 9 11 / 4%);
+  }
+}
+
+.dark-theme .mat-mdc-option {
+  &.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+    background-color: rgb(255 255 255 / 10%);
+  }
+
+  &:hover:not(.mdc-list-item--disabled) {
+    background-color: rgb(255 255 255 / 6%);
+  }
+}
+
+// ============================================================
+// Numeric inputs — tabular figures for amounts (fintech UX)
+// ============================================================
+
+/* stylelint-disable-next-line selector-no-qualifying-type */
+input[type='number'].mat-mdc-input-element {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+// ============================================================
+// Stepper navigation — match card/dialog action bars
+// ============================================================
+
+mifosx-stepper-buttons,
+.stepper-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-3, 12px);
+  margin-top: var(--space-6, 24px);
+  padding-top: var(--space-4, 16px);
+  border-top: 1px solid rgb(9 9 11 / 8%);
+
+  .mat-mdc-raised-button {
+    min-height: var(--input-height, 48px);
+    min-width: 7rem;
+  }
+
+  @media (width <= 768px) {
+    flex-direction: column-reverse;
+    align-items: stretch;
+
+    .mat-mdc-button-base {
+      width: 100%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mdc-text-field--outlined .mat-mdc-text-field-wrapper,
+  mat-card-actions .mat-mdc-raised-button.mat-primary,
+  mat-card-actions .mat-mdc-unelevated-button.mat-primary {
+    transform: none !important;
+  }
+}
+
+.dark-theme mifosx-stepper-buttons,
+.dark-theme .stepper-actions {
+  border-top-color: rgb(255 255 255 / 10%);
+}
+
+/* stylelint-enable selector-class-pattern */

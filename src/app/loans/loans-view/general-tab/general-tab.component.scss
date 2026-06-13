@@ -6,26 +6,472 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-.tab-container {
-  padding: 1%;
-  margin: 1%;
+.loan-general-tab {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.875rem, 2vw, 1.25rem);
+  padding: 0.25rem 0 0.5rem;
+}
 
-  h3 {
-    margin: 1% auto;
+.quick-nav {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  padding: 0.5rem;
+  margin: 0 -0.25rem;
+  border-radius: 14px;
+  background: rgb(244 244 245 / 88%);
+  backdrop-filter: blur(8px);
+}
+
+.quick-nav-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid rgb(15 23 42 / 10%);
+  border-radius: 999px;
+  background: var(--md-sys-color-surface-container-lowest, #fff);
+  color: #334155;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+
+  i {
+    font-size: 0.6875rem;
+    color: rgb(100 116 139 / 80%);
   }
 
-  .performance-history-container {
-    border: 1px solid;
-    padding: 1%;
-    margin-bottom: 20px;
+  &:hover {
+    border-color: rgb(9 9 11 / 35%);
+    color: #0f172a;
   }
 
-  table {
-    width: 100%;
-    margin-bottom: 20px;
+  &.active {
+    background: #18181b;
+    border-color: #18181b;
+    color: #fff;
+
+    i {
+      color: rgb(255 255 255 / 75%);
+    }
   }
 }
 
-span {
-  margin: 0.5em 0;
+#section-overview,
+.section-card {
+  scroll-margin-top: 72px;
+}
+
+.overview-title {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(71 85 105 / 90%);
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* stylelint-disable-line unit-allowed-list */
+  gap: clamp(0.625rem, 1.5vw, 0.875rem);
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem 1.125rem;
+  border-radius: 14px;
+  background: var(--md-sys-color-surface-container-lowest, #fff);
+  border: 1px solid rgb(15 23 42 / 6%);
+  box-shadow: 0 1px 3px rgb(15 23 42 / 5%);
+  transition: box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    box-shadow: 0 4px 14px rgb(15 23 42 / 10%);
+  }
+}
+
+.kpi-card-alert {
+  border-color: rgb(239 68 68 / 18%);
+}
+
+.kpi-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  flex-shrink: 0;
+  background: rgb(9 9 11 / 8%);
+  color: #18181b;
+}
+
+.kpi-repayments.kpi-icon {
+  background: rgb(168 85 247 / 12%);
+  color: #6d28d9;
+}
+
+.kpi-maturity.kpi-icon {
+  background: rgb(2 132 199 / 10%);
+  color: #0369a1;
+}
+
+.kpi-outstanding.kpi-icon {
+  background: rgb(22 163 74 / 10%);
+  color: #15803d;
+}
+
+.kpi-overdue.kpi-icon {
+  background: rgb(239 68 68 / 12%);
+  color: #dc2626;
+}
+
+.kpi-paid.kpi-icon {
+  background: rgb(34 197 94 / 10%);
+  color: #16a34a;
+}
+
+.kpi-overpaid.kpi-icon {
+  background: rgb(14 165 233 / 10%);
+  color: #0284c7;
+}
+
+.kpi-proposed.kpi-icon {
+  background: rgb(168 85 247 / 12%);
+  color: #6d28d9;
+}
+
+.kpi-approved.kpi-icon {
+  background: rgb(34 197 94 / 10%);
+  color: #16a34a;
+}
+
+.kpi-status.kpi-icon {
+  background: rgb(100 116 139 / 12%);
+  color: #475569;
+}
+
+.kpi-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.kpi-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.kpi-value-text {
+  font-size: 1rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kpi-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.kpi-detail {
+  font-size: 0.6875rem;
+  color: #94a3b8;
+  margin-top: 0.125rem;
+}
+
+.section-card {
+  border-radius: 16px;
+  background: var(--md-sys-color-surface-container-lowest, #fff);
+  border: 1px solid rgb(15 23 42 / 6%);
+  box-shadow: 0 1px 3px rgb(15 23 42 / 5%);
+  overflow: hidden;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid rgb(15 23 42 / 6%);
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
+  }
+}
+
+.section-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 9px;
+  background: rgb(9 9 11 / 7%);
+  color: #3f3f46;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.section-action {
+  flex-shrink: 0;
+  border-radius: 999px;
+  font-weight: 500;
+  text-decoration: none;
+
+  --mdc-outlined-button-outline-color: rgb(15 23 42 / 14%);
+  --mdc-outlined-button-label-text-color: #334155;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* stylelint-disable-line unit-allowed-list */
+  gap: 1px;
+  background: rgb(15 23 42 / 6%);
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.875rem 1.25rem;
+  background: var(--md-sys-color-surface-container-lowest, #fff);
+}
+
+.detail-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.detail-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1e293b;
+  word-break: break-word;
+
+  &.r-amount {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+}
+
+.amounts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* stylelint-disable-line unit-allowed-list */
+}
+
+.amount-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid rgb(15 23 42 / 6%);
+
+  &:nth-last-child(-n + 2) {
+    border-bottom: none;
+  }
+
+  &:nth-child(odd) {
+    border-right: 1px solid rgb(15 23 42 / 6%);
+  }
+}
+
+.amount-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.amount-value {
+  font-size: 1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #0f172a;
+}
+
+:host-context(.dark-theme) {
+  .overview-title {
+    color: rgb(196 198 208 / 90%);
+  }
+
+  .quick-nav {
+    background: rgb(24 24 27 / 80%);
+  }
+
+  .quick-nav-chip {
+    background: var(--md-sys-color-surface-container, #2c2f36);
+    border-color: rgb(255 255 255 / 12%);
+    color: #d4d4d8;
+
+    i {
+      color: rgb(161 161 170 / 80%);
+    }
+
+    &:hover {
+      border-color: rgb(161 161 170 / 45%);
+      color: #f4f4f5;
+    }
+
+    &.active {
+      background: var(--mifos-accent-bg, rgb(255 255 255 / 12%));
+      border-color: var(--mifos-accent-bg, rgb(255 255 255 / 12%));
+      color: var(--mifos-accent-fg, #fafafa);
+
+      i {
+        color: rgb(255 255 255 / 75%);
+      }
+    }
+  }
+
+  .kpi-card,
+  .section-card {
+    background: var(--md-sys-color-surface-container, #2c2f36);
+    border-color: rgb(255 255 255 / 8%);
+  }
+
+  .kpi-card-alert {
+    border-color: rgb(248 113 113 / 22%);
+  }
+
+  .kpi-icon {
+    background: rgb(161 161 170 / 14%);
+    color: #d4d4d8;
+  }
+
+  .kpi-repayments.kpi-icon {
+    background: rgb(192 132 252 / 14%);
+    color: #c4b5fd;
+  }
+
+  .kpi-maturity.kpi-icon {
+    background: rgb(56 189 248 / 12%);
+    color: #7dd3fc;
+  }
+
+  .kpi-outstanding.kpi-icon {
+    background: rgb(74 222 128 / 12%);
+    color: #86efac;
+  }
+
+  .kpi-overdue.kpi-icon {
+    background: rgb(248 113 113 / 14%);
+    color: #fca5a5;
+  }
+
+  .kpi-paid.kpi-icon {
+    background: rgb(74 222 128 / 12%);
+    color: #86efac;
+  }
+
+  .kpi-overpaid.kpi-icon {
+    background: rgb(56 189 248 / 12%);
+    color: #7dd3fc;
+  }
+
+  .kpi-proposed.kpi-icon {
+    background: rgb(192 132 252 / 14%);
+    color: #c4b5fd;
+  }
+
+  .kpi-approved.kpi-icon {
+    background: rgb(74 222 128 / 12%);
+    color: #86efac;
+  }
+
+  .kpi-detail {
+    color: rgb(161 161 170 / 90%);
+  }
+
+  .kpi-value,
+  .amount-value {
+    color: #f4f4f5;
+  }
+
+  .kpi-label,
+  .detail-label,
+  .amount-label {
+    color: rgb(161 161 170 / 95%);
+  }
+
+  .section-head {
+    border-bottom-color: rgb(255 255 255 / 8%);
+  }
+
+  .section-action {
+    --mdc-outlined-button-outline-color: rgb(255 255 255 / 18%);
+    --mdc-outlined-button-label-text-color: #d4d4d8;
+  }
+
+  .details-grid {
+    background: rgb(255 255 255 / 8%);
+  }
+
+  .detail-item {
+    background: var(--md-sys-color-surface-container, #2c2f36);
+  }
+
+  .section-heading h3 {
+    color: #f4f4f5;
+  }
+
+  .section-icon {
+    background: rgb(161 161 170 / 14%);
+    color: #d4d4d8;
+  }
+
+  .detail-value {
+    color: #e4e4e7;
+  }
+}
+
+@media (width <= 900px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* stylelint-disable-line unit-allowed-list */
+  }
+
+  .details-grid,
+  .amounts-grid {
+    grid-template-columns: minmax(0, 1fr); /* stylelint-disable-line unit-allowed-list */
+  }
+}
+
+@media (width <= 480px) {
+  .kpi-grid {
+    grid-template-columns: minmax(0, 1fr); /* stylelint-disable-line unit-allowed-list */
+  }
 }

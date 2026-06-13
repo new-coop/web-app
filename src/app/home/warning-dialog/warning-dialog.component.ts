@@ -6,43 +6,29 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import {
-  MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose
-} from '@angular/material/dialog';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
+import { AuthenticationService } from 'app/core/authentication/authentication.service';
 
 @Component({
   selector: 'mifosx-warning-dialog',
   standalone: true,
   templateUrl: './warning-dialog.component.html',
   styleUrls: ['./warning-dialog.component.scss'],
-  imports: [
-    ...STANDALONE_SHARED_IMPORTS,
-    MatDialogTitle,
-    CdkScrollable,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose
-  ],
+  imports: [...STANDALONE_SHARED_IMPORTS],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WarningDialogComponent {
-  dialogRef = inject<MatDialogRef<WarningDialogComponent>>(MatDialogRef);
+  private authenticationService = inject(AuthenticationService);
+  private cdr = inject(ChangeDetectorRef);
 
-  title: string;
-  content: string;
-  buttonText: string;
+  visible = !this.authenticationService.hasDialogBeenShown();
+  buttonText = environment.warningDialog.buttonText;
 
-  constructor() {
-    this.title = environment.warningDialog.title;
-    this.content = environment.warningDialog.content;
-    this.buttonText = environment.warningDialog.buttonText;
+  dismiss(): void {
+    this.authenticationService.showDialog();
+    this.visible = false;
+    this.cdr.markForCheck();
   }
 }

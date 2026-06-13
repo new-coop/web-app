@@ -21,7 +21,7 @@ import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 
 /** Custom Services */
 import { DomSanitizer } from '@angular/platform-browser';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 import { LoanAccountActionsBaseComponent } from '../loan-account-actions-base.component';
 import { environment } from '../../../../../environments/environment';

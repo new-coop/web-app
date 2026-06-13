@@ -48,7 +48,7 @@
   --tx-linked: var(--ch-paid);
   --tx-linked-bg: var(--ch-paid-bg);
 
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: var(--font-family, 'Inter', system-ui, sans-serif);
   display: block;
 }
 
@@ -120,7 +120,7 @@
   border-radius: 4px;
   background: var(--ch-blue-50);
   color: var(--ch-blue-700);
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: var(--font-family, 'Inter', system-ui, sans-serif);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -309,7 +309,7 @@
 
 /* ── ID cell ─────────────────────────────────────────────────── */
 .tx-id {
-  font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+  font-family: var(--font-family-mono, 'JetBrains Mono', ui-monospace, monospace);
   font-size: 12px;
   color: var(--ch-text-2);
 }
@@ -426,7 +426,7 @@
 
 /* ── Monospace amounts (mirrors charges-tab .mono) ───────────── */
 .mono {
-  font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+  font-family: var(--font-family-mono, 'JetBrains Mono', ui-monospace, monospace);
   font-size: 13px;
 }
 

@@ -23,8 +23,11 @@ import '@material/web/button/elevated-button.js';
 import '@material/web/button/text-button.js';
 import '@material/web/button/filled-tonal-button.js';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
+import { M3IconComponent } from '../m3-icon/m3-icon.component';
 
 export type M3ButtonVariant = 'filled' | 'outlined' | 'elevated' | 'text' | 'tonal';
+export type M3ButtonTone = 'default' | 'destructive';
+export type M3ButtonSize = 'default' | 'compact' | 'large';
 
 /**
  * Material Design 3 Button Component
@@ -79,7 +82,8 @@ export type M3ButtonVariant = 'filled' | 'outlined' | 'elevated' | 'text' | 'ton
   standalone: true,
   imports: [
     STANDALONE_SHARED_IMPORTS,
-    CommonModule
+    CommonModule,
+    M3IconComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   encapsulation: ViewEncapsulation.None,
@@ -97,6 +101,16 @@ export class M3ButtonComponent {
   @Input() variant: M3ButtonVariant = 'filled';
 
   /**
+   * Semantic tone for action emphasis
+   */
+  @Input() tone: M3ButtonTone = 'default';
+
+  /**
+   * Button size preset
+   */
+  @Input() size: M3ButtonSize = 'default';
+
+  /**
    * Button type attribute
    */
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
@@ -105,6 +119,16 @@ export class M3ButtonComponent {
    * Disabled state
    */
   @Input() disabled: boolean = false;
+
+  /**
+   * Loading state — disables interaction and shows a spinner
+   */
+  @Input() loading: boolean = false;
+
+  /**
+   * Accessible label for icon-only buttons
+   */
+  @Input() ariaLabel?: string;
 
   /**
    * Button label text
@@ -135,28 +159,23 @@ export class M3ButtonComponent {
    * Handle button click
    */
   onClick(event: Event): void {
-    if (!this.disabled) {
+    if (!this.isDisabled) {
       this.clicked.emit(event);
     }
   }
 
-  /**
-   * Get the Material Web Component tag name based on variant
-   */
-  get componentTag(): string {
-    switch (this.variant) {
-      case 'filled':
-        return 'md-filled-button';
-      case 'outlined':
-        return 'md-outlined-button';
-      case 'elevated':
-        return 'md-elevated-button';
-      case 'text':
-        return 'md-text-button';
-      case 'tonal':
-        return 'md-filled-tonal-button';
+  get isDisabled(): boolean {
+    return this.disabled || this.loading;
+  }
+
+  get iconSize(): number {
+    switch (this.size) {
+      case 'compact':
+        return 16;
+      case 'large':
+        return 20;
       default:
-        return 'md-filled-button';
+        return 18;
     }
   }
 
@@ -164,6 +183,20 @@ export class M3ButtonComponent {
    * Get container classes
    */
   get containerClasses(): string {
-    return this.fullWidth ? 'm3-button-container--full-width' : 'm3-button-container';
+    const classes = [this.fullWidth ? 'm3-button-container--full-width' : 'm3-button-container'];
+
+    if (this.tone === 'destructive') {
+      classes.push('m3-button--destructive');
+    }
+
+    if (this.size !== 'default') {
+      classes.push(`m3-button--${this.size}`);
+    }
+
+    if (this.loading) {
+      classes.push('m3-button--loading');
+    }
+
+    return classes.join(' ');
   }
 }

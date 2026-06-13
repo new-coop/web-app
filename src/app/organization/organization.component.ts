@@ -7,76 +7,209 @@
  */
 
 /** Angular Imports */
-import {
-  ChangeDetectionStrategy,
-  AfterViewInit,
-  Component,
-  ElementRef,
-  TemplateRef,
-  ViewChild,
-  inject
-} from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, AfterViewInit, Component, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 /** Custom Services */
 import { ConfigurationWizardService } from '../configuration-wizard/configuration-wizard.service';
 import { PopoverService } from '../configuration-wizard/popover/popover.service';
-import { MatNavList, MatListItem } from '@angular/material/list';
-import { MatIcon } from '@angular/material/icon';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MatLine } from '@angular/material/grid-list';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
+import { NavHubComponent, NavHubSection } from '../shared/nav-hub/nav-hub.component';
+import { ConfigWizardStepComponent } from '../configuration-wizard/config-wizard-step/config-wizard-step.component';
 
 /**
  * Organization component.
  */
 @Component({
-  selector: 'mifosx-products',
+  selector: 'mifosx-organization',
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    MatNavList,
-    MatListItem,
-    MatIcon,
-    FaIconComponent,
-    MatLine
+    NavHubComponent,
+    ConfigWizardStepComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrganizationComponent implements AfterViewInit {
-  private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private configurationWizardService = inject(ConfigurationWizardService);
   private popoverService = inject(PopoverService);
 
-  shouldShowFundMapping = false;
-  /* Reference of manage offices */
-  @ViewChild('office') office: ElementRef<any>;
   /* Template for popover on manage offices */
   @ViewChild('templateOffice') templateOffice: TemplateRef<any>;
-  /* Reference of add/edit currency */
-  @ViewChild('addEditCurrency') addEditCurrency: ElementRef<any>;
   /* Template for popover on add/edit currency */
   @ViewChild('templateAddEditCurrency') templateAddEditCurrency: TemplateRef<any>;
-  /* Reference of manage holidays */
-  @ViewChild('holidays') holidays: ElementRef<any>;
   /* Template for popover on manage holidays */
   @ViewChild('templateHolidays') templateHolidays: TemplateRef<any>;
-  /* Reference of manage employees */
-  @ViewChild('employee') employee: ElementRef<any>;
   /* Template for popover on manage employee */
   @ViewChild('templateEmployee') templateEmployee: TemplateRef<any>;
-  /* Reference of define working days */
-  @ViewChild('workingDays') workingDays: ElementRef<any>;
   /* Template for popover on define working days */
   @ViewChild('templateWorkingDays') templateWorkingDays: TemplateRef<any>;
-  /* Reference of manage funds */
-  @ViewChild('manageFunds') manageFunds: ElementRef<any>;
   /* Template for popover on manage funds */
   @ViewChild('templateManageFunds') templateManageFunds: TemplateRef<any>;
-  // Initialize an array of 18 boolean values, all set to false
-  arrowBooleans: boolean[] = new Array(19).fill(false);
+
+  readonly sections: NavHubSection[] = [
+    {
+      label: 'labels.heading.Structure and Staff',
+      items: [
+        {
+          label: 'labels.heading.Manage Offices',
+          description: 'labels.text.Add new office or modify or deactivate office',
+          icon: 'apartment',
+          link: '/organization/offices',
+          permission: 'READ_OFFICE',
+          anchorId: 'wizard-offices'
+        },
+        {
+          label: 'labels.heading.Manage Employees',
+          description: 'labels.text.Employee represents loan officers',
+          icon: 'badge',
+          link: '/organization/employees',
+          permission: 'READ_STAFF',
+          anchorId: 'wizard-employees'
+        },
+        {
+          label: 'labels.heading.Manage Holidays',
+          description: 'labels.text.Define holidays for office',
+          icon: 'event',
+          link: '/organization/holidays',
+          permission: 'READ_HOLIDAY',
+          anchorId: 'wizard-holidays'
+        },
+        {
+          label: 'labels.heading.Working Days',
+          description: 'labels.text.Working days and configure behaviour of payments',
+          icon: 'date_range',
+          link: '/organization/working-days',
+          permission: 'READ_WORKINGDAYS',
+          anchorId: 'wizard-working-days'
+        }
+      ]
+    },
+    {
+      label: 'labels.heading.Loans and Funds',
+      items: [
+        {
+          label: 'labels.heading.Manage Funds',
+          description: 'labels.text.Funds are associated with loans',
+          icon: 'account_balance_wallet',
+          link: '/organization/manage-funds',
+          permission: 'READ_FUND',
+          anchorId: 'wizard-manage-funds'
+        },
+        {
+          label: 'labels.heading.Fund Mapping',
+          description: 'labels.text.Bulk entry screen for mapping',
+          icon: 'swap_horiz',
+          link: '/organization/fund-mapping',
+          permission: 'READ_OFFICE'
+        },
+        {
+          label: 'labels.heading.Manage Loan Originators',
+          description: 'labels.text.Loan Originators are associated with loan accounts',
+          icon: 'support_agent',
+          link: '/organization/manage-loan-originators',
+          permission: 'READ_LOAN_ORIGINATOR'
+        },
+        {
+          label: 'labels.heading.Bulk Loan Reassignment',
+          description: 'labels.text.Easy way to reassign all the loan',
+          icon: 'sync_alt',
+          link: '/organization/bulkloan',
+          permission: 'BULKREASSIGN_LOAN'
+        },
+        {
+          label: 'labels.heading.Loan Provisioning Criteria',
+          description: 'labels.text.Loan Provisioning Criteria Organization',
+          icon: 'edit_note',
+          link: '/organization/provisioning-criteria',
+          permission: 'VIEW_PROVISIONS'
+        },
+        {
+          label: 'labels.text.Investors',
+          description: 'labels.text.View the loan account details associated with the investors',
+          icon: 'business_center',
+          link: '/organization/investors',
+          permission: 'READ_OFFICE'
+        },
+        {
+          label: 'labels.heading.Standing Instructions History',
+          description: 'labels.text.View logged history',
+          icon: 'history_edu',
+          link: '/organization/standing-instructions-history',
+          permission: 'READ_STANDINGINSTRUCTION'
+        }
+      ]
+    },
+    {
+      label: 'labels.heading.Payments and Cash',
+      items: [
+        {
+          label: 'labels.heading.Currency Configuration',
+          description: 'labels.text.Currencies available across organization',
+          icon: 'currency_exchange',
+          link: '/organization/currencies',
+          permission: 'READ_CURRENCY',
+          anchorId: 'wizard-currencies'
+        },
+        {
+          label: 'labels.heading.Payment Type',
+          description: 'labels.text.Manage payment types',
+          icon: 'credit_card',
+          link: '/organization/payment-types',
+          permission: 'READ_PAYMENTTYPE'
+        },
+        {
+          label: 'labels.heading.Teller / Cashier Management',
+          description: 'labels.text.Manage Tellers / Cashiers',
+          icon: 'point_of_sale',
+          link: '/organization/tellers',
+          permission: 'READ_TELLER'
+        }
+      ]
+    },
+    {
+      label: 'labels.heading.Tools',
+      items: [
+        {
+          label: 'labels.heading.Bulk Import',
+          description: 'labels.text.Bulk data import using excel spreadsheet templates',
+          icon: 'upload_file',
+          link: '/organization/bulk-import',
+          permission: 'VIEW_BULKIMPORT'
+        },
+        {
+          label: 'labels.heading.SMS Campaigns',
+          description: 'labels.text.Define SMS Campaigns for Organization',
+          icon: 'sms',
+          link: '/organization/sms-campaigns',
+          permission: 'VIEW_SMSCAMPAIGNS'
+        },
+        {
+          label: 'labels.heading.AdHocQuery',
+          description: 'labels.text.Define AdHocQuery for Organization',
+          icon: 'query_stats',
+          link: '/organization/adhoc-query',
+          permission: 'VIEW_ADHOC'
+        },
+        {
+          label: 'labels.heading.Password Preferences',
+          description: 'labels.text.The usage of stronger passwords',
+          icon: 'lock',
+          link: '/organization/password-preferences',
+          permission: 'READ_PASSWORD_VALIDATION_POLICY'
+        },
+        {
+          label: 'labels.heading.Entity Data Table Checks',
+          description: 'labels.text.Entity Data Table Checks Organization',
+          icon: 'checklist',
+          link: '/organization/entity-data-table-checks',
+          permission: 'READ_ENTITY_DATATABLE_CHECK'
+        }
+      ]
+    }
+  ];
 
   /**
    * Popover function
@@ -84,51 +217,46 @@ export class OrganizationComponent implements AfterViewInit {
    * @param target HTMLElement | ElementRef<any>.
    * @param position String.
    * @param backdrop Boolean.
-   * @param arrowNumber - The index of the boolean value to toggle.
    */
-  showPopover(
-    template: TemplateRef<any>,
-    target: HTMLElement | ElementRef<any>,
-    position: string,
-    backdrop: boolean
-  ): void {
+  showPopover(template: TemplateRef<any>, target: HTMLElement, position: string, backdrop: boolean): void {
     setTimeout(() => this.popoverService.open(template, target, position, backdrop, {}), 200);
   }
 
+  closeConfigWizard(): void {
+    this.configurationWizardService.closeConfigWizard();
+  }
+
   /**
-   * To show popover.
+   * Configuration wizard popovers, anchored to the hub cards by element id.
    */
   ngAfterViewInit() {
     if (this.configurationWizardService.showCreateOffice) {
-      setTimeout(() => {
-        this.showPopover(this.templateOffice, this.office.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateOffice, 'wizard-offices');
     }
     if (this.configurationWizardService.showAddEditCurrency) {
-      setTimeout(() => {
-        this.showPopover(this.templateAddEditCurrency, this.addEditCurrency.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateAddEditCurrency, 'wizard-currencies');
     }
     if (this.configurationWizardService.showCreateHoliday) {
-      setTimeout(() => {
-        this.showPopover(this.templateHolidays, this.holidays.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateHolidays, 'wizard-holidays');
     }
     if (this.configurationWizardService.showCreateEmployee) {
-      setTimeout(() => {
-        this.showPopover(this.templateEmployee, this.employee.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateEmployee, 'wizard-employees');
     }
     if (this.configurationWizardService.showDefineWorkingDays) {
-      setTimeout(() => {
-        this.showPopover(this.templateWorkingDays, this.workingDays.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateWorkingDays, 'wizard-working-days');
     }
     if (this.configurationWizardService.showManageFunds) {
-      setTimeout(() => {
-        this.showPopover(this.templateManageFunds, this.manageFunds.nativeElement, 'bottom', true);
-      });
+      this.showWizardPopover(this.templateManageFunds, 'wizard-manage-funds');
     }
+  }
+
+  private showWizardPopover(template: TemplateRef<any>, anchorId: string): void {
+    setTimeout(() => {
+      const target = document.getElementById(anchorId);
+      if (target) {
+        this.showPopover(template, target, 'bottom', true);
+      }
+    });
   }
 
   /**
@@ -233,10 +361,5 @@ export class OrganizationComponent implements AfterViewInit {
     this.configurationWizardService.showManageFunds = false;
     this.configurationWizardService.showRecurringDepositProductsList = true;
     this.router.navigate(['/products/recurring-deposit-products']);
-  }
-
-  arrowBooleansToggle(arrowNumber: number) {
-    // Toggle the boolean value at the given index
-    this.arrowBooleans[arrowNumber] = !this.arrowBooleans[arrowNumber];
   }
 }

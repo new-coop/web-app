@@ -764,7 +764,8 @@
       "DONE": "सम्पन्न",
       "Submitting": "पेश गर्दै",
       "OK": "ठीक छ",
-      "undo_account_transfer": "खाता स्थानान्तरण रद्द गर्नुहोस्"
+      "undo_account_transfer": "खाता स्थानान्तरण रद्द गर्नुहोस्",
+      "View all results": "सबै परिणामहरू हेर्नुहोस्"
     },
     "catalogs": {
       "Interest payment waiver": "ब्याज भुक्तानी माफी",
@@ -1560,7 +1561,23 @@
       "identifier id": "पहिचानकर्ता आईडी",
       "savings-transaction-datatable-tab works": "बचत-लेनदेन-डेटाटेबल-ट्याब काम गर्दछ",
       "successfully select option": "सफलतापूर्वक। अगाडि बढ्नको लागि कृपया तलका विकल्पहरूबाट चयन गर्नुहोस्।",
-      "undo_account_transfer": "खाता स्थानान्तरण रद्द गर्नुहोस्"
+      "undo_account_transfer": "खाता स्थानान्तरण रद्द गर्नुहोस्",
+      "Quick Actions": "Quick Actions",
+      "Search": "खोज्नुहोस्",
+      "Customization": "अनुकूलन",
+      "Security and Oversight": "सुरक्षा र निगरानी",
+      "Automation and Integrations": "स्वचालन र एकीकरणहरू",
+      "Configuration": "कन्फिगरेसन",
+      "About": "बारेमा",
+      "Structure and Staff": "संरचना र कर्मचारी",
+      "Loans and Funds": "ऋण र कोषहरू",
+      "Payments and Cash": "भुक्तानी र नगद",
+      "Tools": "उपकरणहरू",
+      "Loans": "ऋणहरू",
+      "Deposits and Shares": "निक्षेप र शेयरहरू",
+      "Pricing and Rules": "मूल्य र नियमहरू",
+      "Ledger Setup": "लेजर सेटअप",
+      "Period Operations": "अवधि सञ्चालनहरू"
     },
     "inputs": {
       "# Remittance": "# रेमिट्यान्स",
@@ -3143,6 +3160,7 @@
       "Clients": "ग्राहकहरु",
       "Close": "बन्द गर्नुहोस्",
       "Close (as Rescheduled)": "बन्द (पुन: तालिका अनुसार)",
+      "Collapse Sidebar": "साइडबार संक्षिप्त गर्नुहोस्",
       "Collection Sheet": "संग्रह पाना",
       "Configuration Wizard": "कन्फिगरेसन विजार्ड",
       "Contract Termination": "सम्झौता समाप्ति",
@@ -3156,6 +3174,7 @@
       "Disburse to Savings": "बचतमा वितरण गर्नुहोस्",
       "Discount Fee": "छुट शुल्क",
       "Edit Repayment Schedule": "पुन: भुक्तानी तालिका सम्पादन गर्नुहोस्",
+      "Expand Sidebar": "साइडबार विस्तार गर्नुहोस्",
       "Foreclosure": "फोरक्लोजर",
       "Frequent Postings": "बारम्बार पोस्टिंगहरू",
       "Frequently Accessed": "बारम्बार पहुँच",
@@ -3236,7 +3255,10 @@
       "Tasks": "कार्यहरू",
       "Remittances": "रेमिट्यान्स",
       "Process Remittance": "रेमिट्यान्स प्रक्रिया",
-      "Undo Write-off": "राइट-अफ पूर्ववत गर्नुहोस्"
+      "Undo Write-off": "राइट-अफ पूर्ववत गर्नुहोस्",
+      "Home": "गृहपृष्ठ",
+      "Operations": "सञ्चालन",
+      "Administration": "प्रशासन"
     },
     "placeholders": {
       "Add new server": "नयाँ सर्भर थप्नुहोस्",
@@ -4032,7 +4054,20 @@
       "username": "प्रयोगकर्ता नाम",
       "withhold tax for this account": "यस खाताको लागि कर रोक्नुहोस्",
       "withoutCategory": "बिना श्रेणी",
-      "“Maker-Checker” principle requires every tasks": "\"मेकर-चेकर\" सिद्धान्तले त्रुटि र दुरुपयोगको सम्भावना कम गर्न प्रत्येक कार्यहरू दुई व्यक्तिद्वारा पूरा गर्न आवश्यक छ। एक व्यक्तिले प्रक्रिया सुरु गर्छ र दोस्रोले यसलाई पूरा गर्दछ।"
+      "“Maker-Checker” principle requires every tasks": "\"मेकर-चेकर\" सिद्धान्तले त्रुटि र दुरुपयोगको सम्भावना कम गर्न प्रत्येक कार्यहरू दुई व्यक्तिद्वारा पूरा गर्न आवश्यक छ। एक व्यक्तिले प्रक्रिया सुरु गर्छ र दोस्रोले यसलाई पूरा गर्दछ।",
+      "Good Morning": "Good Morning",
+      "Good Afternoon": "Good Afternoon",
+      "Good Evening": "Good Evening",
+      "No results found": "कुनै परिणाम फेला परेन",
+      "Search settings": "सेटिङहरू खोज्नुहोस्",
+      "No settings match your search": "तपाईंको खोजसँग कुनै सेटिङ मेल खाँदैन",
+      "Configure data, security, automation and platform behavior": "डेटा, सुरक्षा, स्वचालन र प्लेटफर्म व्यवहार कन्फिगर गर्नुहोस्",
+      "Manage your organization structure, staff, funds and tools": "आफ्नो संगठन संरचना, कर्मचारी, कोष र उपकरणहरू व्यवस्थापन गर्नुहोस्",
+      "Define and maintain the products your institution offers": "तपाईंको संस्थाले प्रदान गर्ने उत्पादनहरू परिभाषित र व्यवस्थापन गर्नुहोस्",
+      "Record, search and automate journal entries across your ledger": "आफ्नो लेजरमा जर्नल प्रविष्टिहरू रेकर्ड, खोज र स्वचालित गर्नुहोस्",
+      "Run portfolio, financial and organization reports": "पोर्टफोलियो, वित्तीय र संगठन प्रतिवेदनहरू चलाउनुहोस्",
+      "Search reports": "प्रतिवेदनहरू खोज्नुहोस्",
+      "No reports match your search": "तपाईंको खोजसँग कुनै प्रतिवेदन मेल खाँदैन"
     },
     "permissions": {
       "actions": {

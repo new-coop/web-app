@@ -6,82 +6,79 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-card>
-    <form [formGroup]="taxComponentForm" (ngSubmit)="submit()">
-      <mat-card-content>
-        <div class="layout-column">
-          <mat-form-field>
-            <mat-label>{{ 'labels.inputs.Name' | translate }}</mat-label>
-            <input matInput required formControlName="name" />
-            @if (taxComponentForm.controls.name.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Name' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>{{ 'labels.inputs.Percentage' | translate }}</mat-label>
-            <input matInput required formControlName="percentage" />
-            @if (taxComponentForm.controls.name.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Percentage' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
-
-          @if (taxComponentData?.creditAccountType?.value) {
+<div class="container form-page">
+  <mifosx-form-workspace eyebrow="labels.heading.Products" title="labels.heading.Edit Tax Component">
+    <form [formGroup]="taxComponentForm" (ngSubmit)="submit()" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
             <mat-form-field>
-              <mat-label>{{ 'labels.inputs.Credit Account Type' | translate }}</mat-label>
-              <input matInput formControlName="creditAccountType" />
+              <mat-label>{{ 'labels.inputs.Name' | translate }}</mat-label>
+              <input matInput required formControlName="name" />
+              @if (taxComponentForm.controls.name.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Name' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
             </mat-form-field>
-          }
 
-          @if (taxComponentData?.creditAccount?.name) {
             <mat-form-field>
-              <mat-label>{{ 'labels.inputs.Credit Account' | translate }}</mat-label>
-              <input matInput formControlName="creditAccount" />
+              <mat-label>{{ 'labels.inputs.Percentage' | translate }}</mat-label>
+              <input matInput required formControlName="percentage" />
+              @if (taxComponentForm.controls.name.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Percentage' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
             </mat-form-field>
-          }
 
-          <mat-form-field (click)="startDatePicker.open()">
-            <mat-label>{{ 'labels.inputs.Start Date' | translate }}</mat-label>
-            <input
-              matInput
-              [min]="minDate"
-              [max]="maxDate"
-              [matDatepicker]="startDatePicker"
-              required
-              formControlName="startDate"
-            />
-            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #startDatePicker></mat-datepicker>
-            @if (taxComponentForm.controls.startDate.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Start Date' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
+            @if (taxComponentData?.creditAccountType?.value) {
+              <mat-form-field>
+                <mat-label>{{ 'labels.inputs.Credit Account Type' | translate }}</mat-label>
+                <input matInput formControlName="creditAccountType" />
+              </mat-form-field>
             }
-          </mat-form-field>
-        </div>
-      </mat-card-content>
 
-      <mat-card-actions class="layout-row align-center gap-5px responsive-column">
+            @if (taxComponentData?.creditAccount?.name) {
+              <mat-form-field>
+                <mat-label>{{ 'labels.inputs.Credit Account' | translate }}</mat-label>
+                <input matInput formControlName="creditAccount" />
+              </mat-form-field>
+            }
+
+            <mat-form-field (click)="startDatePicker.open()">
+              <mat-label>{{ 'labels.inputs.Start Date' | translate }}</mat-label>
+              <input
+                matInput
+                [min]="minDate"
+                [max]="maxDate"
+                [matDatepicker]="startDatePicker"
+                required
+                formControlName="startDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #startDatePicker></mat-datepicker>
+              @if (taxComponentForm.controls.startDate.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Start Date' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
+      <footer class="form-workspace-footer">
         <button type="button" mat-raised-button [routerLink]="['../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="!taxComponentForm.valid"
-          *mifosxHasPermission="'UPDATE_TAXCOMPONENT'"
-        >
+        <button mat-raised-button color="primary" *mifosxHasPermission="'UPDATE_TAXCOMPONENT'" type="submit">
           {{ 'labels.buttons.Submit' | translate }}
         </button>
-      </mat-card-actions>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>

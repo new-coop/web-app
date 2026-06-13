@@ -7,24 +7,33 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, OnInit, inject, DestroyRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  inject,
+  DestroyRef
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /** rxjs Imports */
-import { forkJoin, merge } from 'rxjs';
-import { skip } from 'rxjs/operators';
+import { forkJoin, merge, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 /** Custom Services */
 import { HomeService } from '../../home.service';
 import { ThemingService } from 'app/shared/theme-toggle/theming.service';
+import { getMifosChartPalette, getSeriesStyle } from 'app/core/utils/chart-colors';
 
 /** Charting Imports */
 import { Dates } from 'app/core/utils/dates';
 import { Chart, registerables } from 'chart.js';
 import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { NgStyle } from '@angular/common';
 import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
@@ -55,6 +64,15 @@ export class ClientTrendsBarComponent implements OnInit {
   private dateUtils = inject(Dates);
   private themingService = inject(ThemingService);
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
+
+  /** Offices from parent or route resolver */
+  @Input() set offices(value: any) {
+    if (value) {
+      this.officeData = value;
+      this.cdr.markForCheck();
+    }
+  }
 
   /** Current theme */
   private currentTheme = 'light-theme';
@@ -78,13 +96,17 @@ export class ClientTrendsBarComponent implements OnInit {
    */
   constructor() {
     this.route.data.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((data: { offices: any }) => {
-      this.officeData = data.offices;
+      if (data.offices) {
+        this.officeData = data.offices;
+        this.cdr.markForCheck();
+      }
     });
   }
 
   ngOnInit() {
-    this.getChartData();
     this.initializeControls();
+    this.getChartData();
+    this.fetchTrends(this.officeId.value, this.timescale.value);
     // Subscribe to theme changes to update chart legend colors
     this.themingService.theme.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((theme) => {
       this.currentTheme = theme;
@@ -108,55 +130,60 @@ export class ClientTrendsBarComponent implements OnInit {
    */
   getChartData() {
     merge(this.officeId.valueChanges, this.timescale.valueChanges)
-      .pipe(skip(1), takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        const officeId = this.officeId.value;
-        const timescale = this.timescale.value;
-        switch (timescale) {
-          case 'Day':
-            const clientsByDay = this.homeService.getClientTrendsByDay(officeId);
-            const loansByDay = this.homeService.getLoanTrendsByDay(officeId);
-            forkJoin([
-              clientsByDay,
-              loansByDay
-            ]).subscribe((data: any[]) => {
-              const dayLabels = this.getLabels(timescale);
-              const clientCounts = this.getCounts(data[0], dayLabels, timescale, 'client');
-              const loanCounts = this.getCounts(data[1], dayLabels, timescale, 'loan');
-              this.setChart(dayLabels, clientCounts, loanCounts);
-              this.hideOutput = false;
-            });
-            break;
-          case 'Week':
-            const clientsByWeek = this.homeService.getClientTrendsByWeek(officeId);
-            const loansByWeek = this.homeService.getLoanTrendsByWeek(officeId);
-            forkJoin([
-              clientsByWeek,
-              loansByWeek
-            ]).subscribe((data: any[]) => {
-              const weekLabels = this.getLabels(timescale);
-              const clientCounts = this.getCounts(data[0], weekLabels, timescale, 'client');
-              const loanCounts = this.getCounts(data[1], weekLabels, timescale, 'loan');
-              this.setChart(weekLabels, clientCounts, loanCounts);
-              this.hideOutput = false;
-            });
-            break;
-          case 'Month':
-            const clientsByMonth = this.homeService.getClientTrendsByMonth(officeId);
-            const loansByMonth = this.homeService.getLoanTrendsByMonth(officeId);
-            forkJoin([
-              clientsByMonth,
-              loansByMonth
-            ]).subscribe((data: any[]) => {
-              const monthLabels = this.getLabels(timescale);
-              const clientCounts = this.getCounts(data[0], monthLabels, timescale, 'client');
-              const loanCounts = this.getCounts(data[1], monthLabels, timescale, 'loan');
-              this.setChart(monthLabels, clientCounts, loanCounts);
-              this.hideOutput = false;
-            });
-            break;
-        }
+        this.fetchTrends(this.officeId.value, this.timescale.value);
       });
+  }
+
+  private fetchTrends(officeId: number, timescale: string): void {
+    switch (timescale) {
+      case 'Day':
+        forkJoin([
+          this.homeService.getClientTrendsByDay(officeId),
+          this.homeService.getLoanTrendsByDay(officeId)
+        ])
+          .pipe(catchError(() => of([])))
+          .subscribe((data: any[]) => {
+            const dayLabels = this.getLabels(timescale);
+            const clientCounts = this.getCounts(data[0] || [], dayLabels, timescale, 'client');
+            const loanCounts = this.getCounts(data[1] || [], dayLabels, timescale, 'loan');
+            this.setChart(dayLabels, clientCounts, loanCounts);
+            this.hideOutput = false;
+            this.cdr.markForCheck();
+          });
+        break;
+      case 'Week':
+        forkJoin([
+          this.homeService.getClientTrendsByWeek(officeId),
+          this.homeService.getLoanTrendsByWeek(officeId)
+        ])
+          .pipe(catchError(() => of([])))
+          .subscribe((data: any[]) => {
+            const weekLabels = this.getLabels(timescale);
+            const clientCounts = this.getCounts(data[0] || [], weekLabels, timescale, 'client');
+            const loanCounts = this.getCounts(data[1] || [], weekLabels, timescale, 'loan');
+            this.setChart(weekLabels, clientCounts, loanCounts);
+            this.hideOutput = false;
+            this.cdr.markForCheck();
+          });
+        break;
+      case 'Month':
+        forkJoin([
+          this.homeService.getClientTrendsByMonth(officeId),
+          this.homeService.getLoanTrendsByMonth(officeId)
+        ])
+          .pipe(catchError(() => of([])))
+          .subscribe((data: any[]) => {
+            const monthLabels = this.getLabels(timescale);
+            const clientCounts = this.getCounts(data[0] || [], monthLabels, timescale, 'client');
+            const loanCounts = this.getCounts(data[1] || [], monthLabels, timescale, 'loan');
+            this.setChart(monthLabels, clientCounts, loanCounts);
+            this.hideOutput = false;
+            this.cdr.markForCheck();
+          });
+        break;
+    }
   }
 
   /**
@@ -264,7 +291,11 @@ export class ClientTrendsBarComponent implements OnInit {
    * @param {number[]} loanCounts Loans Ordinate.
    */
   setChart(labels: any[], clientCounts: number[], loanCounts: number[]) {
-    const legendColor = this.getLegendColor();
+    const isDark = this.currentTheme === 'dark-theme';
+    const palette = getMifosChartPalette(isDark);
+
+    const clientStyle = getSeriesStyle(isDark, 'clients');
+    const loanStyle = getSeriesStyle(isDark, 'loans');
 
     if (!this.chart) {
       this.chart = new Chart('client-trends-bar', {
@@ -275,18 +306,20 @@ export class ClientTrendsBarComponent implements OnInit {
             {
               label: 'New Clients',
               data: clientCounts,
-              backgroundColor: 'dodgerblue',
-              borderColor: 'dodgerblue',
-              borderWidth: 2,
-              fill: false
+              backgroundColor: clientStyle.backgroundColor,
+              borderColor: clientStyle.borderColor,
+              borderWidth: clientStyle.borderWidth,
+              fill: true,
+              tension: 0.3
             },
             {
               label: 'Loans Disbursed',
               data: loanCounts,
-              backgroundColor: 'red',
-              borderColor: 'red',
-              borderWidth: 2,
-              fill: false
+              backgroundColor: loanStyle.backgroundColor,
+              borderColor: loanStyle.borderColor,
+              borderWidth: loanStyle.borderWidth,
+              fill: true,
+              tension: 0.3
             }
           ]
         },
@@ -295,7 +328,7 @@ export class ClientTrendsBarComponent implements OnInit {
           plugins: {
             legend: {
               labels: {
-                color: legendColor
+                color: palette.legend
               }
             }
           },
@@ -305,7 +338,21 @@ export class ClientTrendsBarComponent implements OnInit {
               title: {
                 display: true,
                 text: 'Values',
-                color: '#1074B9'
+                color: palette.axis
+              },
+              ticks: {
+                color: palette.axis
+              },
+              grid: {
+                color: palette.grid
+              }
+            },
+            x: {
+              ticks: {
+                color: palette.axis
+              },
+              grid: {
+                display: false
               }
             }
           }
@@ -320,21 +367,47 @@ export class ClientTrendsBarComponent implements OnInit {
   }
 
   /**
-   * Gets the legend color based on the current theme.
-   */
-  private getLegendColor(): string {
-    return this.currentTheme === 'dark-theme' ? 'white' : '#666';
-  }
-
-  /**
    * Updates chart colors based on the current theme.
    */
   updateChartColors() {
-    const legendColor = this.getLegendColor();
+    const isDark = this.currentTheme === 'dark-theme';
+    const palette = getMifosChartPalette(isDark);
+
+    const clientStyle = getSeriesStyle(isDark, 'clients');
+    const loanStyle = getSeriesStyle(isDark, 'loans');
+
+    if (this.chart?.data?.datasets?.[0]) {
+      this.chart.data.datasets[0].backgroundColor = clientStyle.backgroundColor;
+      this.chart.data.datasets[0].borderColor = clientStyle.borderColor;
+      this.chart.data.datasets[0].borderWidth = clientStyle.borderWidth;
+    }
+
+    if (this.chart?.data?.datasets?.[1]) {
+      this.chart.data.datasets[1].backgroundColor = loanStyle.backgroundColor;
+      this.chart.data.datasets[1].borderColor = loanStyle.borderColor;
+      this.chart.data.datasets[1].borderWidth = loanStyle.borderWidth;
+    }
 
     if (this.chart?.options?.plugins?.legend?.labels) {
-      this.chart.options.plugins.legend.labels.color = legendColor;
-      this.chart.update();
+      this.chart.options.plugins.legend.labels.color = palette.legend;
     }
+
+    if (this.chart?.options?.scales?.y?.title) {
+      this.chart.options.scales.y.title.color = palette.axis;
+    }
+
+    if (this.chart?.options?.scales?.y?.ticks) {
+      this.chart.options.scales.y.ticks.color = palette.axis;
+    }
+
+    if (this.chart?.options?.scales?.y?.grid) {
+      this.chart.options.scales.y.grid.color = palette.grid;
+    }
+
+    if (this.chart?.options?.scales?.x?.ticks) {
+      this.chart.options.scales.x.ticks.color = palette.axis;
+    }
+
+    this.chart?.update();
   }
 }

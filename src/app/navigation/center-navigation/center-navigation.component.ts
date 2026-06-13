@@ -19,7 +19,7 @@ import {
   MatCardSubtitle,
   MatCardContent
 } from '@angular/material/card';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatTooltip } from '@angular/material/tooltip';
 import { AccountNumberComponent } from '../../shared/account-number/account-number.component';
 import { ExternalIdentifierComponent } from '../../shared/external-identifier/external-identifier.component';

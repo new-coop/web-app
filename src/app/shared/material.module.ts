@@ -47,6 +47,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { TouchOnSubmitDirective } from 'app/directives/touch-on-submit.directive';
+import { ValidateOnBlurDirective } from 'app/directives/validate-on-blur.directive';
 
 /**
  * Material Module
@@ -54,9 +56,15 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
  * Angular CDK and Angular Material modules are exported here.
  */
 @NgModule({
+  imports: [
+    TouchOnSubmitDirective,
+    ValidateOnBlurDirective
+  ],
   exports: [
     DragDropModule,
     LayoutModule,
+    TouchOnSubmitDirective,
+    ValidateOnBlurDirective,
     MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,
@@ -96,7 +104,11 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { appearance: 'fill' }
+      useValue: {
+        appearance: 'outline',
+        floatLabel: 'always',
+        subscriptSizing: 'dynamic'
+      }
     },
     {
       provide: STEPPER_GLOBAL_OPTIONS,

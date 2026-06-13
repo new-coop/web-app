@@ -7,7 +7,15 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, DestroyRef, OnDestroy, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  OnDestroy,
+  inject
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -82,10 +90,11 @@ import { LoanProductService } from 'app/products/loan-products/services/loan-pro
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GeneralTabComponent implements OnDestroy {
+export class GeneralTabComponent implements AfterViewInit, OnDestroy {
   private alertService = inject(AlertService);
   private sanitizer = inject(DomSanitizer);
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
   pdfUrl: SafeResourceUrl | null = null;
   rawPdfUrl: string | null = null;
   showPdf: boolean = false;
@@ -144,6 +153,8 @@ export class GeneralTabComponent implements OnDestroy {
       this.rawPdfUrl = null;
     }
     this.pdfUrl = null;
+    this.sectionObserver?.disconnect();
+    this.sectionObserver = null;
   }
 
   private route = inject(ActivatedRoute);
@@ -266,6 +277,12 @@ export class GeneralTabComponent implements OnDestroy {
   /** Client Id */
   clientid: any;
 
+  /** In-page section navigation (anchor chips with counts) */
+  sectionNav: { id: string; label: string; icon: string; count: number }[] = [];
+  /** Section currently in view (scrollspy) */
+  activeSection = '';
+  private sectionObserver: IntersectionObserver | null = null;
+
   /**
    * @param {ActivatedRoute} route Activated Route
    * @param {ClientsService} clientService Clients Service
@@ -292,8 +309,85 @@ export class GeneralTabComponent implements OnDestroy {
 
           // Compute performance history from accounts data
           this.computePerformanceHistory(data.clientAccountsData ?? { loanAccounts: [], savingsAccounts: [] });
+
+          this.buildSectionNav();
         }
       );
+  }
+
+  private buildSectionNav() {
+    const depositsOf = (type: string) =>
+      this.savingAccounts.filter((account: any) => account.depositType?.value === type).length;
+    this.sectionNav = [
+      {
+        id: 'section-charges',
+        label: 'labels.heading.Upcoming Charges',
+        icon: 'fa-file-invoice-dollar',
+        count: this.upcomingCharges.length
+      },
+      {
+        id: 'section-loans',
+        label: 'labels.heading.Loan Accounts',
+        icon: 'fa-money-bill-alt',
+        count: this.loanAccounts.length
+      },
+      {
+        id: 'section-savings',
+        label: 'labels.heading.Saving Accounts',
+        icon: 'fa-university',
+        count: depositsOf('Savings')
+      },
+      {
+        id: 'section-fixed',
+        label: 'labels.heading.Fixed Deposit Accounts',
+        icon: 'fa-lock',
+        count: depositsOf('Fixed Deposit')
+      },
+      {
+        id: 'section-recurring',
+        label: 'labels.heading.Recurring Deposit Accounts',
+        icon: 'fa-rotate',
+        count: depositsOf('Recurring Deposit')
+      },
+      {
+        id: 'section-shares',
+        label: 'labels.inputs.Shares Accounts',
+        icon: 'fa-chart-pie',
+        count: this.shareAccounts.length
+      },
+      {
+        id: 'section-collateral',
+        label: 'labels.heading.Collateral Data',
+        icon: 'fa-shield-alt',
+        count: this.collaterals.length
+      }
+    ];
+  }
+
+  /** Smooth-scrolls to an account section. */
+  scrollToSection(sectionId: string) {
+    this.activeSection = sectionId;
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /** Highlights the section currently in view as the user scrolls. */
+  ngAfterViewInit() {
+    this.sectionObserver = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting);
+        if (visible.length > 0) {
+          this.activeSection = visible[0].target.id;
+          this.cdr.markForCheck();
+        }
+      },
+      { rootMargin: '-20% 0px -65% 0px' }
+    );
+    this.sectionNav.forEach((section) => {
+      const element = document.getElementById(section.id);
+      if (element) {
+        this.sectionObserver.observe(element);
+      }
+    });
   }
 
   private computePerformanceHistory(accountsData: any) {

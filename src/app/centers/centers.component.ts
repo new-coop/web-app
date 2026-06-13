@@ -24,7 +24,7 @@ import { CentersService } from './centers.service';
 
 /** Custom Data Source */
 import { CentersDataSource } from './centers.datasource';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import {
   MatTable,
   MatColumnDef,
@@ -37,8 +37,9 @@ import {
   MatRowDef,
   MatRow
 } from '@angular/material/table';
-import { NgClass, AsyncPipe } from '@angular/common';
-import { StatusLookupPipe } from '../pipes/status-lookup.pipe';
+import { AsyncPipe } from '@angular/common';
+import { TableNameCellComponent } from '../shared/ui/table-name-cell/table-name-cell.component';
+import { StatusBadgeComponent } from '../shared/ui/status-badge/status-badge.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**
@@ -60,14 +61,14 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
     MatSortHeader,
     MatCellDef,
     MatCell,
-    NgClass,
     MatHeaderRowDef,
     MatHeaderRow,
     MatRowDef,
     MatRow,
     MatPaginator,
     AsyncPipe,
-    StatusLookupPipe
+    TableNameCellComponent,
+    StatusBadgeComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

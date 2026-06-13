@@ -7,7 +7,7 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, OnInit, inject, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
@@ -41,7 +41,8 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { TwoFactorAuthenticationComponent } from './two-factor-authentication/two-factor-authentication.component';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 import { M3IconComponent } from '../shared/m3-ui/m3-icon/m3-icon.component';
 
@@ -64,9 +65,10 @@ import { VersionService } from '../system/version.service';
     ResetPasswordComponent,
     TwoFactorAuthenticationComponent,
     MatMenuTrigger,
-    FaIconComponent,
     MatMenu,
     MatMenuItem,
+    MatIconButton,
+    MatTooltip,
     M3IconComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -86,6 +88,7 @@ export class LoginComponent implements OnInit {
   private versionService = inject(VersionService);
   private translateService = inject(TranslateService);
   private destroyRef = inject(DestroyRef);
+  private changeDetectorRef = inject(ChangeDetectorRef);
 
   public environment = environment;
 
@@ -119,10 +122,11 @@ export class LoginComponent implements OnInit {
     // Subscribe to theme changes
     this.themingService.theme.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.themeDarkEnabled = this.settingsService.themeDarkEnabled;
+      this.changeDetectorRef.markForCheck();
     });
 
     // Initialize theme based on settings
-    this.themingService.setDarkMode(!!this.settingsService.themeDarkEnabled);
+    this.themingService.setDarkMode(this.settingsService.themeDarkEnabled);
 
     // Subscribe to alerts
     this.alertService.alertEvent.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((alertEvent: Alert) => {

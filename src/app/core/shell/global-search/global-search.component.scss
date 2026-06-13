@@ -1,0 +1,156 @@
+/**
+ * Copyright since 2025 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 12px);
+  padding: var(--space-2, 8px) 0;
+}
+
+.search-box-icon ::ng-deep .m3-icon {
+  color: var(--mifos-surface-400, #94a3b8);
+}
+
+.search-box-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  font-size: var(--text-base, 1rem);
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.search-box-esc {
+  font-family: inherit;
+  font-size: var(--text-xs, 0.75rem);
+  padding: 1px var(--space-1, 4px);
+  border: 1px solid var(--mifos-surface-300, #d4d4d8);
+  border-radius: 4px;
+  background: var(--mifos-surface-50, #fafafa);
+  color: var(--mifos-surface-500, #71717a);
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--mifos-surface-200, #e2e8f0);
+  padding-top: var(--space-2, 8px);
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.result-item {
+  display: grid;
+  grid-template-columns: 110px 1fr auto; /* stylelint-disable-line unit-allowed-list */
+  align-items: center;
+  gap: var(--space-3, 12px);
+  width: 100%;
+  padding: var(--space-2, 8px) var(--space-2, 8px);
+  border: none;
+  border-radius: var(--radius-sm, 6px);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--motion-fast, 150ms) var(--ease-enter, ease-out);
+
+  &:hover {
+    background: var(--mifos-surface-100, #f4f4f5);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mifos-surface-950, #09090b);
+    outline-offset: -2px;
+    background: var(--mifos-surface-100, #f4f4f5);
+  }
+}
+
+.result-type {
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mifos-surface-500, #71717a);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.result-main {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2, 8px);
+  min-width: 0;
+}
+
+.result-name {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 500;
+  color: var(--mifos-surface-900, #0f172a);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.result-account {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--mifos-surface-500, #71717a);
+}
+
+.result-parent {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--mifos-surface-500, #71717a);
+  white-space: nowrap;
+}
+
+.view-all {
+  margin-top: var(--space-2, 8px);
+  padding: var(--space-2, 8px);
+  border: none;
+  border-top: 1px solid var(--mifos-surface-200, #e2e8f0);
+  background: transparent;
+  color: var(--p-primary-700, #3f3f46);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--mifos-surface-50, #fafafa);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mifos-surface-950, #09090b);
+    outline-offset: -2px;
+  }
+}
+
+.search-empty {
+  margin: 0;
+  padding: var(--space-6, 24px) 0 var(--space-2, 8px);
+  border-top: 1px solid var(--mifos-surface-200, #e2e8f0);
+  text-align: center;
+  color: var(--mifos-surface-500, #71717a);
+  font-size: var(--text-sm, 0.875rem);
+}
+
+.result-skeleton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 12px);
+  padding: var(--space-2, 8px);
+}
+
+.result-skeleton-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 4px);
+}

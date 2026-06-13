@@ -1,0 +1,144 @@
+<!--
+  Copyright since 2025 Mifos Initiative
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<div class="nav-hub" [class.nav-hub--entered]="hasEntered()" [class.nav-hub--filtering]="hasActiveFilter()">
+  <!-- Header: subtitle + local task filter -->
+  <header class="hub-header">
+    @if (hubSubtitle()) {
+      <p class="hub-subtitle">{{ hubSubtitle() | translate }}</p>
+    }
+
+    <label class="hub-filter">
+      <mifosx-m3-icon name="filter_list" [size]="18" class="hub-filter-icon" />
+      <input
+        type="text"
+        class="hub-filter-input"
+        [value]="query()"
+        (input)="onQueryInput($any($event.target).value)"
+        [placeholder]="filterPlaceholder() | translate"
+        [attr.aria-label]="filterPlaceholder() | translate"
+      />
+      @if (query()) {
+        <button
+          type="button"
+          class="hub-filter-clear"
+          (click)="clearQuery()"
+          [attr.aria-label]="'labels.buttons.Clear' | translate"
+        >
+          <mifosx-m3-icon name="close" [size]="16" />
+        </button>
+      }
+    </label>
+  </header>
+
+  @if (showExplorationProgress()) {
+    <div
+      class="hub-exploration"
+      [class.hub-exploration--complete]="explorationPercent() === 100"
+      role="status"
+      [attr.aria-label]="
+        'labels.text.Hub exploration aria' | translate: { explored: exploredCount(), total: totalExplorable() }
+      "
+    >
+      <div class="hub-exploration-header">
+        <span class="hub-exploration-label">
+          @if (explorationPercent() === 100) {
+            <mifosx-m3-icon name="emoji_events" [size]="16" class="hub-exploration-trophy" />
+          }
+          {{ 'labels.text.Hub exploration progress' | translate }}
+        </span>
+        <span class="hub-exploration-stats">{{ exploredCount() }} / {{ totalExplorable() }}</span>
+      </div>
+      <div class="hub-exploration-track">
+        <div class="hub-exploration-fill" [style.width.%]="explorationPercent()"></div>
+      </div>
+      @if (explorationPercent() === 100) {
+        <p class="hub-exploration-complete-msg">{{ 'labels.text.Hub fully explored' | translate }}</p>
+      }
+    </div>
+  }
+
+  @if (featuredItems().length > 0) {
+    <section class="hub-section hub-section-featured">
+      <h2 class="hub-section-label">{{ featuredSectionLabel() | translate }}</h2>
+      <div class="hub-grid">
+        @for (item of featuredItems(); track item.label) {
+          <ng-container *ngTemplateOutlet="card; context: { $implicit: item }" />
+        }
+      </div>
+    </section>
+  }
+
+  @if (recentItems().length > 0) {
+    <section class="hub-section">
+      <h2 class="hub-section-label">{{ 'labels.heading.Recent' | translate }}</h2>
+      <div class="hub-grid">
+        @for (item of recentItems(); track item.label) {
+          <ng-container *ngTemplateOutlet="card; context: { $implicit: item }" />
+        }
+      </div>
+    </section>
+  }
+
+  @for (section of visibleSections(); track section.label ?? $index) {
+    <section class="hub-section">
+      @if (section.label) {
+        <h2 class="hub-section-label">{{ section.label | translate }}</h2>
+      }
+      <div class="hub-grid">
+        @for (item of section.items; track item.label) {
+          <ng-container *ngTemplateOutlet="card; context: { $implicit: item }" />
+        }
+      </div>
+    </section>
+  }
+
+  @if (visibleSections().length === 0 && featuredItems().length === 0) {
+    @if (isAccessDenied()) {
+      <div class="hub-empty hub-empty-denied">
+        <mifosx-m3-icon name="lock" [size]="32" />
+        <p>{{ 'labels.text.No access to hub tasks' | translate }}</p>
+      </div>
+    } @else if (hasActiveFilter()) {
+      <div class="hub-empty">
+        <mifosx-m3-icon name="search_off" [size]="32" />
+        <p>{{ emptySearchMessage() | translate }}</p>
+      </div>
+    }
+  }
+</div>
+
+<ng-template #card let-item>
+  <a
+    class="hub-card"
+    [class.hub-card--explored]="isExplored(item)"
+    [class.disabled]="item.disabled"
+    [attr.id]="item.anchorId ?? null"
+    [routerLink]="item.disabled ? null : item.link"
+    [queryParams]="item.queryParams ?? null"
+    [attr.aria-disabled]="item.disabled ? true : null"
+    [attr.tabindex]="item.disabled ? -1 : null"
+    (click)="onCardClick(item)"
+  >
+    <span class="hub-card-icon">
+      <mifosx-m3-icon [name]="item.icon" [size]="22" />
+    </span>
+    @if (isExplored(item)) {
+      <span class="hub-card-explored" [attr.aria-label]="'labels.text.Task explored' | translate">
+        <mifosx-m3-icon name="check_circle" [size]="16" />
+      </span>
+    }
+    <span class="hub-card-body">
+      <span class="hub-card-title">{{ item.label | translate }}</span>
+      @if (item.description) {
+        <span class="hub-card-description">{{ item.description | translate }}</span>
+      }
+    </span>
+    <mifosx-m3-icon class="hub-card-arrow" name="arrow_forward" [size]="18" />
+  </a>
+</ng-template>

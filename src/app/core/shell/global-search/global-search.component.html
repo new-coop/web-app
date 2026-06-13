@@ -1,0 +1,81 @@
+<!--
+  Copyright since 2025 Mifos Initiative
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<p-dialog
+  [visible]="visible()"
+  (visibleChange)="$event ? open() : close()"
+  [modal]="true"
+  [dismissableMask]="true"
+  [showHeader]="false"
+  [draggable]="false"
+  [resizable]="false"
+  position="top"
+  styleClass="global-search-dialog"
+  [style]="{ width: '640px', 'max-width': '92vw', 'margin-top': '10vh' }"
+  appendTo="body"
+  (onShow)="focusInput()"
+>
+  <div class="search-box">
+    <mifosx-m3-icon name="search" [size]="20" class="search-box-icon" />
+    <input
+      #searchInput
+      type="text"
+      pInputText
+      class="search-box-input"
+      [formControl]="queryControl"
+      [placeholder]="'labels.heading.Search' | translate"
+      [attr.aria-label]="'labels.heading.Search' | translate"
+      role="searchbox"
+      autocomplete="off"
+      (keydown)="onInputKeydown($event)"
+    />
+    <kbd class="search-box-esc">Esc</kbd>
+  </div>
+
+  @if (loading()) {
+    <div class="search-results" aria-busy="true">
+      @for (s of skeletons; track $index) {
+        <div class="result-skeleton">
+          <p-skeleton shape="circle" size="2rem" />
+          <div class="result-skeleton-lines">
+            <p-skeleton height="0.875rem" width="60%" />
+            <p-skeleton height="0.75rem" width="40%" />
+          </div>
+        </div>
+      }
+    </div>
+  } @else if (results().length > 0) {
+    <div class="search-results" #resultsList role="listbox">
+      @for (result of results(); track result.entityType + '-' + result.entityId) {
+        <button
+          type="button"
+          class="result-item"
+          role="option"
+          (click)="navigate(result)"
+          (keydown)="onResultKeydown($event, $index)"
+        >
+          <span class="result-type">{{ 'labels.catalogs.' + result.entityType | translate }}</span>
+          <span class="result-main">
+            <span class="result-name">{{ result.entityName }}</span>
+            @if (result.entityAccountNo) {
+              <span class="result-account numeric">#{{ result.entityAccountNo }}</span>
+            }
+          </span>
+          @if (result.parentName) {
+            <span class="result-parent">{{ result.parentName }}</span>
+          }
+        </button>
+      }
+      <button type="button" class="view-all" (click)="viewAllResults()">
+        {{ 'labels.buttons.View all results' | translate }}
+      </button>
+    </div>
+  } @else if (searched()) {
+    <p class="search-empty">{{ 'labels.text.No results found' | translate }}</p>
+  }
+</p-dialog>

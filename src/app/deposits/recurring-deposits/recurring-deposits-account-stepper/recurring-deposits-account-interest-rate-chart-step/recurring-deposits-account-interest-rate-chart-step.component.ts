@@ -22,7 +22,7 @@ import {
 } from '@angular/material/table';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NgIf, NgSwitch, TitleCasePipe } from '@angular/common';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatStepperPrevious, MatStepperNext } from '@angular/material/stepper';
 import { DateFormatPipe } from '../../../../pipes/date-format.pipe';
 import { FormatNumberPipe } from '../../../../pipes/format-number.pipe';

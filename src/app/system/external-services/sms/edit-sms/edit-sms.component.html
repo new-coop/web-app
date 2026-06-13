@@ -6,58 +6,60 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-card>
-    <form [formGroup]="smsConfigurationForm" (ngSubmit)="submit()">
-      <mat-card-content>
-        <div class="layout-column">
-          <mat-form-field>
-            <mat-label>{{ 'labels.inputs.Host Name' | translate }}</mat-label>
-            <input matInput required formControlName="host_name" />
-            @if (smsConfigurationForm.controls.host_name.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Host Name' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
+<div class="container form-page form-page--narrow">
+  <mifosx-form-workspace eyebrow="labels.heading.System" title="labels.heading.Edit Sms">
+    <form [formGroup]="smsConfigurationForm" (ngSubmit)="submit()" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Host Name' | translate }}</mat-label>
+              <input matInput required formControlName="host_name" />
+              @if (smsConfigurationForm.controls.host_name.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Host Name' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>{{ 'labels.inputs.Port Number' | translate }}</mat-label>
-            <input matInput required formControlName="port_number" />
-            @if (smsConfigurationForm.controls.port_number.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Port Number' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Port Number' | translate }}</mat-label>
+              <input matInput required formControlName="port_number" />
+              @if (smsConfigurationForm.controls.port_number.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Port Number' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>{{ 'labels.inputs.End Point' | translate }}</mat-label>
-            <input matInput required formControlName="end_point" />
-            @if (smsConfigurationForm.controls.end_point.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.End Point' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.End Point' | translate }}</mat-label>
+              <input matInput required formControlName="end_point" />
+              @if (smsConfigurationForm.controls.end_point.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.End Point' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>{{ 'labels.inputs.Tenant App Key' | translate }}</mat-label>
-            <input matInput required formControlName="tenant_app_key" />
-            @if (smsConfigurationForm.controls.tenant_app_key.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Tenant App Key' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
-        </div>
-      </mat-card-content>
-
-      <mat-card-actions class="layout-row align-center gap-5px responsive-column">
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Tenant App Key' | translate }}</mat-label>
+              <input matInput required formControlName="tenant_app_key" />
+              @if (smsConfigurationForm.controls.tenant_app_key.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Tenant App Key' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
+      <footer class="form-workspace-footer">
         <button type="button" mat-raised-button [routerLink]="['../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
@@ -65,10 +67,11 @@
           mat-raised-button
           color="primary"
           [disabled]="!smsConfigurationForm.valid || smsConfigurationForm.pristine"
+          type="submit"
         >
           {{ 'labels.buttons.Submit' | translate }}
         </button>
-      </mat-card-actions>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>

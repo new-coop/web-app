@@ -7,7 +7,7 @@
  */
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { FormatNumberPipe } from '@pipes/format-number.pipe';
 import { NearBreach } from 'app/products/loan-products/models/loan-product.model';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';

@@ -34,7 +34,7 @@ import {
 } from '@angular/material/table';
 import { TranslateService } from '@ngx-translate/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatStepperPrevious, MatStepperNext } from '@angular/material/stepper';
 import { ChargesFilterPipe } from '../../../pipes/charges-filter.pipe';
 import { DateFormatPipe } from '../../../pipes/date-format.pipe';

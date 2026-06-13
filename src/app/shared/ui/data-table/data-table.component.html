@@ -1,0 +1,72 @@
+<!--
+  Copyright since 2025 Mifos Initiative
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<p-table
+  styleClass="mifosx-datatable"
+  paginatorStyleClass="mifosx-datatable-paginator"
+  [value]="loading() ? skeletonRows : rows()"
+  [columns]="columns()"
+  [lazy]="true"
+  [paginator]="totalRecords() > pageSize()"
+  [rows]="pageSize()"
+  [first]="first()"
+  [totalRecords]="totalRecords()"
+  [rowsPerPageOptions]="[25, 50, 100]"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  [rowHover]="true"
+  scrollable
+  scrollHeight="flex"
+  (onLazyLoad)="lazyLoad.emit($event)"
+  [tableStyle]="{ 'min-width': '100%' }"
+>
+  <ng-template #header let-columns>
+    <tr>
+      @for (col of columns; track col.field) {
+        <th
+          [pSortableColumn]="col.field"
+          [pSortableColumnDisabled]="!col.sortable"
+          [class.numeric]="col.numeric"
+          [style.width]="col.width"
+        >
+          {{ col.header }}
+          @if (col.sortable) {
+            <p-sortIcon [field]="col.field" />
+          }
+        </th>
+      }
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-row let-columns="columns">
+    <tr class="data-row" tabindex="0" (click)="rowSelect.emit(row)" (keydown.enter)="rowSelect.emit(row)">
+      @for (col of columns; track col.field) {
+        <td [class.numeric]="col.numeric">
+          @if (loading()) {
+            <p-skeleton height="1rem" />
+          } @else if (cellTemplate()) {
+            <ng-container *ngTemplateOutlet="cellTemplate()!; context: { $implicit: row, col }" />
+          } @else {
+            {{ row[col.field] }}
+          }
+        </td>
+      }
+    </tr>
+  </ng-template>
+
+  <ng-template #emptymessage>
+    <tr>
+      <td [attr.colspan]="columns().length" class="empty-state">
+        <p>{{ emptyMessage() }}</p>
+        @if (emptyActionLabel()) {
+          <p-button [label]="emptyActionLabel()!" outlined (onClick)="emptyAction.emit()" />
+        }
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

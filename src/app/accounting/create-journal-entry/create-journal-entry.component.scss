@@ -5,3 +5,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.layout-column {
+  width: 100%;
+  margin-right: 0 !important;
+}
+
+.form-ledger-col .form-array-row {
+  border-left-width: 3px;
+}
+
+.form-section--debit .form-array-row {
+  border-left-color: var(--form-debit-accent, #b45309);
+}
+
+.form-section--credit .form-array-row {
+  border-left-color: var(--form-credit-accent, #15803d);
+}

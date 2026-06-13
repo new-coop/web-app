@@ -765,7 +765,8 @@
       "DONE": "Hotovo",
       "Submitting": "Odesílání",
       "OK": "OK",
-      "undo_account_transfer": "Vrátit převod účtu"
+      "undo_account_transfer": "Vrátit převod účtu",
+      "View all results": "Zobrazit všechny výsledky"
     },
     "catalogs": {
       "Interest payment waiver": "Prominutí platby úroků",
@@ -1561,7 +1562,23 @@
       "identifier id": "identifikátor id",
       "savings-transaction-datatable-tab works": "spořicí-transakční-datatable-tab funguje",
       "successfully select option": "úspěšně. Chcete-li pokračovat dále, vyberte si z níže uvedených možností.",
-      "undo_account_transfer": "Vrátit převod účtu"
+      "undo_account_transfer": "Vrátit převod účtu",
+      "Quick Actions": "Quick Actions",
+      "Search": "Hledat",
+      "Customization": "Přizpůsobení",
+      "Security and Oversight": "Zabezpečení a dohled",
+      "Automation and Integrations": "Automatizace a integrace",
+      "Configuration": "Konfigurace",
+      "About": "O aplikaci",
+      "Structure and Staff": "Struktura a zaměstnanci",
+      "Loans and Funds": "Úvěry a fondy",
+      "Payments and Cash": "Platby a pokladna",
+      "Tools": "Nástroje",
+      "Loans": "Úvěry",
+      "Deposits and Shares": "Vklady a podíly",
+      "Pricing and Rules": "Ceny a pravidla",
+      "Ledger Setup": "Nastavení hlavní knihy",
+      "Period Operations": "Operace období"
     },
     "inputs": {
       "# Remittance": "# Remitence",
@@ -3144,6 +3161,7 @@
       "Clients": "klienti",
       "Close": "Zavřít",
       "Close (as Rescheduled)": "Zavřít (jako přeplánováno)",
+      "Collapse Sidebar": "Sbalit boční panel",
       "Collection Sheet": "Sbírkový list",
       "Configuration Wizard": "Průvodce konfigurací",
       "Contract Termination": "Ukončení smlouvy",
@@ -3157,6 +3175,7 @@
       "Disburse to Savings": "Výplata na Úspory",
       "Discount Fee": "Poplatek za slevu",
       "Edit Repayment Schedule": "Upravit splátkový kalendář",
+      "Expand Sidebar": "Rozbalit boční panel",
       "Foreclosure": "Exekuce",
       "Frequent Postings": "Časté příspěvky",
       "Frequently Accessed": "Často používané",
@@ -3237,7 +3256,10 @@
       "Tasks": "Úkoly",
       "Remittances": "Remitence",
       "Process Remittance": "Zpracovat remitenci",
-      "Undo Write-off": "Zrušit odpis"
+      "Undo Write-off": "Zrušit odpis",
+      "Home": "Domů",
+      "Operations": "Provoz",
+      "Administration": "Správa"
     },
     "placeholders": {
       "Add new server": "Přidat nový server",
@@ -4033,7 +4055,20 @@
       "username": "uživatelské jméno",
       "withhold tax for this account": "srazit daň pro tento účet",
       "withoutCategory": "Bez kategorie",
-      "“Maker-Checker” principle requires every tasks": "Princip „Maker-Checker“ vyžaduje, aby každý úkol prováděli dva lidé, aby se snížila pravděpodobnost chyb a zneužití. Jedna osoba proces iniciuje a druhá jej dokončí."
+      "“Maker-Checker” principle requires every tasks": "Princip „Maker-Checker“ vyžaduje, aby každý úkol prováděli dva lidé, aby se snížila pravděpodobnost chyb a zneužití. Jedna osoba proces iniciuje a druhá jej dokončí.",
+      "Good Morning": "Good Morning",
+      "Good Afternoon": "Good Afternoon",
+      "Good Evening": "Good Evening",
+      "No results found": "Nebyly nalezeny žádné výsledky",
+      "Search settings": "Hledat nastavení",
+      "No settings match your search": "Žádné nastavení neodpovídá vašemu hledání",
+      "Configure data, security, automation and platform behavior": "Nakonfigurujte data, zabezpečení, automatizaci a chování platformy",
+      "Manage your organization structure, staff, funds and tools": "Spravujte strukturu organizace, zaměstnance, fondy a nástroje",
+      "Define and maintain the products your institution offers": "Definujte a spravujte produkty vaší instituce",
+      "Record, search and automate journal entries across your ledger": "Zaznamenávejte, vyhledávejte a automatizujte účetní zápisy v hlavní knize",
+      "Run portfolio, financial and organization reports": "Spouštějte portfoliové, finanční a organizační sestavy",
+      "Search reports": "Hledat sestavy",
+      "No reports match your search": "Žádné sestavy neodpovídají vašemu hledání"
     },
     "permissions": {
       "actions": {

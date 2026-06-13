@@ -162,6 +162,11 @@ export class EditRuleComponent implements OnInit {
    * if successful redirects to view updated rule.
    */
   submit() {
+    if (this.accountingRuleForm.invalid) {
+      this.accountingRuleForm.markAllAsTouched();
+      return;
+    }
+
     const accountingRule = this.accountingRuleForm.value;
     if (accountingRule.debitRuleType === 'fixedAccount') {
       delete accountingRule.debitTags;

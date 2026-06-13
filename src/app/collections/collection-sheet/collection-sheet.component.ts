@@ -13,7 +13,7 @@ import { CollectionsService } from '../collections.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SettingsService } from 'app/settings/settings.service';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 
 import { OrganizationService } from 'app/organization/organization.service';
 import { CentersService } from 'app/centers/centers.service';

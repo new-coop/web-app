@@ -19,6 +19,7 @@ import {
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
+import { ConfigurationWizardService } from '../configuration-wizard.service';
 
 /**
  * Completion Dialog Component.
@@ -41,4 +42,9 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 export class CompletionDialogComponent {
   dialogRef = inject<MatDialogRef<CompletionDialogComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
+  private configurationWizardService = inject(ConfigurationWizardService);
+
+  constructor() {
+    this.configurationWizardService.recordSetupProgress(100);
+  }
 }

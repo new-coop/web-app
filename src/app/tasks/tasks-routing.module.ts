@@ -42,6 +42,11 @@ const routes: Routes = [
       data: { title: 'Checker Inbox & Tasks', breadcrumb: 'Checker Inbox & Tasks' },
       children: [
         {
+          path: '',
+          redirectTo: 'checker-inbox',
+          pathMatch: 'full'
+        },
+        {
           path: 'checker-inbox',
           component: CheckerInboxComponent,
           data: { title: 'Checker Inbox' },

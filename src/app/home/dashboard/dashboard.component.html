@@ -6,25 +6,106 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <div class="dashboard-layout">
-    <mat-card class="search-card">
-      <mat-card-content>
-        <mat-form-field>
-          <mat-label>{{ 'labels.placeholders.Search Activity' | translate }}</mat-label>
-          <input matInput [matAutocomplete]="activitySearch" [formControl]="searchText" />
-        </mat-form-field>
+<div class="dashboard-page">
+  <section class="activity-filter">
+    <fa-icon icon="search" class="activity-filter-icon"></fa-icon>
+    <input
+      type="text"
+      class="activity-filter-input"
+      [formControl]="searchText"
+      [matAutocomplete]="activitySearch"
+      [placeholder]="'labels.placeholders.Search Activity' | translate"
+      [attr.aria-label]="'labels.placeholders.Search Activity' | translate"
+    />
 
-        <mat-autocomplete #activitySearch="matAutocomplete">
-          @for (activity of filteredActivities | async; track activity) {
-            <mat-option [routerLink]="activity.path">
-              <span>{{ activity.activity }}</span>
-            </mat-option>
+    <mat-autocomplete #activitySearch="matAutocomplete">
+      @for (activity of filteredActivities | async; track activity) {
+        <mat-option [routerLink]="activity.path">
+          <span>{{ activity.activity }}</span>
+        </mat-option>
+      }
+    </mat-autocomplete>
+  </section>
+
+  <!-- KPI row: headline metrics at a glance -->
+  <section class="kpi-grid">
+    @for (kpi of kpiCards; track kpi.labelKey) {
+      <div class="kpi-card" [class]="'kpi-' + kpi.theme">
+        <div class="kpi-icon">
+          <fa-icon [icon]="kpi.icon"></fa-icon>
+        </div>
+        <div class="kpi-body">
+          @if (kpi.loaded) {
+            <span class="kpi-value">{{ kpi.value !== null ? (kpi.value | number) : '—' }}</span>
+          } @else {
+            <span class="kpi-skeleton" aria-hidden="true"></span>
           }
-        </mat-autocomplete>
-      </mat-card-content>
-    </mat-card>
+          <span class="kpi-label">{{ kpi.labelKey | translate }}</span>
+        </div>
+      </div>
+    }
+  </section>
 
+  <!-- Chart row: interactive widgets with office/timescale filters -->
+  <section class="chart-grid">
+    <div class="chart-cell chart-wide">
+      <mifosx-client-trends-bar [offices]="offices"></mifosx-client-trends-bar>
+    </div>
+    <div class="chart-cell">
+      <mifosx-amount-disbursed-pie [offices]="offices"></mifosx-amount-disbursed-pie>
+    </div>
+    <div class="chart-cell">
+      <mifosx-amount-collected-pie [offices]="offices"></mifosx-amount-collected-pie>
+    </div>
+  </section>
+
+  <!-- Offices table: sortable -->
+  <section class="table-card">
+    <div class="table-header">
+      <span class="icon-chip">
+        <fa-icon icon="building"></fa-icon>
+      </span>
+      <h3 class="table-title">{{ 'labels.heading.Offices' | translate }}</h3>
+    </div>
+    <div class="table-scroll">
+      <table class="offices-table">
+        <thead>
+          <tr>
+            <th (click)="sortBy('name')">
+              {{ 'labels.inputs.Office Name' | translate }}
+              @if (sortColumn === 'name') {
+                <fa-icon [icon]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'" class="sort-icon"></fa-icon>
+              }
+            </th>
+            <th (click)="sortBy('externalId')">
+              {{ 'labels.inputs.External Id' | translate }}
+              @if (sortColumn === 'externalId') {
+                <fa-icon [icon]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'" class="sort-icon"></fa-icon>
+              }
+            </th>
+            <th (click)="sortBy('openingDate')">
+              {{ 'labels.inputs.Opening Date' | translate }}
+              @if (sortColumn === 'openingDate') {
+                <fa-icon [icon]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'" class="sort-icon"></fa-icon>
+              }
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (office of sortedOffices; track office.id) {
+            <tr [routerLink]="['/organization/offices/view', office.id]">
+              <td class="office-name">{{ office.name }}</td>
+              <td>{{ office.externalId || '—' }}</td>
+              <td>{{ office.openingDate | dateFormat }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Analytics dashboard engine -->
+  <section class="engine-panel">
     <mifosx-analytics-dashboard [dashboard]="dashboardDefinition" [offices]="offices"></mifosx-analytics-dashboard>
-  </div>
+  </section>
 </div>

@@ -6,22 +6,194 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-table {
-  width: 100%;
+.term-variations-page {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.875rem, 2vw, 1.25rem);
+  padding: clamp(0.75rem, 2vw, 1rem);
+}
 
-  .action-button {
-    min-width: 26px;
-    padding: 0 0 3px;
-    margin: 0 2%;
-    line-height: 25px;
+.section-card {
+  border-radius: 16px;
+  background: var(--md-sys-color-surface-container-lowest, #fff);
+  border: 1px solid rgb(15 23 42 / 6%);
+  box-shadow: 0 1px 3px rgb(15 23 42 / 5%);
+  overflow: hidden;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid rgb(15 23 42 / 6%);
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a;
   }
 }
 
-.container {
-  padding-top: 1%;
-  padding-bottom: 2%;
+.section-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 9px;
+  background: rgb(9 9 11 / 7%);
+  color: #3f3f46;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
 
-  .delete-button {
-    margin-left: 1%;
+.section-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.4375rem;
+  border-radius: 999px;
+  background: rgb(9 9 11 / 7%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #475569;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table.mat-mdc-table {
+  width: 100%;
+
+  --mat-table-background-color: transparent;
+  --mat-table-row-item-outline-color: rgb(15 23 42 / 6%);
+
+  th.mat-mdc-header-cell {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #64748b;
+    white-space: nowrap;
+  }
+
+  td.mat-mdc-cell {
+    font-size: 0.875rem;
+    color: #1e293b;
+  }
+
+  .r-amount {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  tr.mat-mdc-row:hover {
+    background: rgb(15 23 42 / 3%);
+  }
+}
+
+.row-action {
+  width: 32px;
+  height: 32px;
+  margin: 0 0.125rem;
+}
+
+.row-action-danger {
+  color: #dc2626;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 3rem 1.5rem;
+  border-radius: 16px;
+  background: var(--md-sys-color-surface-container-lowest, #fff);
+  border: 1px dashed rgb(15 23 42 / 12%);
+  color: #64748b;
+  text-align: center;
+
+  .empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 12px;
+    background: rgb(9 9 11 / 6%);
+    font-size: 1.25rem;
+    color: #94a3b8;
+  }
+
+  h4 {
+    margin: 0.25rem 0 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+}
+
+:host-context(.dark-theme) {
+  .section-card {
+    background: var(--md-sys-color-surface-container, #2c2f36);
+    border-color: rgb(255 255 255 / 8%);
+  }
+
+  .section-head {
+    border-bottom-color: rgb(255 255 255 / 8%);
+  }
+
+  .section-heading h3 {
+    color: #f4f4f5;
+  }
+
+  .section-icon,
+  .section-count {
+    background: rgb(161 161 170 / 14%);
+    color: #d4d4d8;
+  }
+
+  table.mat-mdc-table {
+    --mat-table-row-item-outline-color: rgb(255 255 255 / 8%);
+
+    th.mat-mdc-header-cell {
+      color: #a1a1aa;
+    }
+
+    td.mat-mdc-cell {
+      color: #e4e4e7;
+    }
+
+    tr.mat-mdc-row:hover {
+      background: rgb(255 255 255 / 4%);
+    }
+  }
+
+  .empty-state {
+    color: #a1a1aa;
   }
 }

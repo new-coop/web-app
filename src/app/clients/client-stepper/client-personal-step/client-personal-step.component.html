@@ -1,0 +1,153 @@
+<!--
+  Copyright since 2025 Mifos Initiative
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<form [formGroup]="clientPersonalForm">
+  <div class="layout-row-wrap gap-2px responsive-column">
+    @if (clientPersonalForm.get('fullname')) {
+      <mat-form-field class="flex-48">
+        <mat-label>{{ 'labels.inputs.' + getDateLabel(['Name', 'Entity Name']) | translate }}</mat-label>
+        <input matInput required formControlName="fullname" />
+        @if (clientPersonalForm.controls.fullname.hasError('required')) {
+          <mat-error>
+            {{ 'labels.inputs.Client name' | translate }} {{ 'labels.commons.is' | translate }}
+            <strong>{{ 'labels.commons.required' | translate }}</strong>
+          </mat-error>
+        }
+        @if (clientPersonalForm.controls.fullname.hasError('pattern')) {
+          <mat-error>
+            {{ 'labels.inputs.Client name' | translate }} <strong>{{ 'labels.inputs.cannot' | translate }}</strong>
+            {{ 'labels.commons.begin with a special character or number' | translate }}
+          </mat-error>
+        }
+      </mat-form-field>
+    }
+
+    @if (
+      clientPersonalForm.get('firstname') || clientPersonalForm.get('middlename') || clientPersonalForm.get('lastname')
+    ) {
+      <div class="name-fields-row">
+        @if (clientPersonalForm.get('firstname')) {
+          <mat-form-field class="name-field first-name">
+            <mat-label>{{ 'labels.inputs.First Name' | translate }}</mat-label>
+            <input matInput required formControlName="firstname" />
+            @if (clientPersonalForm.controls.firstname.hasError('required')) {
+              <mat-error>
+                {{ 'labels.inputs.Client first name' | translate }} {{ 'labels.commons.is' | translate }}
+                <strong>{{ 'labels.commons.required' | translate }}</strong>
+              </mat-error>
+            }
+            @if (clientPersonalForm.controls.firstname.hasError('pattern')) {
+              <mat-error>
+                {{ 'labels.inputs.Client first name' | translate }}
+                <strong>{{ 'labels.inputs.cannot' | translate }}</strong>
+                {{ 'labels.commons.begin with a special character or number' | translate }}
+              </mat-error>
+            }
+          </mat-form-field>
+        }
+        @if (clientPersonalForm.get('middlename')) {
+          <mat-form-field class="name-field middle-name">
+            <mat-label>{{ 'labels.inputs.Middle Name' | translate }}</mat-label>
+            <input matInput formControlName="middlename" />
+            @if (clientPersonalForm.controls.middlename.hasError('pattern')) {
+              <mat-error>
+                {{ 'labels.inputs.Client middle name' | translate }}
+                <strong>{{ 'labels.inputs.cannot' | translate }}</strong>
+                {{ 'labels.commons.begin with a special character or number' | translate }}
+              </mat-error>
+            }
+          </mat-form-field>
+        }
+        @if (clientPersonalForm.get('lastname')) {
+          <mat-form-field class="name-field last-name">
+            <mat-label>{{ 'labels.inputs.Last Name' | translate }}</mat-label>
+            <input matInput required formControlName="lastname" />
+            @if (clientPersonalForm.controls.lastname.hasError('required')) {
+              <mat-error>
+                {{ 'labels.inputs.Client last name' | translate }} {{ 'labels.commons.is' | translate }}
+                <strong>{{ 'labels.commons.required' | translate }}</strong>
+              </mat-error>
+            }
+            @if (clientPersonalForm.controls.lastname.hasError('pattern')) {
+              <mat-error>
+                {{ 'labels.inputs.Client last name' | translate }}
+                <strong>{{ 'labels.inputs.cannot' | translate }}</strong>
+                {{ 'labels.commons.begin with a special character or number' | translate }}
+              </mat-error>
+            }
+          </mat-form-field>
+        }
+      </div>
+    }
+
+    <mat-form-field class="flex-48" (click)="dateOfBirthDatePicker.open()">
+      <mat-label>{{ 'labels.inputs.' + getDateLabel(['Date of Birth', 'Incorporation Date']) | translate }}</mat-label>
+      <input matInput [max]="maxDate" [matDatepicker]="dateOfBirthDatePicker" formControlName="dateOfBirth" />
+      <mat-datepicker-toggle matSuffix [for]="dateOfBirthDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #dateOfBirthDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    @if (legalFormId === LegalFormId.PERSON) {
+      <mat-form-field class="flex-48">
+        <mat-label>{{ 'labels.inputs.Gender' | translate }}</mat-label>
+        <mat-select formControlName="genderId">
+          @for (gender of genderOptions; track gender) {
+            <mat-option [value]="gender.id">
+              {{ gender.name }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+
+    @if (clientPersonalForm.get('clientNonPersonDetails')) {
+      <div class="flex-100 layout-row-wrap responsive-column gap-4percent" formGroupName="clientNonPersonDetails">
+        <mat-form-field class="flex-48">
+          <mat-label>{{ 'labels.inputs.Constitution' | translate }}</mat-label>
+          <mat-select formControlName="constitutionId" required>
+            @for (constitution of constitutionOptions; track constitution) {
+              <mat-option [value]="constitution.id">
+                {{ constitution.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="flex-48">
+          <mat-label>{{ 'labels.inputs.Main Business Line' | translate }}</mat-label>
+          <mat-select formControlName="mainBusinessLineId">
+            @for (business of businessLineOptions; track business) {
+              <mat-option [value]="business.id">
+                {{ business.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="flex-48" (click)="incorpValidityTillDateDatePicker.open()">
+          <mat-label>{{ 'labels.inputs.Incorporation Validity Till Date' | translate }}</mat-label>
+          <input
+            matInput
+            [min]="minDate"
+            [max]="maxDate"
+            [matDatepicker]="incorpValidityTillDateDatePicker"
+            formControlName="incorpValidityTillDate"
+          />
+          <mat-datepicker-toggle matSuffix [for]="incorpValidityTillDateDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #incorpValidityTillDateDatePicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="flex-48">
+          <mat-label>{{ 'labels.inputs.Incorporation Number' | translate }}</mat-label>
+          <input matInput formControlName="incorpNumber" />
+        </mat-form-field>
+        <mat-form-field class="flex-98">
+          <mat-label>{{ 'labels.inputs.Remarks' | translate }}</mat-label>
+          <textarea matInput formControlName="remarks" cdkTextareaAutosize cdkAutosizeMinRows="2"></textarea>
+        </mat-form-field>
+      </div>
+    }
+  </div>
+</form>

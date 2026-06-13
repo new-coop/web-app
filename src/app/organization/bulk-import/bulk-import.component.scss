@@ -46,7 +46,7 @@ mat-card {
       overflow: hidden;
 
       mat-icon {
-        color: var(--md-sys-color-primary, #1074b9);
+        color: var(--md-sys-color-primary, #18181b);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -92,7 +92,7 @@ mat-card {
       height: 40px;
 
       &:focus-visible {
-        outline: 2px solid var(--md-sys-color-primary, #1074b9);
+        outline: 2px solid var(--md-sys-color-primary, #18181b);
         outline-offset: 2px;
         border-radius: 8px;
       }
@@ -109,11 +109,11 @@ mat-card {
 
       fa-icon.rotated {
         transform: rotate(180deg);
-        color: var(--md-sys-color-primary, #1074b9);
+        color: var(--md-sys-color-primary, #18181b);
       }
 
       &:hover fa-icon {
-        color: var(--md-sys-color-primary, #1074b9);
+        color: var(--md-sys-color-primary, #18181b);
       }
     }
   }

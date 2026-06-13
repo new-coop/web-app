@@ -22,7 +22,7 @@ import {
   MatTable
 } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { TranslateService } from '@ngx-translate/core';
 import { LoansService } from 'app/loans/loans.service';
 import { LoanOriginator } from 'app/loans/models/loan-account.model';

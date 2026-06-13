@@ -6,7 +6,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-.disabled-item {
-  pointer-events: none; // Prevent clicks
-  opacity: 0.5; // Greyed out effect
-}
+// Page layout is provided by the shared nav-hub component.

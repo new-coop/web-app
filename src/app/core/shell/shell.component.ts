@@ -10,41 +10,45 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AsyncPipe } from '@angular/common';
 
 /** rxjs Imports */
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+/** PrimeNG Imports */
+import { DrawerModule } from 'primeng/drawer';
+
 /** Custom Services */
 import { ProgressBarService } from '../progress-bar/progress-bar.service';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
-import { NgClass, AsyncPipe } from '@angular/common';
-import { SidenavComponent } from './sidenav/sidenav.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
+import { AppSidebarComponent } from './app-sidebar/app-sidebar.component';
+import { AppTopbarComponent } from './app-topbar/app-topbar.component';
+import { GlobalSearchComponent } from './global-search/global-search.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { ContentComponent } from './content/content.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
-import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
+import { TranslatePipe } from '@ngx-translate/core';
+
+const SIDEBAR_COLLAPSED_KEY = 'mifosXSidebarCollapsed';
 
 /**
- * Shell component.
+ * Shell component: redesigned layout with domain sidebar,
+ * minimal topbar and global search.
  */
 @Component({
   selector: 'mifosx-shell',
   templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.scss'],
   imports: [
-    ...STANDALONE_SHARED_IMPORTS,
-    MatSidenavContainer,
-    MatSidenav,
-    NgClass,
-    SidenavComponent,
-    MatSidenavContent,
-    ToolbarComponent,
+    AsyncPipe,
+    DrawerModule,
+    AppSidebarComponent,
+    AppTopbarComponent,
+    GlobalSearchComponent,
     BreadcrumbComponent,
     ContentComponent,
     FooterComponent,
-    AsyncPipe
+    TranslatePipe
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -58,10 +62,14 @@ export class ShellComponent implements OnInit {
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map((result) => result.matches));
-  /** Sets the initial state of sidenav as collapsed. Not collapsed if false. */
-  sidenavCollapsed = true;
+  private isHandset = false;
+
+  /** Sidebar collapsed state, persisted across sessions. */
+  sidenavCollapsed = localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === 'true';
+  /** Mobile navigation drawer visibility. */
+  mobileNavVisible = false;
   /** Progress bar mode. */
-  progressBarMode: string;
+  progressBarMode = 'none';
 
   /**
    * Subscribes to progress bar to update its mode.
@@ -71,14 +79,22 @@ export class ShellComponent implements OnInit {
       this.progressBarMode = mode;
       this.cdr.detectChanges();
     });
+    this.isHandset$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((isHandset) => {
+      this.isHandset = isHandset;
+    });
   }
 
   /**
-   * Toggles the current collapsed state of sidenav according to the emitted event.
-   * @param {boolean} event denotes state of sidenav
+   * Hamburger behavior: collapses the sidebar on desktop,
+   * opens the navigation drawer on mobile.
    */
-  toggleCollapse($event: boolean) {
-    this.sidenavCollapsed = $event;
+  onMenuToggle() {
+    if (this.isHandset) {
+      this.mobileNavVisible = true;
+    } else {
+      this.sidenavCollapsed = !this.sidenavCollapsed;
+      localStorage.setItem(SIDEBAR_COLLAPSED_KEY, String(this.sidenavCollapsed));
+    }
     this.cdr.detectChanges();
   }
 }

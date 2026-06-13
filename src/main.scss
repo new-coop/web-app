@@ -7,6 +7,11 @@
  */
 
 @use 'theme/mifosx-theme';
+@use 'theme/design-tokens';
+@use 'theme/app-dark';
+@use 'theme/modern' as *;
+@use 'theme/forms' as *;
+@use 'theme/tables' as *;
 @use 'theme/material-web' as *;
 @use 'theme/pictonblue-yellowgreen' as *;
 @use 'theme/indigo-pink' as *;
@@ -14,7 +19,7 @@
 @use 'theme/deeppurple-amber' as *;
 @use 'theme/purple-green.scss' as *;
 @use 'assets/styles/helper';
-@use 'assets/styles/loader';
+@use 'assets/styles/fa-compat';
 @use 'lightgallery/scss/lightgallery' as *;
 @use 'lightgallery/scss/lg-thumbnail' as *;
 @use 'lightgallery/scss/lg-zoom' as *;
@@ -36,7 +41,7 @@
 
 // ===== Material Select Panel Styles (Material Design 3) =====
 .mat-mdc-select-panel {
-  background: var(--md-sys-color-surface-container, #fff);
+  background: var(--mifos-surface-0, #fff);
   border-radius: 8px;
   box-shadow:
     0 2px 4px #00000014,
@@ -51,16 +56,16 @@
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: #1074b914;
+      background-color: #18181b14;
     }
 
     &.mat-mdc-option-active {
-      background-color: #1074b91f;
+      background-color: #18181b1f;
     }
 
     &.mdc-list-item--selected {
-      background-color: #1074b91f;
-      color: var(--md-sys-color-primary, #1074b9);
+      background-color: #18181b1f;
+      color: var(--md-sys-color-primary, #18181b);
       font-weight: 500;
     }
 
@@ -72,22 +77,22 @@
 
 // Dark theme select panel
 .dark-theme .mat-mdc-select-panel {
-  background: var(--md-sys-color-surface-container, #2c2f36);
+  background: var(--mifos-surface-0, #1c1c21);
 
   .mat-mdc-option {
     color: var(--md-sys-color-on-surface, #e2e2e5);
 
     &:hover {
-      background-color: #5ba2ec14;
+      background-color: #a1a1aa14;
     }
 
     &.mat-mdc-option-active {
-      background-color: #5ba2ec1f;
+      background-color: #a1a1aa1f;
     }
 
     &.mdc-list-item--selected {
-      background-color: #5ba2ec1f;
-      color: var(--md-sys-color-primary, #5ba2ec);
+      background-color: #a1a1aa1f;
+      color: var(--md-sys-color-primary, #a1a1aa);
       font-weight: 500;
     }
   }
@@ -608,16 +613,18 @@
 }
 
 .mat-mdc-form-field {
-  margin-bottom: 16px;
+  // Dynamic subscript sizing removes reserved space when no error/hint;
+  // keep a small gap between field rows.
+  margin-bottom: 4px;
 
   .mat-mdc-input-element::placeholder {
-    font-size: 14px !important;
-    color: #999 !important;
+    font-size: var(--text-sm, 0.875rem);
+    color: rgb(9 9 11 / 40%);
   }
+}
 
-  .mdc-floating-label {
-    font-size: 14px !important;
-  }
+.dark-theme .mat-mdc-form-field .mat-mdc-input-element::placeholder {
+  color: rgb(255 255 255 / 35%);
 }
 
 mat-stepper {
@@ -862,8 +869,8 @@ mat-card {
 
 /* Print styles — hide app shell, show only receipt content */
 @media print {
-  mat-sidenav,
-  mifosx-toolbar,
+  mifosx-app-sidebar,
+  mifosx-app-topbar,
   mifosx-breadcrumb,
   mifosx-footer,
   .sidebar-panel,
@@ -871,10 +878,6 @@ mat-card {
   .mat-stepper-vertical-line,
   .mat-step-header {
     display: none !important;
-  }
-
-  mat-sidenav-content.sidenav {
-    margin-left: 0 !important;
   }
 
   body,

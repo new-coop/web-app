@@ -6,31 +6,35 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-card>
-    <form [formGroup]="undoClientTransferForm" (ngSubmit)="submit()">
-      <mat-card-content class="layout-column">
-        <mat-form-field (click)="transferDatePicker.open()">
-          <mat-label>{{ 'labels.inputs.Transfer Date' | translate }}</mat-label>
-          <input matInput [matDatepicker]="transferDatePicker" required formControlName="transferDate" />
-          <mat-datepicker-toggle matSuffix [for]="transferDatePicker"></mat-datepicker-toggle>
-          <mat-datepicker #transferDatePicker></mat-datepicker>
-        </mat-form-field>
+<div class="container form-page form-page--narrow">
+  <mifosx-form-workspace eyebrow="labels.heading.Clients" title="labels.heading.Undo Client Transfer">
+    <form [formGroup]="undoClientTransferForm" (ngSubmit)="submit()" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
+            <mat-form-field (click)="transferDatePicker.open()">
+              <mat-label>{{ 'labels.inputs.Transfer Date' | translate }}</mat-label>
+              <input matInput [matDatepicker]="transferDatePicker" required formControlName="transferDate" />
+              <mat-datepicker-toggle matSuffix [for]="transferDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #transferDatePicker></mat-datepicker>
+            </mat-form-field>
 
-        <mat-form-field class="flex-fill">
-          <mat-label>{{ 'labels.inputs.Note' | translate }}</mat-label>
-          <textarea matInput formControlName="note" cdkTextareaAutosize cdkAutosizeMinRows="2"></textarea>
-        </mat-form-field>
-      </mat-card-content>
-
-      <mat-card-actions class="layout-row align-center gap-5px responsive-column">
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Note' | translate }}</mat-label>
+              <textarea matInput formControlName="note" cdkTextareaAutosize cdkAutosizeMinRows="2"></textarea>
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
+      <footer class="form-workspace-footer">
         <button type="button" mat-raised-button [routerLink]="['../../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button mat-raised-button color="primary" [disabled]="!undoClientTransferForm.valid">
+        <button mat-raised-button color="primary" type="submit">
           {{ 'labels.buttons.Confirm' | translate }}
         </button>
-      </mat-card-actions>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>

@@ -1,0 +1,73 @@
+<!--
+  Copyright since 2025 Mifos Initiative
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<div class="sidebar" [class.collapsed]="collapsed()">
+  <a class="brand" routerLink="/home" (click)="navigated.emit()">
+    <img src="assets/images/MifosX_logo.png" alt="" class="brand-logo" />
+    @if (!collapsed()) {
+      <span class="brand-name">{{ 'APP_NAME' | translate }}</span>
+    }
+  </a>
+
+  <nav class="nav" [attr.aria-label]="'labels.menus.Main Items' | translate">
+    @for (section of sections; track $index) {
+      <div class="nav-section">
+        @if (section.label) {
+          @if (collapsed()) {
+            <hr class="nav-divider" />
+          } @else {
+            <span class="nav-section-label">{{ 'labels.menus.' + section.label | translate }}</span>
+          }
+        }
+
+        @for (item of section.items; track item.link) {
+          @if (item.permission) {
+            <ng-container *mifosxHasPermission="item.permission">
+              <ng-container *ngTemplateOutlet="navLink; context: { $implicit: item }" />
+            </ng-container>
+          } @else {
+            <ng-container *ngTemplateOutlet="navLink; context: { $implicit: item }" />
+          }
+        }
+      </div>
+    }
+  </nav>
+
+  @if (collapsible()) {
+    <button
+      type="button"
+      class="collapse-toggle"
+      (click)="collapseToggle.emit()"
+      [pTooltip]="collapsed() ? ('labels.menus.Expand Sidebar' | translate) : undefined"
+      tooltipPosition="right"
+      [attr.aria-label]="(collapsed() ? 'labels.menus.Expand Sidebar' : 'labels.menus.Collapse Sidebar') | translate"
+      [attr.aria-expanded]="!collapsed()"
+    >
+      <mifosx-m3-icon [name]="collapsed() ? 'chevron_right' : 'chevron_left'" [size]="20" />
+      @if (!collapsed()) {
+        <span class="collapse-toggle-label">{{ 'labels.menus.Collapse Sidebar' | translate }}</span>
+      }
+    </button>
+  }
+</div>
+
+<ng-template #navLink let-item>
+  <a
+    class="nav-item"
+    [routerLink]="item.link"
+    routerLinkActive="active"
+    [pTooltip]="collapsed() ? ('labels.menus.' + item.label | translate) : undefined"
+    tooltipPosition="right"
+    (click)="navigated.emit()"
+  >
+    <mifosx-m3-icon [name]="item.icon" [size]="20" />
+    @if (!collapsed()) {
+      <span class="nav-item-label">{{ 'labels.menus.' + item.label | translate }}</span>
+    }
+  </a>
+</ng-template>

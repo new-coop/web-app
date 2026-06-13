@@ -1,0 +1,412 @@
+/**
+ * Copyright since 2025 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+/**
+ * Modern table layer — Material + PrimeNG data tables, shared card chrome,
+ * sticky headers, hover/focus rows, airy row spacing.
+ * Applies globally; no per-template changes required.
+ */
+
+/* stylelint-disable selector-class-pattern */
+
+// ============================================================
+// Shared list table card (toolbar + table pattern)
+// ============================================================
+
+.table-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--mifos-surface-0, #fff);
+  border: 1px solid var(--mifos-surface-200, #e4e4e7);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgb(9 9 11 / 4%));
+  margin: var(--space-4, 16px);
+  overflow: hidden;
+}
+
+.table-card.m-b-20 {
+  margin-bottom: var(--space-4, 16px);
+}
+
+.table-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4, 16px);
+  padding: var(--space-4, 16px) var(--space-6, 24px);
+  border-bottom: 1px solid var(--mifos-surface-200, #e4e4e7);
+}
+
+.table-card-title {
+  margin: 0;
+  font-size: var(--text-base, 1rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--mifos-surface-900, #18181b);
+}
+
+// Avatar + label cell pattern (e.g. client name rows)
+.table-cell-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3, 12px);
+  min-width: 0;
+
+  > span:last-child {
+    font-weight: 500;
+    color: var(--mifos-surface-900, #18181b);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4, 16px);
+  padding: var(--space-4, 16px);
+  border-bottom: 1px solid var(--mifos-surface-200, #e4e4e7);
+
+  @media (width <= 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.toolbar-search {
+  flex: 0 1 360px;
+
+  input {
+    width: 100%;
+  }
+
+  @media (width <= 768px) {
+    flex-basis: auto;
+  }
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: var(--space-3, 12px);
+  flex-wrap: wrap;
+}
+
+.table-scroll {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+// ============================================================
+// Material tables — focus, sort, sticky headers
+// ============================================================
+
+.mat-mdc-table {
+  .mat-sort-header-sorted {
+    .mat-sort-header-content {
+      color: var(--md-sys-color-on-surface, #18181b);
+    }
+  }
+
+  tr.select-row:focus-visible,
+  /* stylelint-disable-next-line selector-no-qualifying-type */
+  tr[mat-row].select-row:focus-visible {
+    outline: 2px solid var(--md-sys-color-primary, #09090b);
+    outline-offset: -2px;
+  }
+}
+
+.table-scroll .mat-mdc-table .mat-mdc-header-row,
+.table-scroll table.mat-mdc-table th.mat-mdc-header-cell {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--mifos-surface-0, #fff);
+}
+
+.dark-theme .table-scroll .mat-mdc-table .mat-mdc-header-row,
+.dark-theme .table-scroll table.mat-mdc-table th.mat-mdc-header-cell {
+  background: rgb(255 255 255 / 4%);
+}
+
+// Card-wrapped Material tables without elevation helpers
+.table-card .mat-mdc-table,
+.reports-table-card .mat-mdc-table {
+  border-radius: 0;
+}
+
+// ============================================================
+// PrimeNG data tables — match Material list aesthetic
+// ============================================================
+
+.p-datatable {
+  .p-datatable-thead > tr > th {
+    padding: 0.875rem 1.25rem;
+    font-size: var(--text-sm, 0.875rem);
+    font-weight: 500;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--mifos-surface-500, #71717a);
+    white-space: nowrap;
+    background: transparent;
+    border-bottom: 1px solid var(--mifos-surface-200, #e4e4e7);
+  }
+
+  .p-datatable-tbody > tr > td {
+    padding: 0.875rem 1.25rem;
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--mifos-surface-700, #3f3f46);
+    border-bottom: 1px solid var(--mifos-surface-100, #f4f4f5);
+    transition: background-color var(--motion-fast, 150ms) var(--ease-enter, ease-out);
+  }
+
+  .p-datatable-tbody > tr:last-child > td {
+    border-bottom-color: transparent;
+  }
+
+  .p-datatable-sort-icon {
+    color: var(--mifos-surface-400, #a1a1aa);
+    transition: color var(--motion-fast, 150ms) var(--ease-enter, ease-out);
+  }
+
+  .p-datatable-thead > tr > th.p-datatable-column-sorted {
+    background: transparent;
+    color: var(--mifos-surface-900, #18181b);
+    font-weight: 600;
+
+    .p-datatable-sort-icon {
+      color: var(--mifos-surface-700, #3f3f46);
+    }
+  }
+
+  &.p-datatable-hoverable .p-datatable-tbody > tr:hover > td {
+    background: var(--mifos-surface-50, #fafafa);
+  }
+}
+
+.mifosx-datatable.p-datatable {
+  border: none;
+  background: transparent;
+
+  .p-datatable-table-container {
+    border-radius: 0;
+  }
+
+  .p-datatable-paginator-bottom {
+    border-top: 1px solid var(--mifos-surface-200, #e4e4e7);
+    background: transparent;
+  }
+}
+
+.mifosx-datatable-paginator.p-paginator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4, 16px);
+  padding: var(--space-3, 12px) var(--space-6, 24px);
+  font-size: var(--text-sm, 0.875rem);
+  background: transparent;
+  border: none;
+
+  .p-paginator-content-start {
+    margin-right: auto;
+  }
+
+  .p-paginator-current {
+    color: var(--mifos-surface-500, #71717a);
+    font-size: var(--text-sm, 0.875rem);
+  }
+
+  .p-paginator-pages {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1, 4px);
+  }
+
+  .p-paginator-page,
+  .p-paginator-prev,
+  .p-paginator-next,
+  .p-paginator-first,
+  .p-paginator-last {
+    min-width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: none;
+    color: var(--mifos-surface-600, #52525b);
+    transition:
+      background-color var(--motion-fast, 150ms) var(--ease-enter, ease-out),
+      color var(--motion-fast, 150ms) var(--ease-enter, ease-out);
+
+    &:hover:not(:disabled) {
+      background: var(--mifos-surface-100, #f4f4f5);
+      color: var(--mifos-surface-900, #18181b);
+    }
+  }
+
+  .p-paginator-page.p-paginator-page-selected {
+    background: var(--mifos-surface-900, #18181b);
+    color: #fff;
+    font-weight: 600;
+
+    &:hover {
+      background: var(--mifos-surface-800, #27272a);
+      color: #fff;
+    }
+  }
+
+  .p-paginator-rpp-dropdown {
+    margin-left: var(--space-2, 8px);
+  }
+}
+
+// Soft pill badges inside tables (status columns)
+.p-datatable .p-tag,
+.mat-mdc-table .p-tag {
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 500;
+  padding: 0.25rem 0.625rem;
+  border: none;
+
+  &.p-tag-success {
+    background: #dcfce7;
+    color: #15803d;
+  }
+
+  &.p-tag-warn {
+    background: #fef3c7;
+    color: #b45309;
+  }
+
+  &.p-tag-info {
+    background: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  &.p-tag-danger {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
+
+  &.p-tag-secondary {
+    background: var(--mifos-surface-100, #f4f4f5);
+    color: var(--mifos-surface-600, #52525b);
+  }
+}
+
+// ============================================================
+// Dark theme
+// ============================================================
+
+.dark-theme {
+  .table-card {
+    background: var(--mifos-surface-0, #1c1c21);
+    border-color: rgb(255 255 255 / 10%);
+    box-shadow: none;
+  }
+
+  .table-toolbar {
+    border-bottom-color: rgb(255 255 255 / 8%);
+  }
+
+  .p-datatable {
+    .p-datatable-thead > tr > th {
+      color: rgb(196 198 208 / 95%);
+      border-bottom-color: rgb(255 255 255 / 10%);
+    }
+
+    .p-datatable-tbody > tr > td {
+      color: var(--md-sys-color-on-surface, #e2e2e5);
+      border-bottom-color: rgb(255 255 255 / 6%);
+    }
+
+    .p-datatable-thead > tr > th.p-datatable-column-sorted {
+      background: transparent;
+      color: var(--md-sys-color-on-surface, #e2e2e5);
+    }
+
+    &.p-datatable-hoverable .p-datatable-tbody > tr:hover > td {
+      background: rgb(255 255 255 / 6%);
+    }
+  }
+
+  .table-card-header {
+    border-bottom-color: rgb(255 255 255 / 8%);
+  }
+
+  .table-card-title {
+    color: var(--md-sys-color-on-surface, #e2e2e5);
+  }
+
+  .table-cell-name > span:last-child {
+    color: var(--md-sys-color-on-surface, #e2e2e5);
+  }
+
+  .mifosx-datatable-paginator.p-paginator {
+    .p-paginator-current {
+      color: rgb(255 255 255 / 55%);
+    }
+
+    .p-paginator-page,
+    .p-paginator-prev,
+    .p-paginator-next,
+    .p-paginator-first,
+    .p-paginator-last {
+      color: rgb(255 255 255 / 70%);
+
+      &:hover:not(:disabled) {
+        background: rgb(255 255 255 / 8%);
+        color: var(--md-sys-color-on-surface, #e2e2e5);
+      }
+    }
+
+    .p-paginator-page.p-paginator-page-selected {
+      background: var(--md-sys-color-on-surface, #e2e2e5);
+      color: var(--md-sys-color-surface, #424242);
+
+      &:hover {
+        background: var(--mifos-accent-bg, rgb(255 255 255 / 12%));
+        color: var(--mifos-accent-fg, #fafafa);
+      }
+    }
+  }
+
+  .p-datatable .p-tag,
+  .mat-mdc-table .p-tag {
+    &.p-tag-success {
+      background: rgb(34 197 94 / 18%);
+      color: #86efac;
+    }
+
+    &.p-tag-warn {
+      background: rgb(245 158 11 / 18%);
+      color: #fcd34d;
+    }
+
+    &.p-tag-info {
+      background: rgb(59 130 246 / 18%);
+      color: #93c5fd;
+    }
+
+    &.p-tag-danger {
+      background: rgb(239 68 68 / 18%);
+      color: #fca5a5;
+    }
+
+    &.p-tag-secondary {
+      background: rgb(255 255 255 / 10%);
+      color: rgb(255 255 255 / 70%);
+    }
+  }
+
+  .mifosx-datatable.p-datatable .p-datatable-paginator-bottom {
+    border-top-color: rgb(255 255 255 / 8%);
+  }
+}
+
+/* stylelint-enable selector-class-pattern */

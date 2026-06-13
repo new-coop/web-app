@@ -6,23 +6,27 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-card>
-    <form (ngSubmit)="submit()">
-      <mat-card-content>
-        <div>
-          <p class="mat-typography confirm-text">
-            {{ 'labels.text.Undo approval of shares account with ID' | translate }}: {{ accountId }} ?
-          </p>
-        </div>
-      </mat-card-content>
-
-      <mat-card-actions class="layout-row align-center gap-5px responsive-column">
+<div class="container form-page form-page--narrow">
+  <mifosx-form-workspace eyebrow="labels.heading.Shares" title="labels.heading.Undo Approval Shares Account">
+    <form (ngSubmit)="submit()" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
+            <p class="form-field-full confirm-text">
+              {{ 'labels.text.Undo approval of shares account with ID' | translate }}: {{ accountId }} ?
+            </p>
+          </div>
+        </section>
+      </div>
+      <footer class="form-workspace-footer">
         <button type="button" mat-raised-button [routerLink]="['../../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button mat-raised-button color="warn">{{ 'labels.buttons.Submit' | translate }}</button>
-      </mat-card-actions>
+        <button mat-raised-button color="warn" type="submit">
+          {{ 'labels.buttons.Submit' | translate }}
+        </button>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>

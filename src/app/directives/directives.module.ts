@@ -14,6 +14,8 @@ import { CommonModule } from '@angular/common';
 import { HasPermissionDirective } from './has-permission/has-permission.directive';
 import { FormatAmountDirective } from './format-amount.directive';
 import { ValidateOnFocusDirective } from './validate-on-focus.directive';
+import { TouchOnSubmitDirective } from './touch-on-submit.directive';
+import { ValidateOnBlurDirective } from './validate-on-blur.directive';
 import { PositiveNumberDirective } from './positive-number.directive';
 import { PositiveIntegerDirective } from './positive-integer.directive';
 
@@ -28,6 +30,8 @@ import { PositiveIntegerDirective } from './positive-integer.directive';
     HasPermissionDirective,
     FormatAmountDirective,
     ValidateOnFocusDirective,
+    ValidateOnBlurDirective,
+    TouchOnSubmitDirective,
     PositiveNumberDirective,
     PositiveIntegerDirective
   ],
@@ -35,6 +39,8 @@ import { PositiveIntegerDirective } from './positive-integer.directive';
     HasPermissionDirective,
     FormatAmountDirective,
     ValidateOnFocusDirective,
+    ValidateOnBlurDirective,
+    TouchOnSubmitDirective,
     PositiveNumberDirective,
     PositiveIntegerDirective
   ]

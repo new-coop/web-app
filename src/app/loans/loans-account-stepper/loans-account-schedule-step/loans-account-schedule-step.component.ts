@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LoansService } from 'app/loans/loans.service';
 import { RepaymentSchedule } from 'app/loans/models/loan-account.model';
 import { SettingsService } from 'app/settings/settings.service';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { RepaymentScheduleTabComponent } from '../../loans-view/repayment-schedule-tab/repayment-schedule-tab.component';
 import { MatStepperPrevious, MatStepperNext } from '@angular/material/stepper';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';

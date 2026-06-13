@@ -764,7 +764,8 @@
       "DONE": "Hecho",
       "Submitting": "Enviando",
       "OK": "OK",
-      "undo_account_transfer": "Revertir transferencia de cuenta"
+      "undo_account_transfer": "Revertir transferencia de cuenta",
+      "View all results": "Ver todos los resultados"
     },
     "catalogs": {
       "Interest payment waiver": "Exención de pago de intereses",
@@ -1561,7 +1562,23 @@
       "identifier id": "identificación del identificador",
       "savings-transaction-datatable-tab works": "La pestaña de tabla de datos de transacciones de ahorro funciona",
       "successfully select option": "exitosamente. Seleccione una de las opciones siguientes para continuar.",
-      "undo_account_transfer": "Revertir transferencia de cuenta"
+      "undo_account_transfer": "Revertir transferencia de cuenta",
+      "Quick Actions": "Acciones Rápidas",
+      "Search": "Buscar",
+      "Ledger Setup": "Configuración del libro mayor",
+      "Period Operations": "Operaciones de período",
+      "Customization": "Personalización",
+      "Security and Oversight": "Seguridad y supervisión",
+      "Automation and Integrations": "Automatización e integraciones",
+      "Configuration": "Configuración",
+      "About": "Acerca de",
+      "Structure and Staff": "Estructura y personal",
+      "Loans and Funds": "Préstamos y fondos",
+      "Payments and Cash": "Pagos y caja",
+      "Tools": "Herramientas",
+      "Loans": "Préstamos",
+      "Deposits and Shares": "Depósitos y acciones",
+      "Pricing and Rules": "Precios y reglas"
     },
     "inputs": {
       "# Remittance": "# Remesa",
@@ -3145,6 +3162,7 @@
       "Clients": "Clientes",
       "Close": "Cerrar",
       "Close (as Rescheduled)": "Cerrar (según reprogramado)",
+      "Collapse Sidebar": "Contraer barra lateral",
       "Collection Sheet": "Hoja de colección",
       "Configuration Wizard": "Asistente de configuración",
       "Contract Termination": "Terminación del contrato",
@@ -3158,6 +3176,7 @@
       "Disburse to Savings": "Desembolsar a Ahorros",
       "Discount Fee": "Tarifa de Descuento",
       "Edit Repayment Schedule": "Editar calendario de pagos",
+      "Expand Sidebar": "Expandir barra lateral",
       "Foreclosure": "Juicio hipotecario",
       "Frequent Postings": "Publicaciones frecuentes",
       "Frequently Accessed": "Acceso frecuente",
@@ -3238,7 +3257,10 @@
       "Tasks": "Tareas",
       "Remittances": "Remesas",
       "Process Remittance": "Procesar Remesa",
-      "Undo Write-off": "Deshacer castigo contable"
+      "Undo Write-off": "Deshacer castigo contable",
+      "Home": "Inicio",
+      "Operations": "Operaciones",
+      "Administration": "Administración"
     },
     "placeholders": {
       "Add new server": "Agregar nuevo servidor",
@@ -4034,7 +4056,20 @@
       "username": "nombre de usuario",
       "withhold tax for this account": "retener impuestos para esta cuenta",
       "withoutCategory": "Sin categoría",
-      "“Maker-Checker” principle requires every tasks": "El principio \"Maker-Checker\" requiere que dos personas completen cada tarea para reducir la posibilidad de errores y uso indebido. Una persona inicia el proceso y la segunda lo completa."
+      "“Maker-Checker” principle requires every tasks": "El principio \"Maker-Checker\" requiere que dos personas completen cada tarea para reducir la posibilidad de errores y uso indebido. Una persona inicia el proceso y la segunda lo completa.",
+      "Good Morning": "Buenos Días",
+      "Good Afternoon": "Buenas Tardes",
+      "Good Evening": "Buenas Noches",
+      "No results found": "Sin resultados",
+      "Record, search and automate journal entries across your ledger": "Registre, busque y automatice asientos contables en su libro mayor",
+      "Run portfolio, financial and organization reports": "Ejecute reportes de cartera, financieros y de la organización",
+      "Search reports": "Buscar reportes",
+      "No reports match your search": "Ningún reporte coincide con su búsqueda",
+      "Search settings": "Buscar opciones",
+      "No settings match your search": "Ninguna opción coincide con su búsqueda",
+      "Configure data, security, automation and platform behavior": "Configure datos, seguridad, automatización y comportamiento de la plataforma",
+      "Manage your organization structure, staff, funds and tools": "Administre la estructura de su organización, personal, fondos y herramientas",
+      "Define and maintain the products your institution offers": "Defina y mantenga los productos que ofrece su institución"
     },
     "permissions": {
       "actions": {

@@ -44,6 +44,8 @@ import { environment } from '../environments/environment';
 import { CallbackComponent } from './zitadel/callback/callback.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { provideLottieOptions } from 'ngx-lottie';
+import { providePrimeNG } from 'primeng/config';
+import { MifosPreset } from './theme/mifos-preset';
 
 export class CustomMissingTranslationHandler implements MissingTranslationHandler {
   handle(params: MissingTranslationHandlerParams): string {
@@ -91,6 +93,13 @@ export class CustomMissingTranslationHandler implements MissingTranslationHandle
     },
     provideLottieOptions({
       player: () => import('lottie-web')
+    }),
+    providePrimeNG({
+      theme: {
+        preset: MifosPreset,
+        options: { darkModeSelector: '.dark-theme' }
+      },
+      ripple: false
     })
   ]
 })

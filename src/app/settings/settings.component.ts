@@ -7,7 +7,7 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, OnInit, inject, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { merge } from 'rxjs';
@@ -16,15 +16,11 @@ import { merge } from 'rxjs';
 import { SettingsService } from './settings.service';
 import { AlertService } from 'app/core/alert/alert.service';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  MatAccordion,
-  MatExpansionPanel,
-  MatExpansionPanelHeader,
-  MatExpansionPanelTitle
-} from '@angular/material/expansion';
+import { Dates } from 'app/core/utils/dates';
 import { FileUploadComponent } from '../shared/file-upload/file-upload.component';
 import { ThemePickerComponent } from '../shared/theme-picker/theme-picker.component';
 import { LanguageSelectorComponent } from '../shared/language-selector/language-selector.component';
+import { FormWorkspaceComponent } from '../shared/form-workspace/form-workspace.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**
@@ -36,13 +32,11 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   styleUrls: ['./settings.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    MatAccordion,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle,
+    ReactiveFormsModule,
     FileUploadComponent,
     ThemePickerComponent,
-    LanguageSelectorComponent
+    LanguageSelectorComponent,
+    FormWorkspaceComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -50,7 +44,9 @@ export class SettingsComponent implements OnInit {
   private settingsService = inject(SettingsService);
   private alertService = inject(AlertService);
   private translateService = inject(TranslateService);
+  private dates = inject(Dates);
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
   hasChanges = false;
 
@@ -70,7 +66,6 @@ export class SettingsComponent implements OnInit {
     'yyyy-MM-dd'
   ];
   datetimeFormats: string[] = [
-    // All date formats with HH:mm:ss (seconds)
     'dd MMMM yyyy HH:mm:ss',
     'dd/MMMM/yyyy HH:mm:ss',
     'dd-MMMM-yyyy HH:mm:ss',
@@ -80,7 +75,6 @@ export class SettingsComponent implements OnInit {
     'MMMM/dd/yyyy HH:mm:ss',
     'MM-dd-yy HH:mm:ss',
     'yyyy-MM-dd HH:mm:ss',
-    // All date formats with HH:mm (no seconds)
     'dd MMMM yyyy HH:mm',
     'dd/MMMM/yyyy HH:mm',
     'dd-MMMM-yyyy HH:mm',
@@ -103,8 +97,6 @@ export class SettingsComponent implements OnInit {
     '7',
     '8'
   ];
-  /** Placeholder for fonts. */
-  fonts: any;
 
   /** Date Format Setting */
   dateFormat = new FormControl('');
@@ -119,6 +111,8 @@ export class SettingsComponent implements OnInit {
     decimals: string;
   };
 
+  private readonly previewSample = 1234.56789;
+
   ngOnInit() {
     this.initialValues = {
       dateFormat: this.settingsService.dateFormat,
@@ -131,11 +125,33 @@ export class SettingsComponent implements OnInit {
     this.trackChanges();
   }
 
+  get dateFormatPreview(): string {
+    const format = this.dateFormat.value;
+    return format ? (this.dates.formatDate(new Date(), format) ?? '') : '';
+  }
+
+  get datetimeFormatPreview(): string {
+    const format = this.datetimeFormat.value;
+    return format ? (this.dates.formatDate(new Date(), format) ?? '') : '';
+  }
+
+  get decimalsPreview(): string {
+    const decimals = Number(this.decimalsToDisplay.value ?? this.initialValues?.decimals ?? '2');
+    if (Number.isNaN(decimals)) {
+      return '';
+    }
+    return this.previewSample.toLocaleString(undefined, {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals
+    });
+  }
+
   trackChanges(): void {
     merge(this.dateFormat.valueChanges, this.datetimeFormat.valueChanges, this.decimalsToDisplay.valueChanges)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.hasChanges = this.hasFormChanged();
+        this.cdr.markForCheck();
       });
   }
 
@@ -145,6 +161,14 @@ export class SettingsComponent implements OnInit {
       (this.datetimeFormat.value ?? '') !== this.initialValues.datetimeFormat ||
       (this.decimalsToDisplay.value ?? '') !== this.initialValues.decimals
     );
+  }
+
+  reset(): void {
+    this.dateFormat.patchValue(this.initialValues.dateFormat, { emitEvent: false });
+    this.datetimeFormat.patchValue(this.initialValues.datetimeFormat, { emitEvent: false });
+    this.decimalsToDisplay.patchValue(this.initialValues.decimals, { emitEvent: false });
+    this.hasChanges = false;
+    this.cdr.markForCheck();
   }
 
   submit(): void {
@@ -157,6 +181,7 @@ export class SettingsComponent implements OnInit {
       decimals: this.decimalsToDisplay.value ?? ''
     };
     this.hasChanges = false;
+    this.cdr.markForCheck();
     this.alertService.alert({
       type: 'Settings Update',
       message: this.translateService.instant('labels.text.Settings saved successfully')

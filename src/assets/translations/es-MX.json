@@ -765,7 +765,8 @@
       "Submitting": "Enviando",
       "OK": "OK",
       "undo_account_transfer": "Revertir transferencia de cuenta",
-      "Quick Access": "Acceso Rápido"
+      "Quick Access": "Acceso Rápido",
+      "View all results": "Ver todos los resultados"
     },
     "catalogs": {
       "Interest payment waiver": "Exención de pago de intereses",
@@ -1565,7 +1566,23 @@
       "savings-transaction-datatable-tab works": "La pestaña de tabla de datos de transacciones de ahorro funciona",
       "successfully select option": "exitosamente. Seleccione una de las opciones siguientes para continuar.",
       "undo_account_transfer": "Revertir transferencia de cuenta",
-      "Quick Access": "Quick Access"
+      "Quick Access": "Quick Access",
+      "Quick Actions": "Acciones Rápidas",
+      "Search": "Buscar",
+      "Customization": "Personalización",
+      "Security and Oversight": "Seguridad y supervisión",
+      "Automation and Integrations": "Automatización e integraciones",
+      "Configuration": "Configuración",
+      "About": "Acerca de",
+      "Structure and Staff": "Estructura y personal",
+      "Loans and Funds": "Préstamos y fondos",
+      "Payments and Cash": "Pagos y caja",
+      "Tools": "Herramientas",
+      "Loans": "Préstamos",
+      "Deposits and Shares": "Depósitos y acciones",
+      "Pricing and Rules": "Precios y reglas",
+      "Ledger Setup": "Configuración del libro mayor",
+      "Period Operations": "Operaciones de período"
     },
     "inputs": {
       "# Remittance": "# Remesa",
@@ -3149,6 +3166,7 @@
       "Clients": "Clientes",
       "Close": "Cerrar",
       "Close (as Rescheduled)": "Cerrar (según reprogramado)",
+      "Collapse Sidebar": "Contraer barra lateral",
       "Collection Sheet": "Hoja de recuperación",
       "Configuration Wizard": "Asistente de configuración",
       "Contract Termination": "Terminación del contrato",
@@ -3162,6 +3180,7 @@
       "Disburse to Savings": "Desembolsar a Ahorros",
       "Discount Fee": "Tarifa de Descuento",
       "Edit Repayment Schedule": "Editar calendario de pagos",
+      "Expand Sidebar": "Expandir barra lateral",
       "Foreclosure": "Juicio hipotecario",
       "Frequent Postings": "Publicaciones frecuentes",
       "Frequently Accessed": "Acceso frecuente",
@@ -3242,7 +3261,10 @@
       "Reject Additional Shares": "Rechazar acciones adicionales",
       "Tasks": "Tareas",
       "Process Remittance": "Procesar remesa",
-      "Undo Write-off": "Deshacer castigo contable"
+      "Undo Write-off": "Deshacer castigo contable",
+      "Home": "Inicio",
+      "Operations": "Operaciones",
+      "Administration": "Administración"
     },
     "placeholders": {
       "# Remittance": "# Remesa",
@@ -3754,6 +3776,7 @@
       "No repayments and disbursal": "No se encontraron reembolsos ni desembolsos para el cliente seleccionado y la fecha de reunión",
       "No report data was generated": "No se generaron datos del reporte",
       "No transaction was found": "No se encontró ninguna transacción.",
+      "No roles assigned to this user.": "No hay roles asignados a este usuario.",
       "No transactional profile entries yet. Add one below.": "Aún no hay entradas en el perfil transaccional. Agregue una a continuación.",
       "NoDocuments": "No se encontraron documentos.",
       "NoFileSelected": "No se ha seleccionado ningún archivo",
@@ -3860,6 +3883,10 @@
       "Set or update office-level opening balances for GL accounts": "Establecer o actualizar saldos de apertura a nivel de sucursal para cuentas del libro mayor",
       "Settings": "Ajustes",
       "Settings saved successfully": "Configuración guardada exitosamente.",
+      "Settings hub welcome": "Personaliza idioma, formatos de fecha y apariencia según tu forma de trabajar.",
+      "Settings formats preview hint": "El idioma y el tema se aplican al instante. Guarda para conservar los formatos de fecha y números.",
+      "Settings format preview": "Vista previa",
+      "Settings theme hint": "Se aplica al instante en toda la aplicación.",
       "Settle Cash": "Liquidar efectivo",
       "Settlement Date From": "Fecha de liquidación desde",
       "Settlement Date To": "Fecha de liquidación hasta",
@@ -4048,7 +4075,20 @@
       "Configure offerings": "Configure offerings",
       "Savings accounts": "Savings accounts",
       "Offices and staff": "Offices & staff",
-      "System configuration": "Configuration"
+      "System configuration": "Configuration",
+      "Good Morning": "Buenos Días",
+      "Good Afternoon": "Buenas Tardes",
+      "Good Evening": "Buenas Noches",
+      "No results found": "Sin resultados",
+      "Search settings": "Buscar opciones",
+      "No settings match your search": "Ninguna opción coincide con su búsqueda",
+      "Configure data, security, automation and platform behavior": "Configure datos, seguridad, automatización y comportamiento de la plataforma",
+      "Manage your organization structure, staff, funds and tools": "Administre la estructura de su organización, personal, fondos y herramientas",
+      "Define and maintain the products your institution offers": "Defina y mantenga los productos que ofrece su institución",
+      "Record, search and automate journal entries across your ledger": "Registre, busque y automatice asientos contables en su libro mayor",
+      "Run portfolio, financial and organization reports": "Ejecute reportes de cartera, financieros y de la organización",
+      "Search reports": "Buscar reportes",
+      "No reports match your search": "Ningún reporte coincide con su búsqueda"
     },
     "permissions": {
       "actions": {

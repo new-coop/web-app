@@ -32,7 +32,7 @@ import { ReportParameter } from 'app/reports/common-models/report-parameter.mode
 import { BusinessRuleParametersComponent } from './business-rule-parameters/business-rule-parameters.component';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatStepperPrevious, MatStepperNext } from '@angular/material/stepper';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**

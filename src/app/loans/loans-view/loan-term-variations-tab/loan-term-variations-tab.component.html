@@ -6,63 +6,74 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  @for (loanTermVariation of loanTermVariationsData; track loanTermVariation) {
-    <div>
-      <h3 class="m-t-20">{{ 'labels.heading.' + loanTermVariation.label | translate }}</h3>
-      <table mat-table [dataSource]="loanTermVariation.data">
-        <ng-container matColumnDef="row">
-          <th mat-header-cell *matHeaderCellDef>#</th>
-          <td mat-cell *matCellDef="let item; let idx = index">{{ idx + 1 }}</td>
-        </ng-container>
-        <ng-container matColumnDef="startDate">
-          <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Start Date' | translate }}</th>
-          <td mat-cell *matCellDef="let item">{{ item.termVariationApplicableFrom | dateFormat }}</td>
-        </ng-container>
-        <ng-container matColumnDef="endDate">
-          <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.End Date' | translate }}</th>
-          <td mat-cell *matCellDef="let item">{{ item.dateValue | dateFormat }}</td>
-        </ng-container>
-        <ng-container matColumnDef="value">
-          <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Value' | translate }}</th>
-          <td mat-cell *matCellDef="let item">{{ item.decimalValue | formatNumber }}</td>
-        </ng-container>
-        <ng-container matColumnDef="days">
-          <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Days' | translate }}</th>
-          <td mat-cell *matCellDef="let item">{{ item.days | formatNumber }}</td>
-        </ng-container>
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Actions' | translate }}</th>
-          <td mat-cell *matCellDef="let item">
-            @if (allowActions(item.termType.value)) {
-              <span>
+<div class="term-variations-page mat-typography">
+  @if (!loanTermVariationsData.length) {
+    <div class="empty-state">
+      <span class="empty-icon"><i class="fa fa-sliders"></i></span>
+      <h4>{{ 'labels.heading.Term Variations' | translate }}</h4>
+      <p>{{ 'labels.text.No data found' | translate }}</p>
+    </div>
+  }
+
+  @for (loanTermVariation of loanTermVariationsData; track loanTermVariation.label) {
+    <section class="section-card">
+      <header class="section-head">
+        <div class="section-heading">
+          <span class="section-icon"><i class="fa fa-sliders"></i></span>
+          <h3>{{ 'labels.heading.' + loanTermVariation.label | translate }}</h3>
+        </div>
+        <span class="section-count">{{ loanTermVariation.data.length }}</span>
+      </header>
+
+      <div class="table-scroll">
+        <table mat-table [dataSource]="loanTermVariation.data">
+          <ng-container matColumnDef="row">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let item; let idx = index">{{ idx + 1 }}</td>
+          </ng-container>
+          <ng-container matColumnDef="startDate">
+            <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Start Date' | translate }}</th>
+            <td mat-cell *matCellDef="let item">{{ item.termVariationApplicableFrom | dateFormat }}</td>
+          </ng-container>
+          <ng-container matColumnDef="endDate">
+            <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.End Date' | translate }}</th>
+            <td mat-cell *matCellDef="let item">{{ item.dateValue | dateFormat }}</td>
+          </ng-container>
+          <ng-container matColumnDef="value">
+            <th mat-header-cell class="r-amount" *matHeaderCellDef>{{ 'labels.inputs.Value' | translate }}</th>
+            <td mat-cell class="r-amount" *matCellDef="let item">{{ item.decimalValue | formatNumber }}</td>
+          </ng-container>
+          <ng-container matColumnDef="days">
+            <th mat-header-cell class="center" *matHeaderCellDef>{{ 'labels.inputs.Days' | translate }}</th>
+            <td mat-cell class="center" *matCellDef="let item">{{ item.days | formatNumber }}</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell class="center" *matHeaderCellDef>{{ 'labels.inputs.Actions' | translate }}</th>
+            <td mat-cell class="center" *matCellDef="let item">
+              @if (allowActions(item.termType.value)) {
                 <button
-                  class="button"
                   mat-icon-button
-                  color="primary"
+                  class="row-action"
                   matTooltip="{{ 'tooltips.Edit' | translate }}"
-                  matTooltipPosition="right"
                   (click)="manageRequest(item, 'Edit')"
                 >
-                  <fa-icon icon="edit" size="lg"></fa-icon>
+                  <fa-icon icon="edit" size="sm"></fa-icon>
                 </button>
                 <button
-                  class="button"
                   mat-icon-button
-                  color="warn"
+                  class="row-action row-action-danger"
                   matTooltip="{{ 'tooltips.Delete' | translate }}"
-                  matTooltipPosition="left"
                   (click)="manageRequest(item, 'Delete')"
                 >
-                  <fa-icon icon="trash" size="lg"></fa-icon>
+                  <fa-icon icon="trash" size="sm"></fa-icon>
                 </button>
-              </span>
-            }
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="loanDTermVariationsColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: loanDTermVariationsColumns"></tr>
-      </table>
-    </div>
+              }
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="loanDTermVariationsColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: loanDTermVariationsColumns"></tr>
+        </table>
+      </div>
+    </section>
   }
 </div>

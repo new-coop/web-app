@@ -19,9 +19,10 @@ const { HttpsProxyAgent } = require('https-proxy-agent');
 const proxyConfig = [
   {
     context: ['/fineract-provider'],
-    target: 'https://demo.mifos.community',
+    // Local Fineract (Docker, self-signed cert). Community demo: https://demo.mifos.community
+    target: 'https://localhost:8443',
     changeOrigin: true,
-    secure: true,
+    secure: false,
     logLevel: 'debug',
     onProxyReq: function (proxyReq, req, res) {
       console.log('[Proxy] Proxying:', req.method, req.url, '->', this.target + req.url);

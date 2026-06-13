@@ -24,11 +24,12 @@ import {
   MatRowDef,
   MatRow
 } from '@angular/material/table';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
+import { M3IconComponent } from '../shared/m3-ui/m3-icon/m3-icon.component';
 
 /**
- * Reports component.
+ * Reports component: searchable, category-filterable list of all reports.
  */
 @Component({
   selector: 'mifosx-reports',
@@ -48,7 +49,8 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
     MatHeaderRow,
     MatRowDef,
     MatRow,
-    MatPaginator
+    MatPaginator,
+    M3IconComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -59,8 +61,12 @@ export class ReportsComponent implements OnInit {
 
   /** Reports data. */
   reportsData: any;
-  /** Report category filter. */
-  filter: string;
+  /** Unique report categories shown as filter chips. */
+  categories: string[] = [];
+  /** Currently selected category; null means all. */
+  selectedCategory: string | null = null;
+  /** Free-text search. */
+  searchText = '';
   /** Columns to be displayed in reports table. */
   displayedColumns: string[] = [
     'reportName',
@@ -77,82 +83,61 @@ export class ReportsComponent implements OnInit {
 
   /**
    * Retrieves the reports data from `resolve`.
-   * @param {ActivatedRoute} route Activated Route.
    * Prevents reuse of route parameter `filter`.
-   * @param {Router} router: Router.
    */
   constructor() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.route.data.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((data: { reports: any }) => {
       this.reportsData = data.reports;
     });
-    this.filter = this.route.snapshot.params['filter'];
+    // Optional /reports/:filter route param preselects a category
+    this.selectedCategory = this.route.snapshot.params['filter'] ?? null;
   }
 
-  /*
-   *Sets and filters the reports table by category.
-   */
   ngOnInit() {
     this.setReports();
-    this.filterReportsByCategory();
+    this.categories = Array.from(
+      new Set(
+        (this.reportsData ?? [])
+          .map((report: any) => report.reportCategory)
+          .filter((category: string) => category && category !== '(NULL)' && category.trim() !== '')
+      )
+    ).sort() as string[];
+    this.refreshFilter();
   }
 
   /**
-   * Switches filterPredicate if filterValue is not null.
-   * @param {string} filterValue filter string for mat-table.
-   */
-  applyFilter(filterValue: string) {
-    if (filterValue.length) {
-      this.setCustomFilterPredicate();
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-    } else {
-      this.filterReportsByCategory();
-    }
-  }
-
-  /**
-   * Initializes the data source, paginator and sorter for reports table.
+   * Initializes the data source, paginator, sorter and filter predicate.
    */
   setReports() {
     this.dataSource = new MatTableDataSource(this.reportsData);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.dataSource.filterPredicate = (data: any) => {
+      const matchesCategory = !this.selectedCategory || data.reportCategory === this.selectedCategory;
+      const term = this.searchText.trim().toLowerCase();
+      const matchesSearch =
+        !term || `${data.reportName} ${data.reportType} ${data.reportCategory}`.toLowerCase().includes(term);
+      return matchesCategory && matchesSearch;
+    };
+  }
+
+  applyFilter(filterValue: string) {
+    this.searchText = filterValue;
+    this.refreshFilter();
+  }
+
+  selectCategory(category: string | null) {
+    this.selectedCategory = category;
+    this.refreshFilter();
   }
 
   /**
-   * Filters the data source only for report category passed in route params.
+   * MatTableDataSource skips the predicate when `filter` is falsy, so a
+   * non-empty trigger string is always set; the predicate reads component state.
    */
-  filterReportsByCategory() {
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      return data.reportCategory === filter;
-    };
-    this.dataSource.filter = this.filter;
-  }
-
-  /**
-   *  Filters Reports for filter value string and report category.
-   */
-  setCustomFilterPredicate() {
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      /** Transform the data into a lowercase string of all property values. */
-      const dataStr = Object.keys(data)
-        .reduce(function (currentTerm: string, key: string) {
-          /** Use an obscure Unicode character to delimit the words in the concatenated string.
-           * This avoids matches where the values of two columns combined will match the user's query
-           */
-          return currentTerm + /** @type {any} */ data[key] + '◬';
-        }, '')
-        .toLowerCase();
-      /** Transform the filter by converting it to lowercase and removing whitespace. */
-      const transformedFilter = filter.trim().toLowerCase();
-      /* Seperates filter for All reports page.*/
-
-      if (this.filter) {
-        return dataStr.indexOf(transformedFilter) !== -1 && data.reportCategory === this.filter;
-      } else {
-        return dataStr.indexOf(transformedFilter) !== -1;
-      }
-    };
+  private refreshFilter() {
+    this.dataSource.filter = `${this.searchText}\u0001${this.selectedCategory ?? ''}\u0001trigger`;
   }
 
   getCategoryKey(category: string): string {

@@ -43,8 +43,8 @@ export class NavigationService {
    * @returns {Observable<any>} Centers
    */
   getCentersFromStaffId(staffId: number): Observable<any> {
-    const httpParams = new HttpParams().set('R_staffId', staffId.toString()).set('genericResultSet', false.toString());
-    return this.http.get('/runreports/GroupNamesByStaff', { params: httpParams });
+    const httpParams = new HttpParams().set('staffId', staffId.toString());
+    return this.http.get('/centers', { params: httpParams });
   }
 
   /**

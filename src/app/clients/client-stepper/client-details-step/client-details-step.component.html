@@ -1,0 +1,74 @@
+<!--
+  Copyright since 2025 Mifos Initiative
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<form [formGroup]="clientDetailsForm">
+  <div class="layout-row-wrap gap-2px responsive-column">
+    <mat-form-field class="flex-fill flex-23">
+      <mat-label>{{ 'labels.inputs.Office' | translate }}</mat-label>
+      <mat-select required formControlName="officeId">
+        @for (office of officeOptions; track office) {
+          <mat-option [value]="office.id">
+            {{ office.name }}
+          </mat-option>
+        }
+      </mat-select>
+      @if (clientDetailsForm.controls.officeId.hasError('required')) {
+        <mat-error>
+          {{ 'labels.inputs.Office' | translate }} {{ 'labels.commons.is' | translate }}
+          <strong>{{ 'labels.commons.required' | translate }}</strong>
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="flex-fill flex-23">
+      <mat-label>{{ 'labels.inputs.Legal Form' | translate }}</mat-label>
+      <mat-select required formControlName="legalFormId">
+        @for (legalForm of legalFormOptions; track legalForm) {
+          <mat-option [value]="legalForm.id">
+            {{ legalForm.value | translateKey: 'inputs' }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="flex-fill flex-23">
+      <mat-label>{{ 'labels.inputs.External Id' | translate }}</mat-label>
+      <input matInput formControlName="externalId" />
+      @if (!externalNationalIdService.isLoading && externalNationalIdService.statusMessageKey) {
+        <mat-hint>
+          <span
+            class="external-id-status"
+            [ngClass]="{
+              success: externalNationalIdService.statusMessageKey === 'External ID verified successfully',
+              error: externalNationalIdService.statusMessageKey !== 'External ID verified successfully'
+            }"
+          >
+            {{ 'labels.inputs.' + externalNationalIdService.statusMessageKey | translate }}
+          </span>
+        </mat-hint>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="flex-48">
+      <mat-label>{{ 'labels.inputs.Staff' | translate }}</mat-label>
+      <mat-select formControlName="staffId">
+        @for (staff of staffOptions; track staff) {
+          <mat-option [value]="staff.id">
+            {{ staff.displayName }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    @if (clientDetailsForm.value.legalFormId === LegalFormId.PERSON) {
+      <mat-checkbox class="flex-48 margin-v" labelPosition="before" formControlName="isStaff">
+        {{ 'labels.inputs.Is staff' | translate }}?
+      </mat-checkbox>
+    }
+  </div>
+</form>

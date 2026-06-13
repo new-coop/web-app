@@ -23,7 +23,7 @@
 @include mat.all-component-typographies();
 
 $mifosx-typography-level: mat.m2-define-typography-level(
-  $font-family: Roboto,
+  $font-family: "'Inter', system-ui, -apple-system, sans-serif",
   $font-weight: 400,
   $font-size: 14px,
   $line-height: 1.5,

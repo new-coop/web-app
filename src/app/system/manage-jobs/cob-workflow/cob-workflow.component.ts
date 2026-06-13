@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, inject } from '@angular/core';
 import { SystemService } from 'app/system/system.service';
 import { environment } from '../../../../environments/environment';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { LoanLockedComponent } from './loan-locked/loan-locked.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 

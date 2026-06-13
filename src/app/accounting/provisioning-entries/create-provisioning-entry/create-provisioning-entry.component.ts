@@ -71,6 +71,11 @@ export class CreateProvisioningEntryComponent implements OnInit {
    * if successful redirects to view created entry.
    */
   submit() {
+    if (this.provisioningEntryForm.invalid) {
+      this.provisioningEntryForm.markAllAsTouched();
+      return;
+    }
+
     const provisioningEntry = this.provisioningEntryForm.value;
     // TODO: Update once language and date settings are setup
     provisioningEntry.locale = this.settingsService.language.code;

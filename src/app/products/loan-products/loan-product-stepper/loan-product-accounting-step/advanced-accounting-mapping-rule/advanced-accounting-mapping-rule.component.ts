@@ -22,7 +22,7 @@ import {
   MatRowDef,
   MatTable
 } from '@angular/material/table';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AccountingMappingDTO, AdvancedMappingDTO } from 'app/products/loan-products/models/loan-product.model';
 import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';

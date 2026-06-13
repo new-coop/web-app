@@ -1,0 +1,74 @@
+<!--
+  Copyright since 2025 Mifos Initiative
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<form [formGroup]="clientAccountForm">
+  <div class="layout-row-wrap gap-2px responsive-column">
+    <mat-form-field class="flex-48" (click)="submittedOnDatePicker.open()">
+      <mat-label>{{ 'labels.inputs.Submitted On' | translate }}</mat-label>
+      <input
+        matInput
+        [min]="minDate"
+        [max]="maxDate"
+        [matDatepicker]="submittedOnDatePicker"
+        formControlName="submittedOnDate"
+        required
+      />
+      <mat-datepicker-toggle matSuffix [for]="submittedOnDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #submittedOnDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-checkbox labelPosition="before" formControlName="active" class="margin-v flex-48">
+      {{ 'labels.inputs.Active' | translate }}?
+    </mat-checkbox>
+
+    @if (clientAccountForm.contains('activationDate')) {
+      <mat-form-field class="flex-48" (click)="activatedOnDatePicker.open()">
+        <mat-label>{{ 'labels.inputs.Activation Date' | translate }}</mat-label>
+        <input
+          matInput
+          [min]="clientAccountForm.value.submittedOnDate"
+          [max]="maxDate"
+          [matDatepicker]="activatedOnDatePicker"
+          required
+          formControlName="activationDate"
+        />
+        <mat-datepicker-toggle matSuffix [for]="activatedOnDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #activatedOnDatePicker></mat-datepicker>
+        @if (clientAccountForm.controls.activationDate.hasError('required')) {
+          <mat-error>
+            {{ 'labels.inputs.Activation Date' | translate }} {{ 'labels.commons.is' | translate }}
+            <strong>{{ 'labels.commons.required' | translate }}</strong>
+          </mat-error>
+        }
+      </mat-form-field>
+    }
+
+    <mat-checkbox labelPosition="before" formControlName="addSavings" class="margin-v flex-48">
+      {{ 'labels.inputs.Open Savings Account' | translate }}?
+    </mat-checkbox>
+
+    @if (clientAccountForm.contains('savingsProductId')) {
+      <mat-form-field class="flex-48">
+        <mat-label>{{ 'labels.inputs.Savings Product' | translate }}</mat-label>
+        <mat-select required formControlName="savingsProductId">
+          @for (product of savingProductOptions; track product) {
+            <mat-option [value]="product.id">
+              {{ product.name }}
+            </mat-option>
+          }
+        </mat-select>
+        @if (clientAccountForm.controls.savingsProductId.hasError('required')) {
+          <mat-error>
+            {{ 'labels.inputs.Savings Product' | translate }} {{ 'labels.commons.is' | translate }}
+            <strong>{{ 'labels.commons.required' | translate }}</strong>
+          </mat-error>
+        }
+      </mat-form-field>
+    }
+  </div>
+</form>

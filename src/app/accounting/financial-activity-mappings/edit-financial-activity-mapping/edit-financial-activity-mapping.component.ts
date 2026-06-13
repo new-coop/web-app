@@ -122,6 +122,11 @@ export class EditFinancialActivityMappingComponent implements OnInit {
    * if successful redirects to view updated account.
    */
   submit() {
+    if (this.financialActivityMappingForm.invalid) {
+      this.financialActivityMappingForm.markAllAsTouched();
+      return;
+    }
+
     this.accountingService
       .updateFinancialActivityAccount(this.financialActivityAccountId, this.financialActivityMappingForm.value)
       .subscribe((response: any) => {

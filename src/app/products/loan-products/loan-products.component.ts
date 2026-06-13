@@ -45,7 +45,7 @@ import { ProductsService } from '../products.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { ErrorHandlerService } from 'app/core/error-handler/error-handler.service';
 import { ImportLoanProductDialogComponent } from './import-loan-product-dialog/import-loan-product-dialog.component';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenu, MatMenuTrigger, MatMenuItem } from '@angular/material/menu';
 import { StatusLookupPipe } from '../../pipes/status-lookup.pipe';

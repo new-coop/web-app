@@ -6,92 +6,98 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#mifosx-shell-container {
-  max-width: 100%;
+// Noir canvas: light gray background, floating white sidebar card
+.skip-link {
+  position: fixed;
+  top: var(--space-2, 8px);
+  left: var(--space-2, 8px);
+  z-index: 1000;
+  padding: var(--space-2, 8px) var(--space-3, 12px);
+  border-radius: var(--radius-md, 8px);
+  background: var(--mifos-text-primary, #18181b);
+  color: var(--mifos-canvas-bg, #f4f4f5);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--motion-fast, 150ms) var(--ease-enter, ease-out);
+
+  &:focus-visible {
+    transform: translateY(0);
+    outline: 2px solid var(--mifos-focus-ring, #09090b);
+    outline-offset: 2px;
+  }
+}
+
+.app-shell {
+  display: flex;
+  gap: var(--space-3, 12px);
   height: 100vh;
-
-  .sidebar-panel {
-    min-height: 100vh;
-    overflow: auto;
-    box-shadow:
-      0 3px 1px -2px rgb(0 0 0 / 20%),
-      0 2px 2px 0 rgb(0 0 0 / 14%),
-      0 1px 5px 0 rgb(0 0 0 / 12%);
-  }
-
-  .sidebar-full {
-    width: 15rem;
-  }
-
-  .sidebar-compact {
-    width: 4rem;
-  }
+  max-width: 100%;
+  overflow: hidden;
+  padding: var(--space-3, 12px);
+  background: var(--mifos-canvas-bg, #f4f4f5);
 }
 
-$bar: 190px;
-$foo: $bar * 8;
-$color: #e2e4ec;
-
-.sidenav {
-  overflow-x: hidden;
+.shell-sidebar {
+  flex: 0 0 auto;
+  height: 100%;
 }
 
-@keyframes move {
+.shell-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden auto;
+  background: transparent;
+}
+
+// ---- M3 indeterminate progress bar (HTTP activity) ----
+.shell-progress {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-shrink: 0;
+  height: 3px;
+  width: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+.shell-progress-bar {
+  height: 100%;
+  width: 40%;
+  background: var(--mifos-progress, #09090b);
+  animation: shell-progress-indeterminate 1.2s ease-in-out infinite;
+}
+
+@keyframes shell-progress-indeterminate {
   0% {
-    left: 0;
-  }
-
-  16.7% {
-    left: 0;
-  }
-
-  33.3% {
-    left: calc($foo / 2);
-  }
-
-  50% {
-    left: $foo - $bar;
-  }
-
-  66.7% {
-    left: calc($foo / 2);
-  }
-
-  83.3% {
-    left: 0;
+    transform: translateX(-100%);
   }
 
   100% {
-    left: 0;
+    transform: translateX(350%);
   }
 }
 
-@keyframes grow {
-  0% {
-    width: $bar;
+@media (prefers-reduced-motion: reduce) {
+  .shell-progress-bar {
+    animation: none;
+    width: 100%;
+    opacity: 0.55;
   }
+}
 
-  16.7% {
-    width: calc($foo / 2);
+@media (width <= 768px) {
+  .app-shell {
+    padding: 0;
+    gap: 0;
   }
+}
 
-  33.3% {
-    width: calc($foo / 2);
-  }
-
-  50% {
-    width: $bar;
-  }
-
-  66.7% {
-    width: calc($foo / 2);
-  }
-
-  83.3% {
-    width: calc($foo / 2);
-  }
-
-  100% {
-    width: $bar;
-  }
+:host-context(.dark-theme) ::ng-deep .mobile-nav-drawer {
+  background: var(--mifos-surface-0, #1c1c21) !important;
+  border-color: var(--mifos-surface-200, rgb(255 255 255 / 10%)) !important;
 }

@@ -30,54 +30,50 @@
 } @else {
   <!-- Default mode for Shell -->
   @if (displayBackEndInfo) {
-    <div class="layout-column m-b-20 f12" ngClass="{{ styleClass }}" id="footer">
-      <div class="layout-column m-t-10 m-b-10 content-wrapper footer-center">
-        <table class="versions">
-          <tr>
-            <td class="footer-content">{{ 'APP_NAME' | translate }}</td>
-            <td class="right footer-content">
-              {{ versions.mifos }} - <b>{{ hash }}</b>
-            </td>
-          </tr>
-          <tr>
-            <td class="footer-content">{{ 'labels.text.Fineract' | translate }}</td>
-            <td class="right footer-content">
-              {{ versions.fineract.version }} - <b>{{ versions.fineract.hash }}</b>
-            </td>
-          </tr>
-          <tr>
-            <td class="footer-content">{{ 'labels.inputs.Server' | translate }}</td>
-            <td class="right footer-content">
-              {{ server }}
-            </td>
-          </tr>
-          <tr>
-            <td class="footer-content">{{ 'labels.version.Username' | translate }}</td>
-            <td class="right footer-content">
-              {{ username }}
-            </td>
-          </tr>
-          <tr>
-            <td class="footer-content">{{ 'labels.version.Name' | translate }}</td>
-            <td class="right footer-content">
-              {{ name }}
-            </td>
-          </tr>
-          <tr>
-            <td class="footer-content">{{ 'labels.version.Render Time' | translate }}</td>
-            <td class="right footer-content">
-              {{ renderTime | date: 'dd MMMM yyyy HH:mm:ss' }}
-            </td>
-          </tr>
-          @if (isBusinessDateDefined) {
-            <tr>
-              <td class="footer-content">{{ 'labels.text.Current Business Date' | translate }}:</td>
-              <td class="right footer-content business-date">
-                <b>{{ businessDate | date: 'EEEE, MMMM dd, y' }}</b>
-              </td>
-            </tr>
-          }
-        </table>
+    <div class="app-footer" ngClass="{{ styleClass }}" id="footer">
+      <div class="footer-meta">
+        <span class="meta-item">
+          <span class="meta-label">{{ 'APP_NAME' | translate }}</span>
+          <span class="meta-value"
+            >{{ versions.mifos }} &ndash; <b>{{ hash }}</b></span
+          >
+        </span>
+        <span class="meta-sep" aria-hidden="true">&middot;</span>
+        <span class="meta-item">
+          <span class="meta-label">{{ 'labels.text.Fineract' | translate }}</span>
+          <span class="meta-value"
+            >{{ versions.fineract.version }} &ndash; <b>{{ versions.fineract.hash }}</b></span
+          >
+        </span>
+        <span class="meta-sep" aria-hidden="true">&middot;</span>
+        <span class="meta-item">
+          <span class="meta-label">{{ 'labels.inputs.Server' | translate }}</span>
+          <span class="meta-value">{{ server }}</span>
+        </span>
+        <span class="meta-sep" aria-hidden="true">&middot;</span>
+        <span class="meta-item">
+          <span class="meta-label">{{ 'labels.version.Username' | translate }}</span>
+          <span class="meta-value">{{ username }}</span>
+        </span>
+        <span class="meta-sep" aria-hidden="true">&middot;</span>
+        <span class="meta-item">
+          <span class="meta-label">{{ 'labels.version.Name' | translate }}</span>
+          <span class="meta-value">{{ name }}</span>
+        </span>
+        <span class="meta-sep" aria-hidden="true">&middot;</span>
+        <span class="meta-item">
+          <span class="meta-label">{{ 'labels.version.Render Time' | translate }}</span>
+          <span class="meta-value">{{ renderTime | date: 'dd MMMM yyyy HH:mm:ss' }}</span>
+        </span>
+        @if (isBusinessDateDefined) {
+          <span class="meta-sep" aria-hidden="true">&middot;</span>
+          <span class="meta-item">
+            <span class="meta-label">{{ 'labels.text.Current Business Date' | translate }}</span>
+            <span class="meta-value business-date">
+              <b>{{ businessDate | date: 'EEEE, MMMM dd, y' }}</b>
+            </span>
+          </span>
+        }
       </div>
     </div>
   }

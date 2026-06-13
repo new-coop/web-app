@@ -1,0 +1,379 @@
+/**
+ * Copyright since 2025 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+/**
+ * Modern UI polish layer
+ *
+ * Consistent shape scale, softer elevation, smooth interaction states and
+ * visible keyboard focus across all Material components.
+ * Shape scale: buttons/inputs 8px, menus 10px, cards 12px, dialogs 16px.
+ */
+
+@use '@angular/material' as mat;
+
+html {
+  // Compact field height (48px instead of 56px) for back-office density
+  @include mat.form-field-density(-2);
+
+  // Buttons: rounded rectangle (noir, PrimeNG showcase)
+  --mdc-filled-button-container-shape: 8px;
+  --mdc-outlined-button-container-shape: 8px;
+  --mdc-text-button-container-shape: 8px;
+  --mdc-protected-button-container-shape: 8px;
+
+  // Cards: white, thin border, soft radius — elevation comes from borders
+  --mdc-elevated-card-container-shape: 14px;
+  --mdc-outlined-card-container-shape: 14px;
+  --mdc-elevated-card-container-elevation: 0px 1px 2px rgb(9 9 11 / 4%);
+
+  // Dialogs
+  --mdc-dialog-container-shape: 16px;
+
+  // Form fields: rounded outline, quiet borders
+  --mdc-outlined-text-field-container-shape: 8px;
+  --mdc-outlined-text-field-outline-color: rgb(9 9 11 / 16%);
+  --mdc-outlined-text-field-hover-outline-color: rgb(9 9 11 / 32%);
+  --mdc-filled-text-field-container-shape: 12px 12px 0 0;
+
+  // Chips
+  --mdc-chip-container-shape-radius: 8px;
+
+  // Menus and overlays
+  --mat-menu-container-shape: 10px;
+  --mat-autocomplete-container-shape: 10px;
+  --mat-select-panel-container-shape: 10px;
+
+  // Snackbar
+  --mdc-snackbar-container-shape: 10px;
+
+  // Tables: airy rows, readable text
+  --mat-table-header-container-height: 52px;
+  --mat-table-row-item-container-height: 52px;
+  --mat-table-footer-container-height: 52px;
+  --mat-table-row-item-label-text-size: 0.875rem;
+}
+
+.dark-theme {
+  --mdc-outlined-text-field-outline-color: rgb(255 255 255 / 18%);
+  --mdc-outlined-text-field-hover-outline-color: rgb(255 255 255 / 36%);
+}
+
+/* stylelint-disable selector-class-pattern */
+
+// ===== Cards: soft borders + gentle hover =====
+.mat-mdc-card {
+  border: 1px solid rgb(9 9 11 / 6%);
+  transition:
+    box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark-theme .mat-mdc-card {
+  background: var(--mifos-surface-0, #1c1c21);
+  color: var(--mifos-text-primary, #f4f4f5);
+  border-color: rgb(255 255 255 / 8%);
+}
+
+// ===== Buttons: smooth color/shadow transitions, no layout shift =====
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-outlined-button,
+.mat-mdc-button {
+  transition:
+    background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ===== Lists and nav: rounded interactive items =====
+.mat-mdc-nav-list .mat-mdc-list-item {
+  border-radius: 8px;
+  margin: 2px 8px;
+  width: auto;
+  transition: background-color 150ms ease;
+}
+
+// ===== Tabs: pill indicator feel, clear active state =====
+.mat-mdc-tab {
+  --mdc-secondary-navigation-tab-container-height: 44px;
+
+  letter-spacing: 0.01em;
+  transition: background-color 150ms ease;
+
+  &:hover {
+    background-color: rgb(9 9 11 / 4%);
+  }
+}
+
+.dark-theme .mat-mdc-tab:hover {
+  background-color: rgb(255 255 255 / 8%);
+}
+
+.mat-mdc-tab-header {
+  border-bottom: 1px solid rgb(9 9 11 / 6%);
+}
+
+.dark-theme .mat-mdc-tab-header {
+  border-bottom-color: rgb(255 255 255 / 8%);
+}
+
+// ===== Paginator: modern footer with range label + circular nav =====
+.mat-mdc-paginator {
+  background: transparent;
+  font-size: 0.875rem;
+  padding: 0 16px;
+
+  .mat-mdc-paginator-range-label {
+    color: var(--mifos-surface-500, #71717a);
+    font-size: 0.875rem;
+    margin: 0 auto 0 0;
+  }
+
+  .mat-mdc-paginator-container {
+    justify-content: space-between;
+    min-height: 52px;
+  }
+
+  .mat-mdc-icon-button {
+    border-radius: 50%;
+    transition: background-color 150ms ease;
+
+    &:hover {
+      background-color: var(--mifos-surface-100, #f4f4f5);
+    }
+  }
+}
+
+// ===== Table containers: bordered panels instead of heavy shadows =====
+// Most list screens wrap `table + paginator` in a div carrying one of these
+// Material elevation helpers (or put them on the table itself). Soften them
+// app-wide: hierarchy comes from borders, not elevation.
+.mat-elevation-z1,
+.mat-elevation-z2,
+.mat-elevation-z8 {
+  background: var(--mifos-surface-0, #fff);
+  border: 1px solid rgb(9 9 11 / 8%);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgb(9 9 11 / 4%);
+}
+
+// Wide tables scroll inside their rounded panel instead of overflowing it
+div:is(.mat-elevation-z1, .mat-elevation-z2, .mat-elevation-z8):has(> table) {
+  overflow-x: auto;
+}
+
+.dark-theme .mat-elevation-z1,
+.dark-theme .mat-elevation-z2,
+.dark-theme .mat-elevation-z8 {
+  border-color: rgb(255 255 255 / 10%);
+  box-shadow: none;
+}
+
+// ===== Dialogs: comfortable padding, clear title =====
+.mat-mdc-dialog-container .mdc-dialog__title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+// ===== Menus and overlay panels: soft borders =====
+.mat-mdc-menu-panel,
+.mat-mdc-autocomplete-panel {
+  border: 1px solid rgb(9 9 11 / 6%);
+  box-shadow:
+    0 4px 12px rgb(9 9 11 / 8%),
+    0 12px 32px rgb(9 9 11 / 10%);
+}
+
+.dark-theme .mat-mdc-menu-panel,
+.dark-theme .mat-mdc-autocomplete-panel {
+  border-color: rgb(255 255 255 / 8%);
+}
+
+.mat-mdc-menu-item {
+  border-radius: 6px;
+  margin: 2px 6px;
+  width: auto;
+  min-height: 40px;
+  transition: background-color 150ms ease;
+}
+
+// ===== Tables: clean headers, airy rows, subtle dividers =====
+.mat-mdc-table {
+  border-radius: 12px;
+  overflow: hidden;
+
+  .mat-mdc-header-row {
+    background-color: transparent;
+  }
+
+  .mat-mdc-header-cell {
+    color: var(--mifos-surface-500, #71717a);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: normal;
+    white-space: nowrap;
+    border-bottom-color: var(--mifos-surface-200, #e4e4e7);
+  }
+
+  .mat-mdc-cell {
+    color: var(--mifos-surface-700, #3f3f46);
+    border-bottom-color: var(--mifos-surface-100, #f4f4f5);
+  }
+
+  // No stray divider under the last row inside rounded containers
+  .mat-mdc-row:last-child .mat-mdc-cell {
+    border-bottom-color: transparent;
+  }
+
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .mat-mdc-row {
+    transition: background-color 150ms ease;
+
+    &:hover {
+      background-color: var(--mifos-surface-50, #fafafa);
+    }
+  }
+
+  // Clickable rows used across all list screens
+  .select-row {
+    cursor: pointer;
+  }
+
+  // Sort header: full-color when active, subtle otherwise
+  .mat-sort-header-arrow {
+    color: var(--mifos-surface-400, #a1a1aa);
+  }
+
+  .mat-sort-header-sorted .mat-sort-header-content {
+    color: var(--mifos-surface-900, #18181b);
+    font-weight: 600;
+  }
+}
+
+.dark-theme .mat-mdc-table {
+  .mat-mdc-header-row {
+    background-color: transparent;
+  }
+
+  .mat-mdc-header-cell {
+    color: rgb(196 198 208 / 95%);
+    border-bottom-color: rgb(255 255 255 / 10%);
+  }
+
+  .mat-mdc-cell {
+    color: var(--md-sys-color-on-surface, #e2e2e5);
+    border-bottom-color: rgb(255 255 255 / 6%);
+  }
+
+  .mat-mdc-row:last-child .mat-mdc-cell {
+    border-bottom-color: transparent;
+  }
+
+  .mat-mdc-row:hover {
+    background-color: rgb(255 255 255 / 6%);
+  }
+
+  .mat-sort-header-arrow {
+    color: rgb(196 198 208 / 60%);
+  }
+
+  .mat-sort-header-sorted .mat-sort-header-content {
+    color: var(--md-sys-color-on-surface, #e2e2e5);
+  }
+}
+
+.dark-theme .mat-mdc-paginator {
+  .mat-mdc-paginator-range-label {
+    color: rgb(255 255 255 / 55%);
+  }
+
+  .mat-mdc-icon-button:hover {
+    background-color: rgb(255 255 255 / 8%);
+  }
+}
+
+// Paginator sits flush under the table inside the same panel
+.mat-mdc-table + .mat-mdc-paginator {
+  border-top: 1px solid rgb(9 9 11 / 6%);
+}
+
+.dark-theme .mat-mdc-table + .mat-mdc-paginator {
+  border-top-color: rgb(255 255 255 / 8%);
+}
+
+// ===== Chips: tinted neutral =====
+.mat-mdc-standard-chip {
+  --mdc-chip-elevated-container-color: rgb(9 9 11 / 6%);
+  --mdc-chip-label-text-color: #18181b;
+}
+
+.dark-theme .mat-mdc-standard-chip {
+  --mdc-chip-elevated-container-color: rgb(255 255 255 / 12%);
+  --mdc-chip-label-text-color: #f4f4f5;
+}
+
+// ===== Tooltips: compact, readable =====
+.mat-mdc-tooltip {
+  --mdc-plain-tooltip-container-shape: 6px;
+  --mdc-plain-tooltip-supporting-text-size: 12px;
+}
+
+// ===== Visible keyboard focus =====
+a:focus-visible,
+button:focus-visible,
+[role='button']:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary, #09090b);
+  outline-offset: 2px;
+}
+
+// ===== Slim, unobtrusive scrollbars =====
+/* stylelint-disable-next-line selector-max-universal */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(100 116 139 / 40%) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(100 116 139 / 40%);
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgb(100 116 139 / 60%);
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* stylelint-enable selector-class-pattern */
+
+// ===== Respect reduced motion =====
+@media (prefers-reduced-motion: reduce) {
+  /* stylelint-disable selector-max-universal */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* stylelint-enable selector-max-universal */
+}

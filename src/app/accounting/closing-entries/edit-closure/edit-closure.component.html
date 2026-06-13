@@ -6,44 +6,47 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-card>
-    <form [formGroup]="accountingClosureForm" (ngSubmit)="submit()">
-      <mat-card-content>
-        <div class="layout-column">
-          <mat-form-field>
-            <mat-label>{{ 'labels.inputs.Office' | translate }}</mat-label>
-            <mat-select required formControlName="officeId">
-              @for (office of officeData; track office) {
-                <mat-option [value]="office.id">
-                  {{ office.name }}
-                </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
+<div class="container form-page form-page--narrow">
+  <mifosx-form-workspace eyebrow="labels.heading.Accounting" title="labels.heading.Closing Entries">
+    <form [formGroup]="accountingClosureForm" (ngSubmit)="submit()" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Office' | translate }}</mat-label>
+              <mat-select required formControlName="officeId">
+                @for (office of officeData; track office) {
+                  <mat-option [value]="office.id">
+                    {{ office.name }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
 
-          <mat-form-field (click)="closingDatePicker.open()">
-            <mat-label>{{ 'labels.inputs.Closing Date' | translate }}</mat-label>
-            <input matInput [matDatepicker]="closingDatePicker" required formControlName="closingDate" />
-            <mat-datepicker-toggle matSuffix [for]="closingDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #closingDatePicker></mat-datepicker>
-          </mat-form-field>
+            <mat-form-field (click)="closingDatePicker.open()">
+              <mat-label>{{ 'labels.inputs.Closing Date' | translate }}</mat-label>
+              <input matInput [matDatepicker]="closingDatePicker" required formControlName="closingDate" />
+              <mat-datepicker-toggle matSuffix [for]="closingDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #closingDatePicker></mat-datepicker>
+            </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>{{ 'labels.inputs.Comments' | translate }}</mat-label>
-            <textarea matInput formControlName="comments" cdkTextareaAutosize cdkAutosizeMinRows="2"></textarea>
-          </mat-form-field>
-        </div>
-      </mat-card-content>
+            <mat-form-field class="form-field-full">
+              <mat-label>{{ 'labels.inputs.Comments' | translate }}</mat-label>
+              <textarea matInput formControlName="comments" cdkTextareaAutosize cdkAutosizeMinRows="2"></textarea>
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
 
-      <mat-card-actions class="layout-row align-center gap-5px responsive-column">
+      <footer class="form-workspace-footer">
         <button type="button" mat-raised-button [routerLink]="['../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button mat-raised-button color="primary" [disabled]="accountingClosureForm.pristine">
+        <button mat-raised-button color="primary" type="submit" [disabled]="accountingClosureForm.pristine">
           {{ 'labels.buttons.Submit' | translate }}
         </button>
-      </mat-card-actions>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>

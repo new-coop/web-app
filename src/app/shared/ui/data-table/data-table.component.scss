@@ -1,0 +1,63 @@
+/**
+ * Copyright since 2025 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+:host {
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.data-row {
+  cursor: pointer;
+  transition: background-color var(--motion-fast) var(--ease-enter);
+
+  &:hover > td {
+    background: var(--mifos-surface-50, #fafafa);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--p-primary-500, #09090b);
+    outline-offset: -2px;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-12);
+  color: var(--mifos-surface-500, #71717a);
+  background: var(--mifos-surface-50, #fafafa);
+
+  p {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-sm, 0.875rem);
+  }
+}
+
+:host ::ng-deep {
+  .mifosx-datatable .p-datatable-tbody > tr > td.numeric,
+  .mifosx-datatable .p-datatable-thead > tr > th.numeric {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mifosx-datatable .p-skeleton {
+    border-radius: var(--radius-sm, 6px);
+  }
+}
+
+.dark-theme :host,
+:host-context(.dark-theme) {
+  .data-row:hover > td {
+    background: rgb(255 255 255 / 8%);
+  }
+
+  .empty-state {
+    background: rgb(255 255 255 / 3%);
+    color: rgb(255 255 255 / 65%);
+  }
+}

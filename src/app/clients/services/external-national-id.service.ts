@@ -8,7 +8,7 @@
 
 import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, switchMap, timeout, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { environment } from 'environments/environment';
@@ -110,30 +110,38 @@ export class ExternalNationalIdService {
    *                         to avoid re-fetching data for an already-saved external ID)
    */
   watchExternalId(form: FormGroup, genderOptions: GenderOption[], skipInitialValue = false): void {
-    if (!this.enabled) {
-      return;
-    }
-
     const externalIdCtrl = form.get('externalId');
     if (!externalIdCtrl) {
       return;
     }
+    this.watchExternalIdControl(externalIdCtrl, form, genderOptions, skipInitialValue);
+  }
 
-    // In edit mode, if the client already has a valid external ID, lock the fields
-    // without making an API call
-    if (skipInitialValue && externalIdCtrl.value && this.isValidExternalId(externalIdCtrl.value)) {
-      this.disablePersonFields(form);
+  /**
+   * Watch an external ID control and fill person fields on a separate form.
+   */
+  watchExternalIdControl(
+    externalIdControl: AbstractControl,
+    targetForm: FormGroup,
+    genderOptions: GenderOption[],
+    skipInitialValue = false
+  ): void {
+    if (!this.enabled) {
       return;
     }
 
-    externalIdCtrl.valueChanges
+    if (skipInitialValue && externalIdControl.value && this.isValidExternalId(externalIdControl.value)) {
+      this.disablePersonFields(targetForm);
+      return;
+    }
+
+    externalIdControl.valueChanges
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),
         filter((value: string) => {
           if (!value || !this.isValidExternalId(value)) {
-            // Re-enable fields if ID is cleared or invalid
-            this.enablePersonFields(form);
+            this.enablePersonFields(targetForm);
             if (value && value.length > 3 && !this.isValidExternalId(value)) {
               this.statusMessageKey = EXTERNAL_ID_STATUS_KEYS.INVALID_FORMAT;
             } else {
@@ -157,7 +165,7 @@ export class ExternalNationalIdService {
               } else {
                 this.statusMessageKey = EXTERNAL_ID_STATUS_KEYS.FAILED;
               }
-              this.enablePersonFields(form);
+              this.enablePersonFields(targetForm);
               return of(null);
             })
           );
@@ -167,7 +175,7 @@ export class ExternalNationalIdService {
       .subscribe((response: ExternalNationalIdResponse | null) => {
         this.isLoading = false;
         if (response) {
-          this.fillFormFromResponse(form, response, genderOptions);
+          this.fillFormFromResponse(targetForm, response, genderOptions);
         }
       });
   }

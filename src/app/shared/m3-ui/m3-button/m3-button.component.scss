@@ -1,12 +1,10 @@
-﻿/**
+/**
  * Copyright since 2025 Mifos Initiative
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-// Material Web Button Component Styles
-// Base styles are applied globally in src/theme/_material-web.scss
 
 .m3-button-container {
   display: inline-block;
@@ -20,8 +18,163 @@
     md-elevated-button,
     md-text-button,
     md-filled-tonal-button {
-      color: var(--md-filled-button-disabled-label-text-color, #44474e);
       width: 100%;
     }
+  }
+}
+
+md-filled-button,
+md-outlined-button,
+md-elevated-button,
+md-text-button,
+md-filled-tonal-button {
+  cursor: pointer;
+  gap: var(--space-2, 8px);
+
+  &:focus-visible {
+    outline: var(--focus-ring-width, 2px) solid var(--focus-ring-color, #18181b);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.m3-button-label {
+  white-space: nowrap;
+}
+
+.m3-button-icon-leading,
+.m3-button-icon-trailing {
+  flex-shrink: 0;
+
+  ::ng-deep .m3-icon {
+    display: block;
+  }
+}
+
+.m3-button-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentcolor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: m3-button-spin 0.75s linear infinite;
+}
+
+@keyframes m3-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Size variants
+.m3-button--compact {
+  md-filled-button,
+  md-outlined-button,
+  md-elevated-button,
+  md-text-button,
+  md-filled-tonal-button {
+    min-height: 32px;
+
+    --md-filled-button-leading-space: 12px;
+    --md-filled-button-trailing-space: 12px;
+    --md-outlined-button-leading-space: 12px;
+    --md-outlined-button-trailing-space: 12px;
+    --md-elevated-button-leading-space: 12px;
+    --md-elevated-button-trailing-space: 12px;
+    --md-text-button-leading-space: 12px;
+    --md-text-button-trailing-space: 12px;
+    --md-filled-tonal-button-leading-space: 12px;
+    --md-filled-tonal-button-trailing-space: 12px;
+    --md-filled-button-label-text-size: 13px;
+    --md-outlined-button-label-text-size: 13px;
+    --md-elevated-button-label-text-size: 13px;
+    --md-text-button-label-text-size: 13px;
+    --md-filled-tonal-button-label-text-size: 13px;
+  }
+}
+
+.m3-button--large {
+  md-filled-button,
+  md-outlined-button,
+  md-elevated-button,
+  md-text-button,
+  md-filled-tonal-button {
+    min-height: 48px;
+
+    --md-filled-button-leading-space: 28px;
+    --md-filled-button-trailing-space: 28px;
+    --md-outlined-button-leading-space: 28px;
+    --md-outlined-button-trailing-space: 28px;
+    --md-elevated-button-leading-space: 28px;
+    --md-elevated-button-trailing-space: 28px;
+    --md-text-button-leading-space: 28px;
+    --md-text-button-trailing-space: 28px;
+    --md-filled-tonal-button-leading-space: 28px;
+    --md-filled-tonal-button-trailing-space: 28px;
+    --md-filled-button-label-text-size: 15px;
+    --md-outlined-button-label-text-size: 15px;
+    --md-elevated-button-label-text-size: 15px;
+    --md-text-button-label-text-size: 15px;
+    --md-filled-tonal-button-label-text-size: 15px;
+  }
+}
+
+// Destructive tone — dismiss, delete, close
+.m3-button--destructive {
+  md-filled-button {
+    --md-filled-button-container-color: var(--form-error-color, #dc2626);
+    --md-filled-button-label-text-color: #fff;
+    --md-filled-button-hover-state-layer-color: #fff;
+    --md-filled-button-focus-state-layer-color: #fff;
+    --md-filled-button-pressed-state-layer-color: #fff;
+  }
+
+  md-outlined-button {
+    --md-outlined-button-outline-color: var(--form-error-color, #dc2626);
+    --md-outlined-button-label-text-color: var(--form-error-color, #dc2626);
+    --md-outlined-button-hover-state-layer-color: #dc2626;
+    --md-outlined-button-focus-state-layer-color: #dc2626;
+    --md-outlined-button-pressed-state-layer-color: #dc2626;
+  }
+
+  md-text-button {
+    --md-text-button-label-text-color: var(--form-error-color, #dc2626);
+    --md-text-button-hover-state-layer-color: #dc2626;
+    --md-text-button-focus-state-layer-color: #dc2626;
+    --md-text-button-pressed-state-layer-color: #dc2626;
+  }
+
+  md-filled-tonal-button {
+    --md-filled-tonal-button-container-color: #fef2f2;
+    --md-filled-tonal-button-label-text-color: var(--form-error-color, #dc2626);
+    --md-filled-tonal-button-hover-state-layer-color: #dc2626;
+    --md-filled-tonal-button-focus-state-layer-color: #dc2626;
+    --md-filled-tonal-button-pressed-state-layer-color: #dc2626;
+  }
+}
+
+.dark-theme .m3-button--destructive {
+  md-filled-tonal-button {
+    --md-filled-tonal-button-container-color: #450a0a;
+    --md-filled-tonal-button-label-text-color: #fca5a5;
+  }
+
+  md-text-button {
+    --md-text-button-label-text-color: #fca5a5;
+    --md-text-button-hover-state-layer-color: #fca5a5;
+    --md-text-button-focus-state-layer-color: #fca5a5;
+    --md-text-button-pressed-state-layer-color: #fca5a5;
+  }
+
+  md-outlined-button {
+    --md-outlined-button-outline-color: #fca5a5;
+    --md-outlined-button-label-text-color: #fca5a5;
+    --md-outlined-button-hover-state-layer-color: #fca5a5;
+    --md-outlined-button-focus-state-layer-color: #fca5a5;
+    --md-outlined-button-pressed-state-layer-color: #fca5a5;
   }
 }

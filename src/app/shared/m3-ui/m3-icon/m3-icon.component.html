@@ -5,4 +5,11 @@
   License, v. 2.0. If a copy of the MPL was not distributed with this
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
-<span [class]="iconClass" [ngStyle]="iconStyles" class="m3-icon">{{ name }}</span>
+@if (isDuotone) {
+  <span class="m3-icon m3-icon--duotone" [ngStyle]="iconStyles" aria-hidden="true">
+    <span class="m3-icon__layer m3-icon__layer--fill material-symbols-filled">{{ name }}</span>
+    <span class="m3-icon__layer m3-icon__layer--stroke material-symbols-outlined">{{ name }}</span>
+  </span>
+} @else {
+  <span [class]="iconClass" [ngStyle]="iconStyles" class="m3-icon">{{ name }}</span>
+}

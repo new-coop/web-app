@@ -764,7 +764,8 @@
       "DONE": "완료",
       "Submitting": "제출 중",
       "OK": "확인",
-      "undo_account_transfer": "계좌 이체 취소"
+      "undo_account_transfer": "계좌 이체 취소",
+      "View all results": "모든 결과 보기"
     },
     "catalogs": {
       "Interest payment waiver": "이자 지급 면제",
@@ -1562,7 +1563,23 @@
       "identifier id": "식별자 ID",
       "savings-transaction-datatable-tab works": "저축 거래 데이터 테이블 탭이 작동합니다.",
       "successfully select option": "성공적으로. 계속 진행하려면 아래 옵션 중에서 선택하세요.",
-      "undo_account_transfer": "계좌 이체 취소"
+      "undo_account_transfer": "계좌 이체 취소",
+      "Quick Actions": "Quick Actions",
+      "Search": "검색",
+      "Customization": "사용자 지정",
+      "Security and Oversight": "보안 및 감독",
+      "Automation and Integrations": "자동화 및 통합",
+      "Configuration": "구성",
+      "About": "정보",
+      "Structure and Staff": "조직 구조 및 직원",
+      "Loans and Funds": "대출 및 기금",
+      "Payments and Cash": "결제 및 현금",
+      "Tools": "도구",
+      "Loans": "대출",
+      "Deposits and Shares": "예금 및 주식",
+      "Pricing and Rules": "가격 및 규칙",
+      "Ledger Setup": "원장 설정",
+      "Period Operations": "기간 작업"
     },
     "inputs": {
       "# Remittance": "# 송금",
@@ -3144,6 +3161,7 @@
       "Clients": "클라이언트",
       "Close": "닫다",
       "Close (as Rescheduled)": "마감(일정 변경됨)",
+      "Collapse Sidebar": "사이드바 접기",
       "Collection Sheet": "수집 시트",
       "Configuration Wizard": "구성 마법사",
       "Contract Termination": "계약 종료",
@@ -3157,6 +3175,7 @@
       "Disburse to Savings": "저축으로 지출",
       "Discount Fee": "할인 수수료",
       "Edit Repayment Schedule": "상환 일정 편집",
+      "Expand Sidebar": "사이드바 펼치기",
       "Foreclosure": "유질",
       "Frequent Postings": "자주 게시되는 게시물",
       "Frequently Accessed": "자주 액세스됨",
@@ -3236,7 +3255,10 @@
       "Tasks": "작업",
       "Remittances": "송금",
       "Process Remittance": "송금 처리",
-      "Undo Write-off": "상각 취소"
+      "Undo Write-off": "상각 취소",
+      "Home": "홈",
+      "Operations": "운영",
+      "Administration": "관리"
     },
     "placeholders": {
       "Add new server": "새 서버 추가",
@@ -4032,7 +4054,20 @@
       "username": "사용자 이름",
       "withhold tax for this account": "이 계정에 대한 원천징수세",
       "withoutCategory": "카테고리 없음",
-      "“Maker-Checker” principle requires every tasks": "\"Maker-Checker\" 원칙은 오류와 오용 가능성을 줄이기 위해 모든 작업을 두 사람이 완료하도록 요구합니다. 한 사람이 프로세스를 시작하고 두 번째 사람이 프로세스를 완료합니다."
+      "“Maker-Checker” principle requires every tasks": "\"Maker-Checker\" 원칙은 오류와 오용 가능성을 줄이기 위해 모든 작업을 두 사람이 완료하도록 요구합니다. 한 사람이 프로세스를 시작하고 두 번째 사람이 프로세스를 완료합니다.",
+      "Good Morning": "Good Morning",
+      "Good Afternoon": "Good Afternoon",
+      "Good Evening": "Good Evening",
+      "No results found": "결과 없음",
+      "Search settings": "설정 검색",
+      "No settings match your search": "검색과 일치하는 설정이 없습니다",
+      "Configure data, security, automation and platform behavior": "데이터, 보안, 자동화 및 플랫폼 동작을 구성합니다",
+      "Manage your organization structure, staff, funds and tools": "조직 구조, 직원, 기금 및 도구를 관리합니다",
+      "Define and maintain the products your institution offers": "기관에서 제공하는 상품을 정의하고 관리합니다",
+      "Record, search and automate journal entries across your ledger": "원장 전체의 분개를 기록, 검색 및 자동화합니다",
+      "Run portfolio, financial and organization reports": "포트폴리오, 재무 및 조직 보고서를 실행합니다",
+      "Search reports": "보고서 검색",
+      "No reports match your search": "검색과 일치하는 보고서가 없습니다"
     },
     "permissions": {
       "actions": {

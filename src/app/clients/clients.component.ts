@@ -7,125 +7,110 @@
  */
 
 /** Angular Imports. */
-import { ChangeDetectionStrategy, Component, DestroyRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort, Sort, MatSortHeader } from '@angular/material/sort';
-import {
-  MatTableDataSource,
-  MatTable,
-  MatColumnDef,
-  MatHeaderCellDef,
-  MatHeaderCell,
-  MatCellDef,
-  MatCell,
-  MatHeaderRowDef,
-  MatHeaderRow,
-  MatRowDef,
-  MatRow
-} from '@angular/material/table';
-import { MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 /** rxjs Imports */
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-/** Custom Services */
+/** Translation */
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
+/** PrimeNG */
+import { ButtonModule } from 'primeng/button';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { TableLazyLoadEvent } from 'primeng/table';
+
+/** Custom Services and Components */
 import { environment } from '../../environments/environment';
 import { ClientsService } from './clients.service';
-import { NgClass } from '@angular/common';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MatProgressBar } from '@angular/material/progress-bar';
+import { HasPermissionDirective } from '../directives/has-permission/has-permission.directive';
+import { ColumnDef, DataTableComponent } from '../shared/ui/data-table/data-table.component';
+import { TableNameCellComponent } from '../shared/ui/table-name-cell/table-name-cell.component';
+import { StatusBadgeComponent } from '../shared/ui/status-badge/status-badge.component';
 import { AccountNumberComponent } from '../shared/account-number/account-number.component';
 import { ExternalIdentifierComponent } from '../shared/external-identifier/external-identifier.component';
-import { StatusLookupPipe } from '../pipes/status-lookup.pipe';
-import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 export const DEBOUNCE_MS = 500;
 
+interface ClientRow extends Record<string, unknown> {
+  id: number;
+  displayName: string;
+  accountNumber: string;
+  externalId: string;
+  status: { code: string; value: string };
+  officeName: string;
+}
+
+/**
+ * Clients list — design-system pattern 3.1 (table card).
+ * Lazy server-side pagination against /v2/clients/search; filter, page and
+ * sort persist in queryParams so back navigation and shared links work.
+ */
 @Component({
   selector: 'mifosx-clients',
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.scss'],
+  standalone: true,
   imports: [
-    ...STANDALONE_SHARED_IMPORTS,
-    MatCheckbox,
-    FaIconComponent,
-    MatProgressBar,
-    MatTable,
-    MatSort,
-    MatColumnDef,
-    MatHeaderCellDef,
-    MatHeaderCell,
-    MatSortHeader,
-    MatCellDef,
-    MatCell,
+    RouterLink,
+    TranslatePipe,
+    ButtonModule,
+    IconFieldModule,
+    InputIconModule,
+    InputTextModule,
+    HasPermissionDirective,
+    DataTableComponent,
+    TableNameCellComponent,
+    StatusBadgeComponent,
     AccountNumberComponent,
-    ExternalIdentifierComponent,
-    NgClass,
-    MatHeaderRowDef,
-    MatHeaderRow,
-    MatRowDef,
-    MatRow,
-    MatPaginator,
-    StatusLookupPipe,
-    MatIconButton,
-    MatIcon
+    ExternalIdentifierComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ClientsComponent implements OnInit, OnDestroy {
+export class ClientsComponent implements OnInit {
   private clientService = inject(ClientsService);
+  private translateService = inject(TranslateService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
 
   private searchInput$ = new Subject<string>();
-  private clientsRequestSub: Subscription | null = null;
+  private requestSub: Subscription | null = null;
   private isComposing = false;
+
+  clients = signal<ClientRow[]>([]);
+  totalRows = signal(0);
+  isLoading = signal(false);
+
+  filterText = '';
+  pageSize = 25;
+  first = signal(0);
+  private sortAttribute = '';
+  private sortDirection = '';
+
+  columns: ColumnDef[] = [];
 
   /** Returns true if client data masking is enabled */
   get hideClientData(): boolean {
     return environment.complianceHideClientData;
   }
 
-  /** Mask a client name */
-  maskName(name: string): string {
-    if (!name) return '';
-    return name
-      .split(' ')
-      .map((part) => (part.length > 1 ? part[0] + '*'.repeat(part.length - 1) : part))
-      .join(' ');
-  }
-
-  @ViewChild('showClosedAccounts') showClosedAccounts: MatCheckbox;
-
-  displayedColumns = [
-    'displayName',
-    'accountNumber',
-    'externalId',
-    'status',
-    'officeName'
-  ];
-  dataSource: MatTableDataSource<any> = new MatTableDataSource();
-
-  existsClientsToFilter = false;
-  notExistsClientsToFilter = false;
-
-  totalRows: number;
-  isLoading = false;
-
-  pageSize = 50;
-  currentPage = 0;
-  filterText = '';
-
-  sortAttribute = '';
-  sortDirection = '';
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-
   ngOnInit() {
+    this.columns = [
+      { field: 'displayName', header: this.translateService.instant('labels.inputs.name'), sortable: true },
+      { field: 'accountNumber', header: this.translateService.instant('labels.inputs.Account No'), sortable: true },
+      { field: 'externalId', header: this.translateService.instant('labels.inputs.External Id'), sortable: true },
+      { field: 'status', header: this.translateService.instant('labels.inputs.Status') },
+      { field: 'officeName', header: this.translateService.instant('labels.inputs.Office Name') }
+    ];
+
+    this.restoreFromQueryParams();
+
     this.searchInput$
       .pipe(debounceTime(DEBOUNCE_MS), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
       .subscribe((value) => {
@@ -133,14 +118,15 @@ export class ClientsComponent implements OnInit, OnDestroy {
           this.search(value);
         }
       });
-
-    if (environment.preloadClients) {
-      this.getClients();
-    }
   }
 
-  ngOnDestroy() {
-    this.clientsRequestSub?.unsubscribe();
+  /** Mask a client name when compliance masking is enabled */
+  maskName(name: string): string {
+    if (!name) return '';
+    return name
+      .split(' ')
+      .map((part) => (part.length > 1 ? part[0] + '*'.repeat(part.length - 1) : part))
+      .join(' ');
   }
 
   onSearchInput(value: string) {
@@ -157,59 +143,81 @@ export class ClientsComponent implements OnInit, OnDestroy {
     this.searchInput$.next(value);
   }
 
-  /**
-   * Searches server for query and resource.
-   */
   search(value: string) {
     this.filterText = value;
-    if (this.paginator?.pageIndex !== 0) {
-      this.resetPaginator();
-      return;
-    }
+    this.first.set(0);
     this.getClients();
+  }
+
+  /** Fired by the table on init, page change and sort change */
+  onLazyLoad(event: TableLazyLoadEvent) {
+    this.first.set(event.first ?? 0);
+    this.pageSize = event.rows ?? this.pageSize;
+    if (event.sortField && typeof event.sortField === 'string') {
+      this.sortAttribute = event.sortField;
+      this.sortDirection = event.sortOrder === -1 ? 'DESC' : 'ASC';
+    } else {
+      this.sortAttribute = '';
+      this.sortDirection = '';
+    }
+    if (environment.preloadClients || this.filterText) {
+      this.getClients();
+    }
+  }
+
+  onRowSelect(client: ClientRow) {
+    this.router.navigate(
+      [
+        client.id,
+        'general'
+      ],
+      { relativeTo: this.route }
+    );
+  }
+
+  private restoreFromQueryParams() {
+    const params = this.route.snapshot.queryParamMap;
+    this.filterText = params.get('q') ?? '';
+    this.pageSize = Number(params.get('size')) || this.pageSize;
+    this.first.set((Number(params.get('page')) || 0) * this.pageSize);
+    const sort = params.get('sort')?.split(',') ?? [];
+    if (sort.length === 2) {
+      this.sortAttribute = sort[0];
+      this.sortDirection = sort[1].toUpperCase();
+    }
+  }
+
+  private syncQueryParams() {
+    const page = Math.floor(this.first() / this.pageSize);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      replaceUrl: true,
+      queryParams: {
+        q: this.filterText || null,
+        page: page || null,
+        size: this.pageSize !== 25 ? this.pageSize : null,
+        sort: this.sortAttribute ? `${this.sortAttribute},${this.sortDirection.toLowerCase()}` : null
+      }
+    });
   }
 
   private getClients() {
-    this.clientsRequestSub?.unsubscribe();
-    this.isLoading = true;
-    this.clientsRequestSub = this.clientService
-      .searchByText(this.filterText, this.currentPage, this.pageSize, this.sortAttribute, this.sortDirection)
-      .subscribe(
-        (data: any) => {
-          this.dataSource.data = data.content;
-
-          this.totalRows = data.totalElements;
-
-          this.existsClientsToFilter = data.numberOfElements > 0;
-          this.notExistsClientsToFilter = !this.existsClientsToFilter;
-          this.isLoading = false;
+    this.requestSub?.unsubscribe();
+    this.isLoading.set(true);
+    const page = Math.floor(this.first() / this.pageSize);
+    this.requestSub = this.clientService
+      .searchByText(this.filterText, page, this.pageSize, this.sortAttribute, this.sortDirection)
+      .subscribe({
+        next: (data: any) => {
+          this.clients.set(data.content ?? []);
+          this.totalRows.set(data.totalElements ?? 0);
+          this.isLoading.set(false);
+          this.syncQueryParams();
         },
-        (error: any) => {
-          this.isLoading = false;
+        error: () => {
+          this.isLoading.set(false);
         }
-      );
-  }
-
-  pageChanged(event: PageEvent) {
-    this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex;
-    this.getClients();
-  }
-
-  sortChanged(event: Sort) {
-    if (event.direction === '') {
-      this.sortDirection = '';
-      this.sortAttribute = '';
-    } else {
-      this.sortAttribute = event.active;
-      this.sortDirection = event.direction;
-    }
-    this.resetPaginator();
-    this.getClients();
-  }
-
-  private resetPaginator() {
-    this.currentPage = 0;
-    this.paginator.firstPage();
+      });
+    this.destroyRef.onDestroy(() => this.requestSub?.unsubscribe());
   }
 }

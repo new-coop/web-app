@@ -41,8 +41,9 @@ import { of } from 'rxjs';
 import { PopoverService } from '../../configuration-wizard/popover/popover.service';
 import { ConfigurationWizardService } from '../../configuration-wizard/configuration-wizard.service';
 import { MatButton, MatIconButton } from '@angular/material/button';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MatTooltip } from '@angular/material/tooltip';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
+import { TableNameCellComponent } from '../../shared/ui/table-name-cell/table-name-cell.component';
+import { StatusBadgeComponent } from '../../shared/ui/status-badge/status-badge.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**
@@ -63,13 +64,14 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
     MatSortHeader,
     MatCellDef,
     MatCell,
-    MatTooltip,
     MatIconButton,
     MatHeaderRowDef,
     MatHeaderRow,
     MatRowDef,
     MatRow,
-    MatPaginator
+    MatPaginator,
+    TableNameCellComponent,
+    StatusBadgeComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

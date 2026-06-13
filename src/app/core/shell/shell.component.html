@@ -7,30 +7,31 @@
 -->
 
 <!-- Application Shell -->
-<mat-sidenav-container id="mifosx-shell-container" autosize>
-  <!-- Sidenav -->
-  <mat-sidenav
-    #sidenav
-    class="sidebar-panel"
-    [ngClass]="{
-      'sidebar-full': !sidenavCollapsed,
-      'sidebar-compact': sidenavCollapsed
-    }"
-    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="(isHandset$ | async) === false"
-  >
-    <mifosx-sidenav [sidenavCollapsed]="sidenavCollapsed"></mifosx-sidenav>
-  </mat-sidenav>
+<a class="skip-link" href="#main-content">{{ 'labels.text.Skip to main content' | translate }}</a>
+<div id="mifosx-shell-container" class="app-shell">
+  <!-- Sidebar (desktop) -->
+  @if ((isHandset$ | async) === false) {
+    <mifosx-app-sidebar
+      class="shell-sidebar"
+      [collapsed]="sidenavCollapsed"
+      [collapsible]="true"
+      (collapseToggle)="onMenuToggle()"
+    />
+  }
 
-  <!-- Content -->
-  <mat-sidenav-content class="sidenav">
-    <!-- Toolbar -->
-    <mifosx-toolbar [sidenav]="sidenav" (collapse)="toggleCollapse($event)"></mifosx-toolbar>
+  <div class="shell-main">
+    <!-- Topbar -->
+    <mifosx-app-topbar (menuToggle)="onMenuToggle()" (searchOpen)="globalSearch.open()" />
+
     <!-- Progress Bar -->
     @if (progressBarMode !== 'none') {
-      <div>
-        <div class="loading"></div>
+      <div
+        class="shell-progress"
+        role="progressbar"
+        aria-busy="true"
+        [attr.aria-label]="'labels.text.Loading' | translate"
+      >
+        <div class="shell-progress-bar"></div>
       </div>
     }
 
@@ -40,5 +41,13 @@
     <mifosx-content></mifosx-content>
     <!-- Footer -->
     <mifosx-footer [styleClass]="'main-page'"></mifosx-footer>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </div>
+</div>
+
+<!-- Sidebar (mobile drawer) -->
+<p-drawer [visible]="mobileNavVisible" (visibleChange)="mobileNavVisible = $event" styleClass="mobile-nav-drawer">
+  <mifosx-app-sidebar [collapsed]="false" (navigated)="mobileNavVisible = false" />
+</p-drawer>
+
+<!-- Global Search (Ctrl+K) -->
+<mifosx-global-search #globalSearch />

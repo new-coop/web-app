@@ -165,7 +165,7 @@ body.dark-theme {
   table {
     tbody {
       tr:nth-child(even) {
-        background-color: #303135 !important;
+        background-color: rgb(255 255 255 / 3%) !important;
       }
     }
   }
@@ -218,13 +218,14 @@ body.dark-theme {
     filter: invert(100%);
   }
 
-  a:any-link {
-    color: #0098ff !important;
-  }
+  // Legacy prose links in content areas (not shell navigation)
+  .container a:any-link,
+  .content-container a:any-link,
+  mat-card a:any-link {
+    color: var(--mifos-text-secondary, rgb(196 198 208 / 90%));
 
-  span.breadcrumb-link {
-    a {
-      color: #0098ff !important;
+    &:hover {
+      color: var(--mifos-text-primary, #f4f4f5);
     }
   }
 
@@ -254,14 +255,6 @@ body.dark-theme {
 
     .mat-checkbox {
       color: white !important;
-    }
-
-    .versions {
-      color: white !important;
-    }
-
-    .business-date {
-      color: #0098ff;
     }
   }
 

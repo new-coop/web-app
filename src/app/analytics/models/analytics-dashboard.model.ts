@@ -57,6 +57,9 @@ export interface AnalyticsChartDataset {
 export interface AnalyticsDetailItem {
   labelKey: string;
   value: number;
+  color?: string;
+  /** Precomputed percentage share of the detail value within its widget. */
+  share?: string;
 }
 
 export interface AnalyticsWidgetState {

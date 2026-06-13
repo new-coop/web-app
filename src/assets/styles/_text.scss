@@ -13,10 +13,11 @@ body {
 
 html {
   font-size: 16px;
+  font-family: var(--font-family, 'Inter', system-ui, sans-serif);
 }
 
 body {
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-family: var(--font-family, 'Inter', system-ui, sans-serif);
   font-weight: 400;
   font-size: 14px;
   color: rgb(0 0 0 / 87%);
@@ -24,15 +25,16 @@ body {
   letter-spacing: normal;
 }
 
+body.dark-theme {
+  color: var(--mifos-text-primary, #f4f4f5);
+}
+
 .mat-h1,
 .mat-headline,
 .mat-typography .mat-h1,
 .mat-typography .mat-headline,
 .mat-typography h1 {
-  font:
-    400 24px/32px Roboto,
-    'Helvetica Neue',
-    sans-serif;
+  font: 600 24px/32px var(--font-family, 'Inter', system-ui, sans-serif);
   letter-spacing: normal;
   margin: 0 0 16px;
 }

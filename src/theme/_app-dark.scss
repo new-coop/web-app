@@ -1,0 +1,92 @@
+/**
+ * Copyright since 2025 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+/**
+ * Global dark-mode polish for pages still on Material / legacy patterns.
+ * Shell and forms use --mifos-* tokens; this catches shared Material chrome.
+ */
+
+.dark-theme {
+  .mat-mdc-chip.mat-mdc-standard-chip {
+    --mdc-chip-label-text-color: var(--mifos-text-primary, #f4f4f5);
+    --mdc-chip-elevated-container-color: var(--mifos-surface-100, #2a2a30);
+    --mdc-chip-outline-color: var(--mifos-surface-200, rgb(255 255 255 / 10%));
+  }
+
+  .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) .mdc-evolution-chip__text-label {
+    color: var(--mifos-text-primary, #f4f4f5);
+  }
+
+  .mat-sort-header-sorted .mat-sort-header-content {
+    color: var(--mifos-text-primary, #f4f4f5);
+  }
+
+  .mat-sort-header-arrow {
+    color: var(--mifos-text-muted, rgb(161 161 170 / 88%));
+  }
+
+  // Legacy list containers
+  .container mat-card:not(:has(form)) {
+    background: var(--mifos-surface-0, #1c1c21);
+    color: var(--mifos-text-primary, #f4f4f5);
+    border-color: var(--mifos-surface-200, rgb(255 255 255 / 10%));
+  }
+
+  .bg-white,
+  .bg-fff {
+    background-color: var(--mifos-surface-0, #1c1c21) !important;
+  }
+
+  // Shell navigation — never inherit legacy Material link blues
+  mifosx-app-sidebar a.nav-item,
+  mifosx-app-sidebar a.brand,
+  mifosx-nav-hub a.hub-card,
+  .breadcrumb-link {
+    color: inherit;
+  }
+
+  // PrimeNG menus portaled to body (outside component hosts)
+  .p-menu {
+    background: var(--mifos-surface-0, #1c1c21);
+    border: 1px solid var(--mifos-surface-200, rgb(255 255 255 / 10%));
+    border-radius: var(--radius-md, 8px);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+    color: var(--mifos-text-primary, #f4f4f5);
+  }
+
+  .p-menu-list {
+    padding: var(--space-1, 4px);
+  }
+
+  .p-menu-item-content {
+    border-radius: 8px;
+    color: var(--mifos-text-secondary, rgb(196 198 208 / 90%));
+    transition:
+      background-color var(--motion-fast, 150ms) ease,
+      color var(--motion-fast, 150ms) ease;
+  }
+
+  .p-menu-item:not(.p-disabled) > .p-menu-item-content:hover {
+    background: var(--mifos-surface-100, #2a2a30);
+    color: var(--mifos-text-primary, #f4f4f5);
+  }
+
+  .p-menu-item.p-focus > .p-menu-item-content,
+  .p-menu-item.p-menuitem-active > .p-menu-item-content {
+    background: var(--mifos-accent-bg, rgb(255 255 255 / 12%));
+    color: var(--mifos-accent-fg, #fafafa);
+  }
+
+  .user-menu-item {
+    color: inherit;
+
+    mifosx-m3-icon .m3-icon {
+      color: inherit;
+    }
+  }
+}

@@ -42,7 +42,9 @@ import { of } from 'rxjs';
 /** Custom Services */
 import { PopoverService } from '../configuration-wizard/popover/popover.service';
 import { ConfigurationWizardService } from '../configuration-wizard/configuration-wizard.service';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
+import { TableNameCellComponent } from '../shared/ui/table-name-cell/table-name-cell.component';
+import { StatusBadgeComponent } from '../shared/ui/status-badge/status-badge.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**
@@ -55,6 +57,8 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
     FaIconComponent,
+    TableNameCellComponent,
+    StatusBadgeComponent,
     MatTable,
     MatSort,
     MatColumnDef,
@@ -82,9 +86,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
   usersData: any;
   /** Columns to be displayed in users table. */
   displayedColumns: string[] = [
-    'username',
     'firstname',
-    'lastname',
+    'username',
     'email',
     'officeName',
     'isSelfServiceUser'

@@ -28,7 +28,7 @@
   --ch-alert-bg: #ffebee;
   --ch-zero: #b0bec5;
 
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: var(--font-family, 'Inter', system-ui, sans-serif);
   display: block;
 }
 
@@ -101,7 +101,7 @@
 }
 
 .summary-value {
-  font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+  font-family: var(--font-family-mono, 'JetBrains Mono', ui-monospace, monospace);
   font-size: 22px;
   font-weight: 500;
   color: var(--ch-text-1);
@@ -279,7 +279,7 @@
 
 /* ── Monospace amounts ───────────────────────────────────────── */
 .mono {
-  font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
+  font-family: var(--font-family-mono, 'JetBrains Mono', ui-monospace, monospace);
   font-size: 13px;
 }
 

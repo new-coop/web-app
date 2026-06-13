@@ -6,46 +6,48 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-card>
-    <form [formGroup]="approveSharesAccountForm" (ngSubmit)="submit()">
-      <mat-card-content>
-        <div class="layout-column">
-          <mat-form-field (click)="approvedDatePicker.open()">
-            <mat-label>{{ 'labels.inputs.Approved On Date' | translate }}</mat-label>
-            <input
-              matInput
-              [min]="minDate"
-              [max]="maxDate"
-              [matDatepicker]="approvedDatePicker"
-              required
-              formControlName="approvedDate"
-            />
-            <mat-datepicker-toggle matSuffix [for]="approvedDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #approvedDatePicker></mat-datepicker>
-            @if (approveSharesAccountForm.controls.approvedDate.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Approved On Date' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
+<div class="container form-page form-page--narrow">
+  <mifosx-form-workspace eyebrow="labels.heading.Shares" title="labels.heading.Approve Shares Account">
+    <form [formGroup]="approveSharesAccountForm" (ngSubmit)="submit()" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
+            <mat-form-field (click)="approvedDatePicker.open()">
+              <mat-label>{{ 'labels.inputs.Approved On Date' | translate }}</mat-label>
+              <input
+                matInput
+                [min]="minDate"
+                [max]="maxDate"
+                [matDatepicker]="approvedDatePicker"
+                required
+                formControlName="approvedDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="approvedDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #approvedDatePicker></mat-datepicker>
+              @if (approveSharesAccountForm.controls.approvedDate.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Approved On Date' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>{{ 'labels.inputs.Note' | translate }}</mat-label>
-            <textarea matInput formControlName="note" cdkTextareaAutosize cdkAutosizeMinRows="2"></textarea>
-          </mat-form-field>
-        </div>
-      </mat-card-content>
-
-      <mat-card-actions class="layout-row align-center gap-5px responsive-column">
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Note' | translate }}</mat-label>
+              <textarea matInput formControlName="note" cdkTextareaAutosize cdkAutosizeMinRows="2"></textarea>
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
+      <footer class="form-workspace-footer">
         <button type="button" mat-raised-button [routerLink]="['../../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button mat-raised-button color="primary" [disabled]="!approveSharesAccountForm.valid">
+        <button mat-raised-button color="primary" type="submit">
           {{ 'labels.buttons.Submit' | translate }}
         </button>
-      </mat-card-actions>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>

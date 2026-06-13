@@ -7,11 +7,10 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router, ActivatedRoute, RouterLink } from '@angular/router';
-import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs';
 
 /** Custom Services */
@@ -20,10 +19,11 @@ import { SettingsService } from 'app/settings/settings.service';
 import { Dates } from 'app/core/utils/dates';
 import { Currency } from 'app/shared/models/general.model';
 import { InputAmountComponent } from '../../../shared/input-amount/input-amount.component';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
+
+type TransactionView = 'details' | 'confirm' | 'complete';
 
 /**
  * Create savings account transactions component.
@@ -35,16 +35,12 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
     InputAmountComponent,
-    MatSlideToggle,
     CdkTextareaAutosize,
-    MatStepperModule,
     FaIconComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SavingsAccountTransactionsComponent implements OnInit {
-  @ViewChild('stepper') stepper: MatStepper;
-
   private formBuilder = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -52,6 +48,7 @@ export class SavingsAccountTransactionsComponent implements OnInit {
   private savingsService = inject(SavingsService);
   private settingsService = inject(SettingsService);
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
   /** Minimum Due Date allowed. */
   minDate = new Date(2000, 0, 1);
@@ -67,8 +64,6 @@ export class SavingsAccountTransactionsComponent implements OnInit {
     isCashPayment: boolean;
     position: number;
   }[];
-  /** Flag to enable payment details fields. */
-  addPaymentDetailsFlag: Boolean = false;
   /** transaction type flag to render required UI */
   transactionType: { deposit: boolean; withdrawal: boolean } = { deposit: false, withdrawal: false };
   /** transaction command for submit request */
@@ -80,15 +75,18 @@ export class SavingsAccountTransactionsComponent implements OnInit {
   transactionResponse: any = null;
   /** Flag to track if transaction is being submitted */
   isSubmitting: boolean = false;
+  /** Current flat view (no stepper) */
+  currentView: TransactionView = 'details';
+
+  /** i18n key for the form-workspace page title */
+  get pageTitle(): string {
+    return this.transactionType.withdrawal
+      ? 'labels.heading.Withdraw Money From Saving Account'
+      : 'labels.heading.Deposit Money To Saving Account';
+  }
 
   /**
    * Retrieves the Saving Account transaction template data from `resolve`.
-   * @param {FormBuilder} formBuilder Form Builder.
-   * @param {SavingsService} savingsService Savings Service.
-   * @param {ActivatedRoute} route Activated Route.
-   * @param {Dates} dateUtils Date Utils.
-   * @param {Router} router Router for navigation.
-   * @param {SettingsService} settingsService Settings Service
    */
   constructor() {
     this.route.data.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((data: { savingsAccountActionData: any }) => {
@@ -96,6 +94,7 @@ export class SavingsAccountTransactionsComponent implements OnInit {
       if (data.savingsAccountActionData.currency) {
         this.currency = data.savingsAccountActionData.currency;
       }
+      this.cdr.markForCheck();
     });
     this.transactionCommand = this.route.snapshot.params['name'].toLowerCase();
     this.transactionType[this.transactionCommand as 'deposit' | 'withdrawal'] = true;
@@ -127,44 +126,31 @@ export class SavingsAccountTransactionsComponent implements OnInit {
         '',
         Validators.required
       ],
+      accountNumber: [''],
+      checkNumber: [''],
+      routingCode: [''],
+      receiptNumber: [''],
+      bankNumber: [''],
       note: ['']
     });
   }
 
   /**
-   * Method to add payment detail fields to the UI.
-   */
-  addPaymentDetails() {
-    this.addPaymentDetailsFlag = !this.addPaymentDetailsFlag;
-    if (this.addPaymentDetailsFlag) {
-      this.savingAccountTransactionForm.addControl('accountNumber', new FormControl(''));
-      this.savingAccountTransactionForm.addControl('checkNumber', new FormControl(''));
-      this.savingAccountTransactionForm.addControl('routingCode', new FormControl(''));
-      this.savingAccountTransactionForm.addControl('receiptNumber', new FormControl(''));
-      this.savingAccountTransactionForm.addControl('bankNumber', new FormControl(''));
-    } else {
-      this.savingAccountTransactionForm.removeControl('accountNumber');
-      this.savingAccountTransactionForm.removeControl('checkNumber');
-      this.savingAccountTransactionForm.removeControl('routingCode');
-      this.savingAccountTransactionForm.removeControl('receiptNumber');
-      this.savingAccountTransactionForm.removeControl('bankNumber');
-    }
-  }
-
-  /**
-   * Method to proceed to confirmation step.
+   * Method to proceed to confirmation view.
    */
   proceedToConfirmation() {
     if (this.savingAccountTransactionForm.valid) {
-      this.stepper.next();
+      this.currentView = 'confirm';
+      this.cdr.markForCheck();
     }
   }
 
   /**
-   * Method to go back to previous step.
+   * Method to go back to the details form.
    */
   goBack() {
-    this.stepper.previous();
+    this.currentView = 'details';
+    this.cdr.markForCheck();
   }
 
   /**
@@ -188,10 +174,16 @@ export class SavingsAccountTransactionsComponent implements OnInit {
     data['transactionAmount'] = data['transactionAmount'] * 1;
     this.savingsService
       .executeSavingsAccountTransactionsCommand(this.savingAccountId, this.transactionCommand, data)
-      .pipe(finalize(() => (this.isSubmitting = false)))
+      .pipe(
+        finalize(() => {
+          this.isSubmitting = false;
+          this.cdr.markForCheck();
+        })
+      )
       .subscribe((res) => {
         this.transactionResponse = res;
-        this.stepper.next();
+        this.currentView = 'complete';
+        this.cdr.markForCheck();
       });
   }
 
@@ -216,30 +208,5 @@ export class SavingsAccountTransactionsComponent implements OnInit {
    */
   printReceipt() {
     window.print();
-  }
-
-  /**
-   * Method to submit the transaction details.
-   * @deprecated
-   */
-  submit() {
-    const savingAccountTransactionFormData = this.savingAccountTransactionForm.value;
-    const locale = this.settingsService.language.code;
-    const dateFormat = this.settingsService.dateFormat;
-    const prevTransactionDate: Date = this.savingAccountTransactionForm.value.transactionDate;
-    if (savingAccountTransactionFormData.transactionDate instanceof Date) {
-      savingAccountTransactionFormData.transactionDate = this.dateUtils.formatDate(prevTransactionDate, dateFormat);
-    }
-    const data = {
-      ...savingAccountTransactionFormData,
-      dateFormat,
-      locale
-    };
-    data['transactionAmount'] = data['transactionAmount'] * 1;
-    this.savingsService
-      .executeSavingsAccountTransactionsCommand(this.savingAccountId, this.transactionCommand, data)
-      .subscribe((res) => {
-        this.router.navigate(['../../transactions'], { relativeTo: this.route });
-      });
   }
 }

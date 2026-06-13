@@ -6,51 +6,48 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container mat-elevation-z8">
-  <mat-card>
-    <form [formGroup]="closeLoanForm" (ngSubmit)="submit()">
-      <mat-card-content>
-        <div class="layout-column">
-          <mat-form-field (click)="closedDatePicker.open()">
-            <mat-label>{{ 'labels.inputs.Closed On' | translate }}</mat-label>
-            <input
-              matInput
-              [min]="minDate"
-              [max]="maxDate"
-              [matDatepicker]="closedDatePicker"
-              required
-              formControlName="transactionDate"
-            />
-            <mat-datepicker-toggle matSuffix [for]="closedDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #closedDatePicker></mat-datepicker>
-            @if (closeLoanForm.controls.transactionDate.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Closed Date' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
+<div class="container form-page form-page--narrow mat-elevation-z8">
+  <mifosx-form-workspace eyebrow="labels.heading.Loans" title="labels.heading.Loans Account Close">
+    <form [formGroup]="closeLoanForm" (ngSubmit)="submit()" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
+            <mat-form-field (click)="closedDatePicker.open()">
+              <mat-label>{{ 'labels.inputs.Closed On' | translate }}</mat-label>
+              <input
+                matInput
+                [min]="minDate"
+                [max]="maxDate"
+                [matDatepicker]="closedDatePicker"
+                required
+                formControlName="transactionDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="closedDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #closedDatePicker></mat-datepicker>
+              @if (closeLoanForm.controls.transactionDate.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Closed Date' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>{{ 'labels.inputs.Note' | translate }}</mat-label>
-            <textarea matInput formControlName="note" cdkTextareaAutosize cdkAutosizeMinRows="2"></textarea>
-          </mat-form-field>
-        </div>
-
-        <mat-card-actions class="layout-row align-center gap-5px responsive-column">
-          <button type="button" mat-raised-button (click)="gotoLoanDefaultView()">
-            {{ 'labels.buttons.Cancel' | translate }}
-          </button>
-          <button
-            mat-raised-button
-            color="primary"
-            [disabled]="!closeLoanForm.valid"
-            *mifosxHasPermission="'CLOSE_LOAN'"
-          >
-            {{ 'labels.buttons.Submit' | translate }}
-          </button>
-        </mat-card-actions>
-      </mat-card-content>
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Note' | translate }}</mat-label>
+              <textarea matInput formControlName="note" cdkTextareaAutosize cdkAutosizeMinRows="2"></textarea>
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
+      <footer class="form-workspace-footer">
+        <button type="button" mat-raised-button (click)="gotoLoanDefaultView()">
+          {{ 'labels.buttons.Cancel' | translate }}
+        </button>
+        <button mat-raised-button color="primary" *mifosxHasPermission="'CLOSE_LOAN'" type="submit">
+          {{ 'labels.buttons.Submit' | translate }}
+        </button>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>

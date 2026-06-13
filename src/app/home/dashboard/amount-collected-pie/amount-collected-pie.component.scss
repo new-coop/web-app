@@ -9,32 +9,101 @@
 .card {
   min-width: 18.5rem;
   padding: 0;
+  border-radius: 12px;
+  background: var(--mifos-surface-0, #fff);
+  border: 1px solid rgb(15 23 42 / 6%);
+  box-shadow: 0 1px 3px rgb(15 23 42 / 5%);
+  overflow: hidden;
+  transition:
+    box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    box-shadow: 0 4px 14px rgb(15 23 42 / 10%);
+  }
 
   .header {
-    :where(#office) {
-      margin-bottom: -1.2em;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
 
-      // Make sure mat-label text is visible in light theme
-      :where(mat-label) {
-        color: rgb(0 0 0 / 87%); // Standard Material Design text color for light theme
-      }
+    // Hide the empty header-text container mat-card-header generates,
+    // so it does not introduce an extra flex gap.
+    /* stylelint-disable-next-line selector-class-pattern */
+    ::ng-deep .mat-mdc-card-header-text {
+      display: none;
     }
+  }
+
+  .icon-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 8px;
+    background: rgb(168 85 247 / 12%);
+    color: #27272a;
+    font-size: 0.9375rem;
+    flex-shrink: 0;
+  }
+
+  .header-title {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: rgb(71 85 105 / 90%);
+  }
+
+  .office-field {
+    width: 11rem;
+    flex-shrink: 0;
+  }
+
+  mat-card-content {
+    padding: 1rem 1.25rem 1.25rem;
   }
 
   .fallback {
     height: 20rem;
+    color: rgb(71 85 105 / 80%);
   }
 }
 
 // Dark theme specific styles
 :host-context(.dark-theme) {
   .card {
+    background: var(--mifos-surface-0, #1c1c21);
+    border-color: rgb(255 255 255 / 8%);
+
+    .icon-chip {
+      background: rgb(161 161 170 / 14%);
+      color: #d4d4d8;
+    }
+
+    .header-title {
+      color: rgb(196 198 208 / 90%);
+    }
+
+    .fallback {
+      color: rgb(196 198 208 / 80%);
+    }
+  }
+}
+
+@media (width <= 768px) {
+  .card {
     .header {
-      :where(#office) {
-        :where(mat-label) {
-          color: white; // White text color for dark theme
-        }
-      }
+      flex-wrap: wrap;
+    }
+
+    .office-field {
+      width: 100%;
     }
   }
 }

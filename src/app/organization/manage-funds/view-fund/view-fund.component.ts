@@ -9,7 +9,7 @@
 import { ChangeDetectionStrategy, Component, inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { ExternalIdentifierComponent } from '../../../shared/external-identifier/external-identifier.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 

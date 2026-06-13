@@ -19,7 +19,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatFormField, MatPrefix, MatLabel, MatHint, MatError } from '@angular/material/form-field';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { M3IconComponent } from '../../shared/m3-ui/m3-icon/m3-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**
@@ -36,7 +36,7 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
     MatRadioButton,
     MatProgressSpinner,
     MatPrefix,
-    FaIconComponent,
+    M3IconComponent,
     MatHint
   ],
   changeDetection: ChangeDetectionStrategy.OnPush

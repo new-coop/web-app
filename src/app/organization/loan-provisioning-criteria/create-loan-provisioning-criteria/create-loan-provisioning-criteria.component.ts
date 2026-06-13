@@ -39,7 +39,7 @@ import { FormDialogComponent } from 'app/shared/form-dialog/form-dialog.componen
 import { OrganizationService } from '../../organization.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { MatFormField, MatLabel, MatError, MatHint } from '@angular/material/form-field';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { FindPipe } from '../../../pipes/find.pipe';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 import { TranslateService } from '@ngx-translate/core';

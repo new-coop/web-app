@@ -6,24 +6,410 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-.container {
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: clamp(0.5rem, 2vw, 1rem) 0 3rem;
   overflow-x: hidden;
 }
 
-.dashboard-layout {
+/* ===== Activity jump filter ===== */
+
+.activity-filter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  max-width: 28rem;
+  padding: 0 var(--space-1, 4px) 0 var(--space-3, 12px);
+  border-bottom: 1px solid var(--mifos-surface-200, #e4e4e7);
+  transition: border-color var(--motion-fast, 150ms) var(--ease-enter, ease-out);
+
+  &:focus-within {
+    border-bottom-color: var(--mifos-text-primary, #18181b);
+  }
+}
+
+.activity-filter-icon {
+  color: var(--mifos-surface-400, #a1a1aa);
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.activity-filter-input {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--mifos-text-primary, #18181b);
+
+  &::placeholder {
+    color: var(--mifos-surface-400, #a1a1aa);
+  }
+}
+
+/* ===== KPI row ===== */
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* stylelint-disable-line unit-allowed-list */
+  gap: clamp(0.75rem, 2vw, 1rem);
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: clamp(1rem, 2.5vw, 1.375rem) clamp(1rem, 3vw, 1.5rem);
+  border-radius: 16px;
+  background: var(--mifos-surface-0, #fff);
+  border: 1px solid var(--mifos-surface-200, #e4e4e7);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgb(15 23 42 / 5%));
+  transition: box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    box-shadow: 0 4px 14px rgb(15 23 42 / 10%);
+  }
+}
+
+.kpi-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 10px;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.kpi-navy .kpi-icon {
+  background: rgb(9 9 11 / 10%);
+  color: #18181b;
+}
+
+.kpi-gold .kpi-icon {
+  background: rgb(168 85 247 / 12%);
+  color: #27272a;
+}
+
+.kpi-green .kpi-icon {
+  background: rgb(22 163 74 / 10%);
+  color: #15803d;
+}
+
+.kpi-slate .kpi-icon {
+  background: rgb(71 85 105 / 10%);
+  color: #475569;
+}
+
+.kpi-body {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  min-width: 0;
 }
 
-.search-card {
-  padding: 16px;
+.kpi-value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  color: var(--mifos-text-primary, #18181b);
 }
 
-.search-card mat-card-content {
+// Skeleton shimmer while metrics load (Doherty Threshold: immediate feedback)
+.kpi-skeleton {
+  display: block;
+  width: 4.5rem;
+  height: 1.625rem;
+  margin: 0.25rem 0;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgb(9 9 11 / 8%) 25%, rgb(9 9 11 / 16%) 50%, rgb(9 9 11 / 8%) 75%);
+  background-size: 200% 100%;
+  animation: kpi-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes kpi-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.kpi-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--mifos-text-muted, #71717a);
+}
+
+/* ===== Chart grid ===== */
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* stylelint-disable-line unit-allowed-list */
+  gap: clamp(0.75rem, 2vw, 1rem);
+}
+
+.chart-cell {
+  min-width: 0;
+}
+
+.chart-wide {
+  grid-column: 1 / -1;
+}
+
+/* ===== Offices table ===== */
+
+.table-card {
+  border-radius: 16px;
+  background: var(--mifos-surface-0, #fff);
+  border: 1px solid var(--mifos-surface-200, #e4e4e7);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgb(15 23 42 / 5%));
+  overflow: hidden;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgb(15 23 42 / 6%);
+}
+
+.icon-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  background: rgb(71 85 105 / 10%);
+  color: #475569;
+  font-size: 0.9375rem;
+  flex-shrink: 0;
+}
+
+.table-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--mifos-text-primary, #18181b);
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.offices-table {
   width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+
+  thead th {
+    text-align: left;
+    padding: 0.875rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--mifos-surface-500, #71717a);
+    background: transparent;
+    border-bottom: 1px solid var(--mifos-surface-200, #e4e4e7);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: color 150ms ease;
+
+    &:hover {
+      color: var(--mifos-surface-900, #18181b);
+    }
+  }
+
+  tbody tr {
+    cursor: pointer;
+    transition: background-color 150ms ease;
+
+    &:hover {
+      background-color: var(--mifos-surface-50, #fafafa);
+    }
+
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  tbody td {
+    padding: 0.875rem 1.25rem;
+    color: var(--mifos-surface-700, #3f3f46);
+    border-bottom: 1px solid var(--mifos-surface-100, #f4f4f5);
+  }
+
+  .office-name {
+    font-weight: 500;
+  }
 }
 
-.search-card mat-form-field {
-  width: 100%;
+.sort-icon {
+  font-size: 0.625rem;
+  margin-left: 0.25rem;
+}
+
+/* ===== Analytics engine container ===== */
+
+.engine-panel {
+  display: block;
+  min-width: 0;
+}
+
+/* ===== Dark theme ===== */
+
+:host-context(.dark-theme) {
+  .activity-filter {
+    border-bottom-color: rgb(255 255 255 / 14%);
+
+    &:focus-within {
+      border-bottom-color: rgb(255 255 255 / 45%);
+    }
+  }
+
+  .activity-filter-icon {
+    color: rgb(161 161 170 / 90%);
+  }
+
+  .activity-filter-input {
+    color: #fafafa;
+
+    &::placeholder {
+      color: rgb(161 161 170 / 80%);
+    }
+  }
+
+  .kpi-card,
+  .table-card {
+    background: var(--mifos-surface-0, #1c1c21);
+    border-color: rgb(255 255 255 / 8%);
+  }
+
+  .page-icon {
+    background: rgb(161 161 170 / 14%);
+    color: #d4d4d8;
+  }
+
+  .kpi-label,
+  .table-title {
+    color: rgb(196 198 208 / 90%);
+  }
+
+  .kpi-skeleton {
+    background: linear-gradient(
+      90deg,
+      rgb(161 161 170 / 10%) 25%,
+      rgb(161 161 170 / 20%) 50%,
+      rgb(161 161 170 / 10%) 75%
+    );
+    background-size: 200% 100%;
+  }
+
+  .kpi-navy .kpi-icon {
+    background: rgb(161 161 170 / 14%);
+    color: #d4d4d8;
+  }
+
+  .kpi-gold .kpi-icon {
+    background: rgb(161 161 170 / 14%);
+    color: #d4d4d8;
+  }
+
+  .kpi-green .kpi-icon {
+    background: rgb(74 222 128 / 12%);
+    color: #86efac;
+  }
+
+  .kpi-slate .kpi-icon,
+  .icon-chip {
+    background: rgb(148 163 184 / 14%);
+    color: #cbd5e1;
+  }
+
+  .table-header {
+    border-bottom-color: rgb(255 255 255 / 8%);
+  }
+
+  .offices-table {
+    thead th {
+      background: rgb(255 255 255 / 3%);
+      border-bottom-color: rgb(255 255 255 / 10%);
+      color: rgb(196 198 208 / 95%);
+
+      &:hover {
+        color: #d4d4d8;
+      }
+    }
+
+    tbody td {
+      border-bottom-color: rgb(255 255 255 / 6%);
+    }
+
+    tbody tr:hover {
+      background-color: rgb(161 161 170 / 8%);
+    }
+  }
+}
+
+/* ===== Responsive ===== */
+
+@media (width <= 1024px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* stylelint-disable-line unit-allowed-list */
+  }
+}
+
+@media (width <= 768px) {
+  .activity-filter {
+    max-width: none;
+  }
+
+  .chart-grid {
+    grid-template-columns: minmax(0, 1fr); /* stylelint-disable-line unit-allowed-list */
+  }
+
+  .table-header {
+    padding: 0.875rem 1rem;
+  }
+
+  .offices-table {
+    thead th,
+    tbody td {
+      padding-right: 1rem;
+      padding-left: 1rem;
+    }
+  }
+}
+
+@media (width <= 480px) {
+  .kpi-grid {
+    grid-template-columns: minmax(0, 1fr); /* stylelint-disable-line unit-allowed-list */
+  }
+
+  .kpi-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.0625rem;
+    border-radius: 8px;
+  }
+
+  .kpi-value {
+    font-size: 1.5rem;
+  }
 }

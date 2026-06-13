@@ -17,9 +17,6 @@ import { Route } from '../core/route/route.service';
 import { HomeComponent } from './home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
-/** Custom Resolvers */
-import { OfficesResolver } from '../accounting/common-resolvers/offices.resolver';
-
 /** Home and Dashboard Routes */
 const routes: Routes = [
   Route.withShell([
@@ -36,10 +33,7 @@ const routes: Routes = [
     {
       path: 'dashboard',
       component: DashboardComponent,
-      data: { title: 'Dashboard', breadcrumb: 'Dashboard' },
-      resolve: {
-        offices: OfficesResolver
-      }
+      data: { title: 'Dashboard', breadcrumb: 'Dashboard' }
     }
   ])
 ];
@@ -51,7 +45,6 @@ const routes: Routes = [
  */
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: [OfficesResolver]
+  exports: [RouterModule]
 })
 export class HomeRoutingModule {}

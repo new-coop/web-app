@@ -57,7 +57,10 @@ import { UploadImageDialogComponent } from './clients-view/custom-dialogs/upload
 import { ClientScreenReportsComponent } from './clients-view/client-actions/client-screen-reports/client-screen-reports.component';
 import { EditClientComponent } from './edit-client/edit-client.component';
 import { CreateClientComponent } from './create-client/create-client.component';
-import { ClientGeneralStepComponent } from './client-stepper/client-general-step/client-general-step.component';
+import { ClientDetailsStepComponent } from './client-stepper/client-details-step/client-details-step.component';
+import { ClientPersonalStepComponent } from './client-stepper/client-personal-step/client-personal-step.component';
+import { ClientContactStepComponent } from './client-stepper/client-contact-step/client-contact-step.component';
+import { ClientAccountStepComponent } from './client-stepper/client-account-step/client-account-step.component';
 import { ClientFamilyMembersStepComponent } from './client-stepper/client-family-members-step/client-family-members-step.component';
 import { ClientPreviewStepComponent } from './client-stepper/client-preview-step/client-preview-step.component';
 import { ClientAddressStepComponent } from './client-stepper/client-address-step/client-address-step.component';
@@ -118,7 +121,10 @@ import { ClientDatatableStepComponent } from './client-stepper/client-datatable-
     ClientScreenReportsComponent,
     EditClientComponent,
     CreateClientComponent,
-    ClientGeneralStepComponent,
+    ClientDetailsStepComponent,
+    ClientPersonalStepComponent,
+    ClientContactStepComponent,
+    ClientAccountStepComponent,
     ClientFamilyMembersStepComponent,
     ClientPreviewStepComponent,
     ClientAddressStepComponent,

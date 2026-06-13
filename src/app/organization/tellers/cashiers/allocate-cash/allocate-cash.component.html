@@ -6,105 +6,102 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-card>
-    <form [formGroup]="allocateCashForm" (ngSubmit)="submit()">
-      <mat-card-content>
-        <div class="layout-row-wrap gap-2px responsive-column">
-          <mat-form-field class="flex-48">
-            <mat-label>{{ 'labels.inputs.Office' | translate }}</mat-label>
-            <input matInput required formControlName="office" />
-          </mat-form-field>
+<div class="container form-page">
+  <mifosx-form-workspace eyebrow="labels.heading.Organization" title="labels.heading.Allocate Cash">
+    <form [formGroup]="allocateCashForm" (ngSubmit)="submit()" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Office' | translate }}</mat-label>
+              <input matInput required formControlName="office" />
+            </mat-form-field>
 
-          <mat-form-field class="flex-48">
-            <mat-label>{{ 'labels.inputs.Teller Name' | translate }}</mat-label>
-            <input matInput required formControlName="tellerName" />
-          </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Teller Name' | translate }}</mat-label>
+              <input matInput required formControlName="tellerName" />
+            </mat-form-field>
 
-          <mat-form-field class="flex-48">
-            <mat-label>{{ 'labels.inputs.Cashier' | translate }}</mat-label>
-            <input matInput required formControlName="cashier" />
-          </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Cashier' | translate }}</mat-label>
+              <input matInput required formControlName="cashier" />
+            </mat-form-field>
 
-          <mat-form-field class="flex-48">
-            <mat-label>{{ 'labels.inputs.Assignment Period' | translate }}</mat-label>
-            <input matInput formControlName="assignmentPeriod" />
-          </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Assignment Period' | translate }}</mat-label>
+              <input matInput formControlName="assignmentPeriod" />
+            </mat-form-field>
 
-          <mat-form-field class="flex-48" (click)="cashDatePicker.open()">
-            <mat-label>{{ 'labels.inputs.Date' | translate }}</mat-label>
-            <input
-              matInput
-              [min]="minDate"
-              [max]="maxDate"
-              [matDatepicker]="cashDatePicker"
-              required
-              formControlName="txnDate"
-            />
-            <mat-datepicker-toggle matSuffix [for]="cashDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #cashDatePicker></mat-datepicker>
-            @if (allocateCashForm.controls.txnDate.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Date' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
-
-          <mat-form-field class="flex-48">
-            <mat-label>{{ 'labels.inputs.Currency' | translate }}</mat-label>
-            <mat-select required formControlName="currencyCode">
-              @for (currency of cashierData.currencyOptions; track currency) {
-                <mat-option [value]="currency.code">
-                  {{ currency.name }}
-                </mat-option>
+            <mat-form-field (click)="cashDatePicker.open()">
+              <mat-label>{{ 'labels.inputs.Date' | translate }}</mat-label>
+              <input
+                matInput
+                [min]="minDate"
+                [max]="maxDate"
+                [matDatepicker]="cashDatePicker"
+                required
+                formControlName="txnDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="cashDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #cashDatePicker></mat-datepicker>
+              @if (allocateCashForm.controls.txnDate.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Date' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
               }
-            </mat-select>
-            @if (allocateCashForm.controls.currencyCode.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Currency' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
+            </mat-form-field>
 
-          <mat-form-field class="flex-48">
-            <mat-label>{{ 'labels.inputs.Amount' | translate }}</mat-label>
-            <input matInput required formControlName="txnAmount" />
-            @if (allocateCashForm.controls.txnAmount.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Amount' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Currency' | translate }}</mat-label>
+              <mat-select required formControlName="currencyCode">
+                @for (currency of cashierData.currencyOptions; track currency) {
+                  <mat-option [value]="currency.code">
+                    {{ currency.name }}
+                  </mat-option>
+                }
+              </mat-select>
+              @if (allocateCashForm.controls.currencyCode.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Currency' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
 
-          <mat-form-field class="flex-48">
-            <mat-label>{{ 'labels.inputs.Notes/Comments' | translate }}</mat-label>
-            <input matInput required formControlName="txnNote" />
-            @if (allocateCashForm.controls.txnNote.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Notes/Comments' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
-        </div>
-      </mat-card-content>
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Amount' | translate }}</mat-label>
+              <input matInput required formControlName="txnAmount" />
+              @if (allocateCashForm.controls.txnAmount.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Amount' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
 
-      <mat-card-actions class="layout-row align-center gap-5px responsive-column">
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Notes/Comments' | translate }}</mat-label>
+              <input matInput required formControlName="txnNote" />
+              @if (allocateCashForm.controls.txnNote.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Notes/Comments' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
+      <footer class="form-workspace-footer">
         <button type="button" mat-raised-button [routerLink]="['../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="!allocateCashForm.valid"
-          *mifosxHasPermission="'ALLOCATECASHIER_TELLER'"
-        >
+        <button mat-raised-button color="primary" *mifosxHasPermission="'ALLOCATECASHIER_TELLER'" type="submit">
           {{ 'labels.buttons.Submit' | translate }}
         </button>
-      </mat-card-actions>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>

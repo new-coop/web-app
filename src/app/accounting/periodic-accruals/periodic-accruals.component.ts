@@ -15,7 +15,7 @@ import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { AccountingService } from '../accounting.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { Dates } from 'app/core/utils/dates';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 /**
  * Periodic accruals component.
@@ -70,6 +70,11 @@ export class PeriodicAccrualsComponent implements OnInit {
    * if successful redirects to accounting.
    */
   submit() {
+    if (this.periodicAccrualsForm.invalid) {
+      this.periodicAccrualsForm.markAllAsTouched();
+      return;
+    }
+
     const periodicAccruals = this.periodicAccrualsForm.value;
     // TODO: Update once language and date settings are setup
     periodicAccruals.locale = this.settingsService.language.code;

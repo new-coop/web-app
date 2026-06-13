@@ -22,7 +22,7 @@ import { AccountingService } from '../accounting.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { Dates } from 'app/core/utils/dates';
 import { MatIconButton, MatButton } from '@angular/material/button';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 /**
@@ -206,6 +206,11 @@ export class FrequentPostingsComponent implements OnInit {
    * if successful redirects to view created transaction.
    */
   submit() {
+    if (this.frequentPostingsForm.invalid) {
+      this.frequentPostingsForm.markAllAsTouched();
+      return;
+    }
+
     const journalEntry = this.frequentPostingsForm.value;
     journalEntry.accountingRule = journalEntry.accountingRule.id;
     // TODO: Update once language and date settings are setup

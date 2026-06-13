@@ -6,4 +6,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-@use '../shared/styles/list-layout' as *;
+// List chrome lives in theme/_tables.scss (.table-card, .table-toolbar, …)
+
+.toolbar-search-icon,
+.button-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 1;
+  color: currentcolor;
+}

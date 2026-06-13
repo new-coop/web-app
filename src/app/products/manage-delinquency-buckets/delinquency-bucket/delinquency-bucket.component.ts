@@ -22,7 +22,7 @@ import {
   MatRowDef,
   MatRow
 } from '@angular/material/table';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 import { MatMenu, MatMenuTrigger, MatMenuItem } from '@angular/material/menu';
 import { DelinquencyBucketBaseComponent } from '../delinquency-base.component';

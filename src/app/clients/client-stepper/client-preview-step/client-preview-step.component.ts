@@ -18,7 +18,7 @@ import {
   MatExpansionPanelDescription
 } from '@angular/material/expansion';
 import { MatStepperPrevious } from '@angular/material/stepper';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { FindPipe } from '../../../pipes/find.pipe';
 import { DateFormatPipe } from '../../../pipes/date-format.pipe';
 import { YesnoPipe } from '../../../pipes/yesno.pipe';
@@ -59,6 +59,9 @@ export class ClientPreviewStepComponent {
 
   /** Form submission event */
   @Output() submitEvent = new EventEmitter();
+
+  /** When false, hides the stepper action row (parent supplies footer) */
+  @Input() showActions = true;
 
   /** Expose enum to template */
   readonly LegalFormId = LegalFormId;

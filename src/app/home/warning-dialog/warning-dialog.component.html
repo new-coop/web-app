@@ -6,8 +6,11 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<h1 mat-dialog-title>{{ 'labels.text.' + title | translate }}</h1>
-<mat-dialog-content>{{ 'labels.text.Warning message' | translate }}</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-raised-button color="primary" mat-dialog-close>{{ 'labels.buttons.' + buttonText | translate }}</button>
-</mat-dialog-actions>
+@if (visible) {
+  <aside class="legal-notice" role="note">
+    <p class="legal-notice__text">{{ 'labels.text.Warning message' | translate }}</p>
+    <button type="button" mat-button class="legal-notice__dismiss" (click)="dismiss()">
+      {{ 'labels.buttons.' + buttonText | translate }}
+    </button>
+  </aside>
+}

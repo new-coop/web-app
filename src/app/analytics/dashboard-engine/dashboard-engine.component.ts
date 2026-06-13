@@ -8,7 +8,17 @@
 
 /* eslint-disable @angular-eslint/prefer-inject */
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  inject
+} from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subscription, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -42,6 +52,8 @@ import { DashboardWidgetComponent } from '../dashboard-widget/dashboard-widget.c
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardEngineComponent implements OnInit, OnChanges, OnDestroy {
+  private cdr = inject(ChangeDetectorRef);
+
   @Input({ required: true }) dashboard!: AnalyticsDashboardDefinition;
   @Input() offices: any[] = [];
 
@@ -78,7 +90,10 @@ export class DashboardEngineComponent implements OnInit, OnChanges, OnDestroy {
       this.reloadDashboard();
     });
 
-    this.reloadDashboard();
+    // Stretchy reports require R_officeId; skip until offices (or credentials) resolve an id.
+    if (this.filtersForm.value.officeId != null) {
+      this.reloadDashboard();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -117,6 +132,11 @@ export class DashboardEngineComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
+    const officeId = this.filtersForm?.value?.officeId;
+    if (officeId == null) {
+      return;
+    }
+
     if (forceRefresh) {
       this.analyticsDataSourceService.clearCache();
     }
@@ -136,6 +156,7 @@ export class DashboardEngineComponent implements OnInit, OnChanges, OnDestroy {
       }),
       {}
     );
+    this.cdr.markForCheck();
 
     this.loadSubscription = forkJoin(
       this.visibleWidgets.map((widget) =>
@@ -155,6 +176,7 @@ export class DashboardEngineComponent implements OnInit, OnChanges, OnDestroy {
           }),
           {}
         );
+        this.cdr.markForCheck();
       },
       error: () => {
         this.widgetStateMap = this.visibleWidgets.reduce(
@@ -167,6 +189,7 @@ export class DashboardEngineComponent implements OnInit, OnChanges, OnDestroy {
           }),
           {}
         );
+        this.cdr.markForCheck();
       }
     });
   }
@@ -182,8 +205,19 @@ export class DashboardEngineComponent implements OnInit, OnChanges, OnDestroy {
     return this.offices[0]?.id ?? null;
   }
   private updateVisibleWidgets(): void {
+    const previousStateMap = this.widgetStateMap;
     this.visibleWidgets = (this.dashboard?.widgets || []).filter((widget) =>
       this.analyticsVisibilityService.canView(widget.visibleTo)
+    );
+    this.widgetStateMap = this.visibleWidgets.reduce(
+      (accumulator, widget) => ({
+        ...accumulator,
+        [widget.id]: previousStateMap[widget.id] ?? {
+          loading: true,
+          empty: false
+        }
+      }),
+      {}
     );
   }
 }

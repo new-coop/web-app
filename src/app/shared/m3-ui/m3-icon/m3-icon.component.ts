@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export type M3IconStyle = 'outlined' | 'filled' | 'rounded' | 'sharp';
+export type M3IconStyle = 'outlined' | 'filled' | 'rounded' | 'sharp' | 'duotone';
 
 /**
  * Material Design 3 Icon Component
@@ -17,7 +17,7 @@ export type M3IconStyle = 'outlined' | 'filled' | 'rounded' | 'sharp';
  * Uses Google's Material Symbols font for consistent iconography.
  *
  * Features:
- * - Multiple icon styles: outlined (default), filled, rounded, and sharp
+ * - Multiple icon variants: duotone (default), outlined, filled, rounded, and sharp
  * - Automatic theme support
  * - Size control
  * - Color customization via CSS
@@ -27,12 +27,18 @@ export type M3IconStyle = 'outlined' | 'filled' | 'rounded' | 'sharp';
  * <mifosx-m3-icon name="account_circle"></mifosx-m3-icon>
  *
  * @example
- * // With filled style
- * <mifosx-m3-icon name="lock" style="filled"></mifosx-m3-icon>
+ * // With filled variant
+ * <mifosx-m3-icon name="lock" variant="filled"></mifosx-m3-icon>
  *
  * @example
  * // With custom size
  * <mifosx-m3-icon name="visibility" [size]="24"></mifosx-m3-icon>
+ *
+ * @example
+ * // Duotone: a soft filled layer underneath a crisp outlined layer.
+ * // Tones default to the theme primary color and can be overridden via the
+ * // --m3-icon-duotone-color and --m3-icon-duotone-fill-color CSS variables.
+ * <mifosx-m3-icon name="home" variant="duotone"></mifosx-m3-icon>
  *
  * Common icon mappings from Font Awesome:
  * - user-circle â†’ account_circle
@@ -63,12 +69,16 @@ export class M3IconComponent {
 
   /**
    * Icon style variant
-   * - outlined: Default style with strokes (default)
+   * - duotone: Two-tone icon — soft filled layer + outlined layer on top (default)
+   * - outlined: Stroke-only icons
    * - filled: Solid filled icons
    * - rounded: Rounded corner icons
    * - sharp: Sharp corner icons
+   *
+   * Named `variant` (not `style`) because Angular reserves the static
+   * `style` attribute for inline CSS and never forwards it to inputs.
    */
-  @Input() style: M3IconStyle = 'outlined';
+  @Input() variant: M3IconStyle = 'duotone';
 
   /**
    * Icon size in pixels
@@ -77,16 +87,23 @@ export class M3IconComponent {
   @Input() size: number = 24;
 
   /**
-   * Whether the icon should be filled (alternative to style="filled")
+   * Whether the icon should be filled (alternative to variant="filled")
    * This is a convenience property for backwards compatibility
    */
   @Input() filled: boolean = false;
 
   /**
+   * Whether the icon renders as two stacked tone layers
+   */
+  get isDuotone(): boolean {
+    return !this.filled && this.variant === 'duotone';
+  }
+
+  /**
    * Get the CSS class for the icon style
    */
   get iconClass(): string {
-    const styleToUse = this.filled ? 'filled' : this.style;
+    const styleToUse = this.filled ? 'filled' : this.variant;
     return `material-symbols-${styleToUse}`;
   }
 

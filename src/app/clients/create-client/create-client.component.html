@@ -6,76 +6,107 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-stepper orientation="vertical" [linear]="false" class="mat-elevation-z8" labelPosition="bottom" #clientStepper>
-    <ng-template matStepperIcon="number">
-      <fa-icon icon="pencil-alt" size="sm"></fa-icon>
-    </ng-template>
+<div class="container form-page">
+  <mifosx-form-workspace
+    eyebrow="labels.heading.Clients"
+    title="labels.heading.Create Client"
+    [showRequiredNote]="false"
+  >
+    @if (clientTemplate) {
+      <form class="form-workspace-form" (ngSubmit)="previewMode ? submit() : openPreview()">
+        <div class="form-workspace-body">
+          @if (!previewMode) {
+            @for (section of visibleSections; track section) {
+              <section class="form-section">
+                <h2 class="form-section-title">{{ sectionLabels[section] | translate }}</h2>
 
-    <ng-template matStepperIcon="edit">
-      <fa-icon icon="pencil-alt" size="sm"></fa-icon>
-    </ng-template>
+                @switch (section) {
+                  @case (CreateClientStep.Details) {
+                    <mifosx-client-details-step
+                      #clientDetails
+                      [clientTemplate]="clientTemplate"
+                      (legalFormChangeEvent)="legalFormChange($event)"
+                    ></mifosx-client-details-step>
+                  }
+                  @case (CreateClientStep.General) {
+                    <mifosx-client-personal-step
+                      #clientPersonal
+                      [clientTemplate]="clientTemplate"
+                      [legalFormId]="legalFormType"
+                      [externalIdControl]="clientDetailsForm?.get('externalId')"
+                      [externalNationalIdService]="clientDetailsStep?.externalNationalIdService"
+                    ></mifosx-client-personal-step>
+                  }
+                  @case (CreateClientStep.Contact) {
+                    <mifosx-client-contact-step
+                      #clientContact
+                      [clientTemplate]="clientTemplate"
+                    ></mifosx-client-contact-step>
+                  }
+                  @case (CreateClientStep.Settings) {
+                    <mifosx-client-account-step
+                      #clientAccount
+                      [clientTemplate]="clientTemplate"
+                    ></mifosx-client-account-step>
+                  }
+                  @case (CreateClientStep.FamilyMembers) {
+                    <mifosx-client-family-members-step
+                      #clientFamily
+                      [clientTemplate]="clientTemplate"
+                    ></mifosx-client-family-members-step>
+                  }
+                  @case (CreateClientStep.Address) {
+                    <mifosx-client-address-step
+                      #clientAddress
+                      [clientTemplate]="clientTemplate"
+                      [clientAddressFieldConfig]="clientAddressFieldConfig"
+                    ></mifosx-client-address-step>
+                  }
+                }
+              </section>
+            }
 
-    <ng-template matStepperIcon="done">
-      <fa-icon icon="check" size="sm"></fa-icon>
-    </ng-template>
+            @for (datatable of datatables; track datatable) {
+              <section class="form-section">
+                <h2 class="form-section-title">{{ datatable.registeredTableName }}</h2>
+                <mifosx-client-datatable-step [datatableData]="datatable" #dtclient></mifosx-client-datatable-step>
+              </section>
+            }
+          } @else {
+            <section class="form-section">
+              <h2 class="form-section-title">{{ 'labels.inputs.PREVIEW' | translate }}</h2>
+              <mifosx-client-preview-step
+                [clientTemplate]="clientTemplate"
+                [clientAddressFieldConfig]="clientAddressFieldConfig"
+                [client]="client"
+                [showActions]="false"
+                (submitEvent)="submit()"
+              ></mifosx-client-preview-step>
+            </section>
+          }
+        </div>
 
-    <ng-template matStepperIcon="error">
-      <fa-icon icon="exclamation-triangle" size="lg"></fa-icon>
-    </ng-template>
-
-    <ng-template matStepperIcon="preview">
-      <fa-icon icon="eye" size="sm"></fa-icon>
-    </ng-template>
-
-    <mat-step [stepControl]="clientGeneralForm">
-      <ng-template matStepLabel>{{ 'labels.inputs.GENERAL' | translate }}</ng-template>
-
-      <mifosx-client-general-step
-        [clientTemplate]="clientTemplate"
-        (legalFormChangeEvent)="legalFormChange($event)"
-      ></mifosx-client-general-step>
-    </mat-step>
-
-    <mat-step>
-      <ng-template matStepLabel>{{ 'labels.inputs.FAMILY MEMBERS' | translate }}</ng-template>
-
-      <mifosx-client-family-members-step
-        #clientFamily
-        [clientTemplate]="clientTemplate"
-      ></mifosx-client-family-members-step>
-    </mat-step>
-
-    @if (clientTemplate.isAddressEnabled) {
-      <mat-step>
-        <ng-template matStepLabel>{{ 'labels.inputs.ADDRESS' | translate }}</ng-template>
-        <mifosx-client-address-step
-          #clientAddress
-          [clientTemplate]="clientTemplate"
-          [clientAddressFieldConfig]="clientAddressFieldConfig"
-        >
-        </mifosx-client-address-step>
-      </mat-step>
+        <footer class="form-workspace-footer">
+          @if (!previewMode) {
+            <button type="button" mat-raised-button [routerLink]="['../']">
+              {{ 'labels.buttons.Cancel' | translate }}
+            </button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!areFormvalids()">
+              {{ 'labels.buttons.Preview' | translate }}
+            </button>
+          } @else {
+            <button type="button" mat-raised-button (click)="closePreview()">
+              {{ 'labels.buttons.Back' | translate }}
+            </button>
+            <button type="button" mat-raised-button [routerLink]="['../']">
+              {{ 'labels.buttons.Cancel' | translate }}
+            </button>
+            <button mat-raised-button color="primary" type="button" (click)="submit()">
+              {{ 'labels.buttons.Submit' | translate }}
+            </button>
+          }
+        </footer>
+      </form>
     }
-
-    @for (datatable of datatables; track datatable) {
-      <mat-step>
-        <ng-template matStepLabel>{{ datatable.registeredTableName }}</ng-template>
-        <mifosx-client-datatable-step [datatableData]="datatable" #dtclient></mifosx-client-datatable-step>
-      </mat-step>
-    }
-
-    @if (areFormvalids()) {
-      <mat-step completed>
-        <ng-template matStepLabel>{{ 'labels.inputs.PREVIEW' | translate }}</ng-template>
-        <mifosx-client-preview-step
-          [clientTemplate]="clientTemplate"
-          [clientAddressFieldConfig]="clientAddressFieldConfig"
-          [client]="client"
-          (submitEvent)="submit()"
-        >
-        </mifosx-client-preview-step>
-      </mat-step>
-    }
-  </mat-stepper>
+  </mifosx-form-workspace>
 </div>

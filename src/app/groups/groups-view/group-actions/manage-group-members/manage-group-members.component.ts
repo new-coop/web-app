@@ -20,7 +20,7 @@ import { ClientsService } from 'app/clients/clients.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
 import { MatIconButton } from '@angular/material/button';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatListSubheaderCssMatStyler, MatNavList } from '@angular/material/list';
 import { MatLine } from '@angular/material/grid-list';
 import { MatTooltip } from '@angular/material/tooltip';

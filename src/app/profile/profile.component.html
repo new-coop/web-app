@@ -6,89 +6,133 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container m-b-10 layout-row layout-lt-md-column align-end gap-1percent">
-  <button mat-raised-button color="primary" class="m-r-10" [routerLink]="['/system', 'roles-and-permissions']">
-    <fa-icon icon="check" class="m-r-10"></fa-icon>
-    {{ 'labels.buttons.Permissions' | translate }}
-  </button>
-  <button mat-raised-button color="primary" class="m-r-10" (click)="changeUserPassword()">
-    <fa-icon icon="cog" class="m-r-10"></fa-icon>
-    {{ 'labels.buttons.Change Password' | translate }}
-  </button>
-</div>
-<div class="container layout-column gap-1percent">
-  <mat-card>
-    <div class="layout-row-wrap">
-      <div class="info-box">
-        <div class="header">
-          {{ 'labels.inputs.Tenant Id' | translate }}
-        </div>
-        <div>
-          {{ tenantIdentifier }}
-        </div>
-      </div>
-      <div class="info-box">
-        <div class="header">
-          {{ 'labels.inputs.User Id' | translate }}
-        </div>
-        <div>
-          {{ profileData.userId }}
-        </div>
-      </div>
-      <div class="info-box">
-        <div class="header">
-          {{ 'labels.inputs.User Name' | translate }}
-        </div>
-        <div>
-          {{ profileData.username }}
-        </div>
-      </div>
-      <div class="info-box">
-        <div class="header">
-          {{ 'labels.inputs.Office' | translate }}
-        </div>
-        <div>
-          {{ profileData.officeName }}
-        </div>
-      </div>
-      <div class="info-box">
-        <div class="header">
-          {{ 'labels.inputs.Status' | translate }}
-        </div>
-        <div>
+<div class="profile-page">
+  <header class="profile-hero">
+    <mifosx-initials-avatar class="hero-avatar-initials" [name]="profileData.username" [size]="88" />
+
+    <div class="hero-identity">
+      <div class="hero-status-row">
+        <span class="status-pill">
+          <span class="status-pill-dot" [class.is-active]="profileData.authenticated"></span>
           {{ profileData.authenticated ? 'Authenticated' : 'Not Authenticated' }}
-        </div>
+        </span>
       </div>
-      <div class="info-box">
-        <div class="header">
-          {{ 'labels.inputs.Language' | translate }}
-        </div>
-        <div>
-          {{ language }}
-        </div>
+
+      <h1 class="hero-name">{{ profileData.username }}</h1>
+
+      <div class="hero-chips">
+        <span class="hero-chip">
+          <mifosx-m3-icon name="domain" [size]="16" />
+          <span class="hero-chip-label">{{ 'labels.inputs.Office' | translate }}</span>
+          <span class="hero-chip-value">{{ profileData.officeName }}</span>
+        </span>
+
+        <span class="hero-chip">
+          <mifosx-m3-icon name="apartment" [size]="16" />
+          <span class="hero-chip-label">{{ 'labels.inputs.Tenant Id' | translate }}</span>
+          <span class="hero-chip-value">{{ tenantIdentifier }}</span>
+        </span>
+
+        @if (profileData.staffDisplayName) {
+          <span class="hero-chip">
+            <mifosx-m3-icon name="badge" [size]="16" />
+            <span class="hero-chip-label">{{ 'labels.inputs.Staff' | translate }}</span>
+            <span class="hero-chip-value">{{ profileData.staffDisplayName }}</span>
+          </span>
+        }
       </div>
     </div>
-  </mat-card>
-  <mat-card>
-    <table class="mat-elevation-z1" mat-table [dataSource]="dataSource">
-      <ng-container matColumnDef="role">
-        <th mat-header-cell *matHeaderCellDef>
-          {{ 'labels.inputs.Role' | translate }}
-        </th>
-        <td mat-cell *matCellDef="let role">
-          {{ role.name }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef>
-          {{ 'labels.inputs.Description' | translate }}
-        </th>
-        <td mat-cell *matCellDef="let role">
-          {{ role.description }}
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </mat-card>
+
+    <div class="hero-actions">
+      <mifosx-m3-button
+        variant="tonal"
+        size="compact"
+        icon="admin_panel_settings"
+        [label]="'labels.buttons.Permissions' | translate"
+        (clicked)="navigateToPermissions()"
+      />
+      <mifosx-m3-button
+        variant="outlined"
+        size="compact"
+        icon="lock_reset"
+        [label]="'labels.buttons.Change Password' | translate"
+        (clicked)="changeUserPassword()"
+      />
+      <mifosx-m3-button
+        variant="text"
+        size="compact"
+        icon="settings"
+        [label]="'labels.menus.Settings' | translate"
+        (clicked)="navigateToSettings()"
+      />
+    </div>
+  </header>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <span class="kpi-icon kpi-user"><mifosx-m3-icon name="fingerprint" [size]="18" /></span>
+      <div class="kpi-body">
+        <span class="kpi-value">{{ profileData.userId }}</span>
+        <span class="kpi-label">{{ 'labels.inputs.User Id' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <span class="kpi-icon kpi-roles"><mifosx-m3-icon name="shield_person" [size]="18" /></span>
+      <div class="kpi-body">
+        <span class="kpi-value">{{ rolesCount }}</span>
+        <span class="kpi-label">{{ 'labels.inputs.Role' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <span class="kpi-icon kpi-perms"><mifosx-m3-icon name="verified_user" [size]="18" /></span>
+      <div class="kpi-body">
+        <span class="kpi-value">{{ permissionsCount }}</span>
+        <span class="kpi-label">{{ 'labels.buttons.Permissions' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <span class="kpi-icon kpi-lang"><mifosx-m3-icon name="translate" [size]="18" /></span>
+      <div class="kpi-body">
+        <span class="kpi-value kpi-value-text">{{ languageName }}</span>
+        <span class="kpi-label">{{ 'labels.inputs.Language' | translate }}</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="section-card">
+    <header class="section-head">
+      <div class="section-heading">
+        <span class="section-icon"><mifosx-m3-icon name="badge" [size]="18" /></span>
+        <h2>{{ 'labels.heading.User Profile' | translate }}</h2>
+      </div>
+      <span class="section-count">{{ rolesCount }}</span>
+    </header>
+
+    @if (rolesCount > 0) {
+      <div class="table-scroll">
+        <table mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Role' | translate }}</th>
+            <td mat-cell *matCellDef="let role">{{ role.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Description' | translate }}</th>
+            <td mat-cell *matCellDef="let role">{{ role.description }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+    } @else {
+      <div class="empty-state">
+        <mifosx-m3-icon name="shield" [size]="32" />
+        <p>{{ 'labels.text.No roles assigned to this user.' | translate }}</p>
+      </div>
+    }
+  </section>
 </div>

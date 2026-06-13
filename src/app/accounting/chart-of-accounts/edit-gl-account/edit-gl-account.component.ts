@@ -143,6 +143,11 @@ export class EditGlAccountComponent implements OnInit {
    * if successful redirects to view updated account.
    */
   submit() {
+    if (this.glAccountForm.invalid) {
+      this.glAccountForm.markAllAsTouched();
+      return;
+    }
+
     this.accountingService.updateGlAccount(this.glAccount.id, this.glAccountForm.value).subscribe((response: any) => {
       this.router.navigate(
         [

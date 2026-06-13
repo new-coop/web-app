@@ -21,7 +21,7 @@ import { Dates } from 'app/core/utils/dates';
 /** Custom Services */
 import { GroupsService } from 'app/groups/groups.service';
 import { SettingsService } from 'app/settings/settings.service';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatFormField, MatLabel, MatError, MatSuffix, MatHint } from '@angular/material/form-field';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 

@@ -10,8 +10,9 @@
   window["env"] = window["env"] || {};
 
   // BackEnd Environment variables
-  window["env"]["fineractApiUrls"] = '';
-  window["env"]["fineractApiUrl"] = '';
+  // Default to this app's origin so requests go through the dev proxy to local Fineract.
+  window["env"]["fineractApiUrls"] = window.location.origin + ',https://demo.mifos.community';
+  window["env"]["fineractApiUrl"] = window.location.origin;
 
   window["env"]["apiProvider"] = '';
   window["env"]["apiVersion"] = '';

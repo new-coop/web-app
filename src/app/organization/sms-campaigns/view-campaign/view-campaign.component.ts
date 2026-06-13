@@ -40,7 +40,7 @@ import { OrganizationService } from '../../organization.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { Dates } from 'app/core/utils/dates';
 import { DataReloadService } from 'app/core/services/data-reload.service';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatTabGroup, MatTab } from '@angular/material/tabs';
 import { MatList, MatListItem } from '@angular/material/list';
 import { DateFormatPipe } from '../../../pipes/date-format.pipe';

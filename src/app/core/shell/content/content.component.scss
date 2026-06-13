@@ -6,11 +6,23 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+.shell-content {
+  display: block;
+  min-height: 100%;
+  outline: none;
+}
+
 mifosx-content {
+  display: block;
   min-height: 100%;
   height: auto !important;
   height: 100%;
+
+  // Fluid gutters: full width minus a consistent inline gutter, capped at 84rem.
+  // Matches the breadcrumb container so headers and content always align.
+  width: min(100% - clamp(2rem, 6vw, 4rem), 84rem);
   margin: 0 auto -30px;
+  padding-bottom: 1.5rem;
 }
 
 #push {

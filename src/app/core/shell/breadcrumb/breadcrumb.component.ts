@@ -32,8 +32,8 @@ import { Breadcrumb } from './breadcrumb.model';
 import { PopoverService } from '../../../configuration-wizard/popover/popover.service';
 import { ConfigurationWizardService } from '../../../configuration-wizard/configuration-wizard.service';
 import { TranslateService } from '@ngx-translate/core';
-import { MatIcon } from '@angular/material/icon';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
+import { M3IconComponent } from 'app/shared/m3-ui/m3-icon/m3-icon.component';
 import { formatTabLabel } from 'app/shared/utils/format-tab-label.util';
 
 /**
@@ -74,7 +74,7 @@ const routeAddBreadcrumbLink = 'addBreadcrumbLink';
   styleUrls: ['./breadcrumb.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    MatIcon
+    M3IconComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -89,6 +89,8 @@ export class BreadcrumbComponent implements AfterViewInit {
 
   /** Array of breadcrumbs. */
   breadcrumbs: Breadcrumb[];
+  /** Cached ancestor trail; updated when breadcrumbs change (avoids slice on every CD). */
+  ancestorBreadcrumbs: Breadcrumb[] = [];
   /* Reference of breadcrumb */
   @ViewChild('breadcrumb') breadcrumb: ElementRef<any>;
   /* Template for popover on breadcrumb */
@@ -254,8 +256,18 @@ export class BreadcrumbComponent implements AfterViewInit {
             }
           });
         }
+        this.ancestorBreadcrumbs = this.breadcrumbs.length >= 2 ? this.breadcrumbs.slice(0, -1) : [];
         this.cdr.markForCheck();
       });
+  }
+
+  /** Translated label for the current page title. */
+  get pageTitle(): string | null {
+    if (!this.breadcrumbs?.length) {
+      return null;
+    }
+    const label = this.breadcrumbs[this.breadcrumbs.length - 1].label;
+    return label ? this.getTranslate(label) : null;
   }
 
   printableValue(value: string): string {

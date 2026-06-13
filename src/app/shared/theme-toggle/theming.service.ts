@@ -24,18 +24,13 @@ export class ThemingService {
   theme = new BehaviorSubject('light-theme'); // <- initial theme
 
   constructor() {
-    // Initially check if dark mode is enabled on system
-    this.darkModeOn = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    // If dark mode is enabled then directly switch to the dark-theme
-    this.setDarkMode(this.darkModeOn);
-
-    // Watch for changes of the preference
-    window.matchMedia('(prefers-color-scheme: dark)').addListener((e) => {
-      const turnOn = e.matches;
-      this.theme.next(turnOn ? 'dark-theme' : 'light-theme');
-
-      // Trigger refresh of UI
+    // Initial theme is applied via inline script in index.html (before paint).
+    // Listen for OS changes only when the user has not set an explicit preference.
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (localStorage.getItem('mifosXThemeDarkEnabled') !== null) {
+        return;
+      }
+      this.setDarkMode(e.matches);
       this.ref.tick();
     });
   }
@@ -47,13 +42,20 @@ export class ThemingService {
 
   setDarkMode(isDarkMode: boolean) {
     this.darkModeOn = isDarkMode;
+    const root = document.documentElement;
     if (isDarkMode) {
       document.body.classList.add('dark-theme');
       document.body.classList.remove('light-theme');
+      root.classList.add('dark-theme');
+      root.classList.remove('light-theme');
+      root.style.colorScheme = 'dark';
       this.theme.next('dark-theme');
     } else {
       document.body.classList.add('light-theme');
       document.body.classList.remove('dark-theme');
+      root.classList.add('light-theme');
+      root.classList.remove('dark-theme');
+      root.style.colorScheme = 'light';
       this.theme.next('light-theme');
     }
   }

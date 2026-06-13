@@ -26,7 +26,7 @@ import {
 } from '@angular/material/table';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TitleCasePipe } from '@angular/common';
 import { StatusLookupPipe } from '../../pipes/status-lookup.pipe';

@@ -57,13 +57,13 @@
           .mdc-notched-outline__leading,
           .mdc-notched-outline__notch,
           .mdc-notched-outline__trailing {
-            border-color: var(--md-sys-color-primary, #1074b9);
+            border-color: var(--md-sys-color-primary, #18181b);
             border-width: 2px;
           }
         }
 
         .mat-mdc-floating-label {
-          color: var(--md-sys-color-primary, #1074b9);
+          color: var(--md-sys-color-primary, #18181b);
         }
       }
 
@@ -112,12 +112,12 @@
         .mdc-notched-outline__leading,
         .mdc-notched-outline__notch,
         .mdc-notched-outline__trailing {
-          border-color: var(--md-sys-color-primary, #5ba2ec);
+          border-color: var(--md-sys-color-primary, #a1a1aa);
         }
       }
 
       .mat-mdc-floating-label {
-        color: var(--md-sys-color-primary, #5ba2ec);
+        color: var(--md-sys-color-primary, #a1a1aa);
       }
     }
 

@@ -6,10 +6,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ChangeDetectionStrategy, Component, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ThemingService } from './theming.service';
 import { SettingsService } from 'app/settings/settings.service';
-import { MatIconButton } from '@angular/material/button';
 import { M3IconComponent } from '../m3-ui/m3-icon/m3-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
@@ -19,23 +19,25 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   styleUrls: ['./theme-toggle.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    MatIconButton,
     M3IconComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ThemeToggleComponent implements OnInit, OnChanges {
+export class ThemeToggleComponent implements OnInit {
   private themingService = inject(ThemingService);
   private settingsService = inject(SettingsService);
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
-  darkModeOn: boolean;
+  darkModeOn = false;
 
   ngOnInit(): void {
     this.darkModeOn = !!this.settingsService.themeDarkEnabled;
-  }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.darkModeOn = !!this.settingsService.themeDarkEnabled;
+    this.themingService.theme.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((theme) => {
+      this.darkModeOn = theme === 'dark-theme';
+      this.cdr.markForCheck();
+    });
   }
 
   /**

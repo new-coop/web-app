@@ -1,0 +1,26 @@
+<!--
+  Copyright since 2025 Mifos Initiative
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<div class="form-workspace">
+  <header class="form-workspace-header">
+    <div class="form-workspace-heading">
+      @if (eyebrow()) {
+        <p class="form-workspace-eyebrow">{{ eyebrow() | translate }}</p>
+      }
+      <h1 class="form-workspace-title">{{ title() | translate }}</h1>
+    </div>
+    @if (showRequiredNote()) {
+      <p class="form-workspace-note">
+        <span class="field-required">*</span>
+        {{ 'labels.text.Red asterisk field' | translate }}
+      </p>
+    }
+  </header>
+
+  <ng-content />
+</div>

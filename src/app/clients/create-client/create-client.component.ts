@@ -9,6 +9,7 @@
 /** Angular Imports */
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   DestroyRef,
   QueryList,
@@ -17,22 +18,31 @@ import {
   inject
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 
 /** Custom Services */
 import { ClientsService } from '../clients.service';
+import { Dates } from 'app/core/utils/dates';
 
 /** Custom Components */
-import { ClientGeneralStepComponent } from '../client-stepper/client-general-step/client-general-step.component';
+import { ClientDetailsStepComponent } from '../client-stepper/client-details-step/client-details-step.component';
+import { ClientPersonalStepComponent } from '../client-stepper/client-personal-step/client-personal-step.component';
+import { ClientContactStepComponent } from '../client-stepper/client-contact-step/client-contact-step.component';
+import { ClientAccountStepComponent } from '../client-stepper/client-account-step/client-account-step.component';
 import { ClientFamilyMembersStepComponent } from '../client-stepper/client-family-members-step/client-family-members-step.component';
 import { ClientAddressStepComponent } from '../client-stepper/client-address-step/client-address-step.component';
 import { ClientDatatableStepComponent } from '../client-stepper/client-datatable-step/client-datatable-step.component';
+import { ClientPreviewStepComponent } from '../client-stepper/client-preview-step/client-preview-step.component';
+import { buildClientGeneralDetails } from '../client-stepper/client-stepper.utils';
+import { LegalFormId } from '../models/legal-form.enum';
+import {
+  CreateClientStep,
+  CREATE_CLIENT_CORE_SECTIONS,
+  CREATE_CLIENT_SECTION_LABELS
+} from '../models/create-client-step.enum';
 
 /** Custom Services */
 import { SettingsService } from 'app/settings/settings.service';
-import { MatStepper, MatStepperIcon, MatStep, MatStepLabel } from '@angular/material/stepper';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { ClientPreviewStepComponent } from '../client-stepper/client-preview-step/client-preview-step.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**
@@ -44,12 +54,11 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   styleUrls: ['./create-client.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    MatStepper,
-    MatStepperIcon,
-    FaIconComponent,
-    MatStep,
-    MatStepLabel,
-    ClientGeneralStepComponent,
+    RouterLink,
+    ClientDetailsStepComponent,
+    ClientPersonalStepComponent,
+    ClientContactStepComponent,
+    ClientAccountStepComponent,
     ClientFamilyMembersStepComponent,
     ClientAddressStepComponent,
     ClientDatatableStepComponent,
@@ -62,32 +71,28 @@ export class CreateClientComponent {
   private router = inject(Router);
   private clientsService = inject(ClientsService);
   private settingsService = inject(SettingsService);
+  private dateUtils = inject(Dates);
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
-  /** Client General Step */
-  @ViewChild(ClientGeneralStepComponent, { static: true }) clientGeneralStep: ClientGeneralStepComponent;
-  /** Client Family Members Step */
+  readonly CreateClientStep = CreateClientStep;
+  readonly sectionLabels = CREATE_CLIENT_SECTION_LABELS;
+
+  @ViewChild('clientDetails') clientDetailsStep: ClientDetailsStepComponent;
+  @ViewChild('clientPersonal') clientPersonalStep: ClientPersonalStepComponent;
+  @ViewChild('clientContact') clientContactStep: ClientContactStepComponent;
+  @ViewChild('clientAccount') clientAccountStep: ClientAccountStepComponent;
   @ViewChild('clientFamily') clientFamilyMembersStep: ClientFamilyMembersStepComponent;
-  /** Client Address Step */
   @ViewChild('clientAddress') clientAddressStep: ClientAddressStepComponent;
-  /** Get handle on dtclient tags in the template */
   @ViewChildren('dtclient') clientDatatables: QueryList<ClientDatatableStepComponent>;
 
   datatables: any = [];
-  legalFormType = 1;
+  legalFormType = LegalFormId.PERSON;
+  previewMode = false;
 
-  /** Client Template */
   clientTemplate: any;
-  /** Client Address Field Config */
   clientAddressFieldConfig: any;
 
-  /**
-   * Fetches client and address template from `resolve`
-   * @param {ActivatedRoute} route Activated Route
-   * @param {Router} router Router
-   * @param {ClientsService} clientsService Clients Service
-   * @param {SettingsService} settingsService Setting service
-   */
   constructor() {
     this.route.data
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -95,40 +100,93 @@ export class CreateClientComponent {
         this.clientTemplate = data.clientTemplate;
         this.clientAddressFieldConfig = data.clientAddressFieldConfig;
         this.setDatatables();
+        this.cdr.markForCheck();
       });
   }
 
-  /**
-   * Retrieves general information about client.
-   */
-  get clientGeneralForm() {
-    return this.clientGeneralStep.createClientForm;
+  get visibleSections(): CreateClientStep[] {
+    const sections = [...CREATE_CLIENT_CORE_SECTIONS];
+    if (this.clientTemplate?.isAddressEnabled) {
+      sections.push(CreateClientStep.Address);
+    }
+    return sections;
   }
 
-  /**
-   * Retrieves the client object
-   */
+  get clientDetailsForm() {
+    return this.clientDetailsStep?.clientDetailsForm;
+  }
+
+  get clientPersonalForm() {
+    return this.clientPersonalStep?.clientPersonalForm;
+  }
+
+  get clientContactForm() {
+    return this.clientContactStep?.clientContactForm;
+  }
+
+  get clientAccountForm() {
+    return this.clientAccountStep?.clientAccountForm;
+  }
+
+  get clientFormValid() {
+    if (!this.clientDetailsForm || !this.clientPersonalForm || !this.clientContactForm || !this.clientAccountForm) {
+      return false;
+    }
+
+    return (
+      this.clientDetailsForm.valid &&
+      this.clientPersonalForm.valid &&
+      this.clientContactForm.valid &&
+      this.clientAccountForm.valid
+    );
+  }
+
+  get clientGeneralDetails() {
+    if (!this.clientDetailsStep || !this.clientPersonalStep || !this.clientContactStep || !this.clientAccountStep) {
+      return {};
+    }
+
+    return buildClientGeneralDetails(
+      {
+        ...this.clientDetailsStep.clientDetails,
+        ...this.clientPersonalStep.clientPersonal,
+        ...this.clientContactStep.clientContact,
+        ...this.clientAccountStep.clientAccount
+      },
+      this.dateUtils,
+      this.settingsService
+    );
+  }
+
   get client() {
-    if (this.clientTemplate.isAddressEnabled) {
+    if (!this.clientFamilyMembersStep) {
+      return this.clientGeneralDetails;
+    }
+
+    if (this.clientTemplate?.isAddressEnabled && this.clientAddressStep) {
       return {
-        ...this.clientGeneralStep.clientGeneralDetails,
+        ...this.clientGeneralDetails,
         ...this.clientFamilyMembersStep.familyMembers,
         ...this.clientAddressStep.address
       };
-    } else {
-      return {
-        ...this.clientGeneralStep.clientGeneralDetails,
-        ...this.clientFamilyMembersStep.familyMembers
-      };
     }
+
+    return {
+      ...this.clientGeneralDetails,
+      ...this.clientFamilyMembersStep.familyMembers
+    };
   }
 
   areFormvalids(): boolean {
-    let areValids = this.clientGeneralForm.valid;
-    if (this.clientTemplate.isAddressEnabled) {
-      areValids = areValids && this.clientAddressStep.address.address.length > 0;
+    if (!this.clientFormValid) {
+      return false;
     }
-    if (this.clientTemplate.datatables && this.clientTemplate.datatables.length > 0 && this.clientDatatables) {
+
+    let areValids = true;
+    if (this.clientTemplate?.isAddressEnabled && this.clientAddressStep) {
+      areValids = this.clientAddressStep.address.address.length > 0;
+    }
+    if (this.clientTemplate?.datatables?.length > 0 && this.clientDatatables) {
       this.clientDatatables.forEach((clientDatatable: ClientDatatableStepComponent) => {
         areValids = areValids && clientDatatable.datatableForm.valid;
       });
@@ -139,11 +197,8 @@ export class CreateClientComponent {
 
   setDatatables(): void {
     this.datatables = [];
-    let legalFormTypeVal = 'person';
-    if (this.legalFormType === 2) {
-      legalFormTypeVal = 'entity';
-    }
-    if (this.clientTemplate.datatables) {
+    const legalFormTypeVal = this.legalFormType === LegalFormId.ENTITY ? 'entity' : 'person';
+    if (this.clientTemplate?.datatables) {
       this.clientTemplate.datatables.forEach((datatable: any) => {
         if (datatable.entitySubType.toLowerCase() === legalFormTypeVal) {
           this.datatables.push(datatable);
@@ -155,15 +210,29 @@ export class CreateClientComponent {
   legalFormChange(eventData: { legalForm: number }) {
     this.legalFormType = eventData.legalForm;
     this.setDatatables();
+    this.previewMode = false;
   }
 
-  /**
-   * Submits the create client form.
-   */
+  openPreview(): void {
+    if (this.areFormvalids()) {
+      this.previewMode = true;
+      this.cdr.markForCheck();
+    }
+  }
+
+  closePreview(): void {
+    this.previewMode = false;
+    this.cdr.markForCheck();
+  }
+
   submit() {
+    if (!this.areFormvalids()) {
+      return;
+    }
+
     const locale = this.settingsService.language.code;
     const dateFormat = this.settingsService.dateFormat;
-    const clientData = {
+    const clientData: Record<string, any> = {
       ...this.client,
       dateFormat,
       locale
@@ -180,6 +249,7 @@ export class CreateClientComponent {
     }
 
     this.clientsService.createClient(clientData).subscribe((response: any) => {
+      this.previewMode = false;
       this.router.navigate(
         [
           '../',

@@ -7,9 +7,10 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, AfterViewInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, NavigationExtras, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationExtras, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 
 /** Custom Services */
@@ -27,17 +28,16 @@ import { DelinquencyPausePeriod } from '../models/loan-account.model';
 import { TranslateService } from '@ngx-translate/core';
 import { LoanTransaction } from 'app/products/loan-products/models/loan-account.model';
 import { OptionData } from 'app/shared/models/option-data.model';
-import { AccountHeaderComponent } from '../../shared/account-header/account-header.component';
-import { SvgIconComponent } from '../../shared/svg-icon/svg-icon.component';
 import { MatTooltip } from '@angular/material/tooltip';
 import { NgClass, CurrencyPipe } from '@angular/common';
 import { LongTextComponent } from '../../shared/long-text/long-text.component';
 import { AccountNumberComponent } from '../../shared/account-number/account-number.component';
 import { ExternalIdentifierComponent } from '../../shared/external-identifier/external-identifier.component';
-import { MatIconButton } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
+import { StatusLookupPipe } from '../../pipes/status-lookup.pipe';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
 import { DateFormatPipe } from '../../pipes/date-format.pipe';
 import { FormatNumberPipe } from '../../pipes/format-number.pipe';
@@ -51,14 +51,13 @@ import { LoanProductBaseComponent } from 'app/products/loan-products/common/loan
   styleUrls: ['./loans-view.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    AccountHeaderComponent,
-    SvgIconComponent,
     MatTooltip,
     NgClass,
     LongTextComponent,
     AccountNumberComponent,
     ExternalIdentifierComponent,
-    MatIconButton,
+    MatButton,
+    StatusLookupPipe,
     MatMenuTrigger,
     MatIcon,
     FaIconComponent,
@@ -75,7 +74,7 @@ import { LoanProductBaseComponent } from 'app/products/loan-products/common/loan
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoansViewComponent extends LoanProductBaseComponent implements OnInit {
+export class LoansViewComponent extends LoanProductBaseComponent implements OnInit, AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);
   private route = inject(ActivatedRoute);
   loansService = inject(LoansService);
@@ -156,6 +155,12 @@ export class LoansViewComponent extends LoanProductBaseComponent implements OnIn
         this.reload();
       }
     });
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => this.scrollActiveTabIntoView());
     this.recalculateInterest = this.loanDetailsData?.recalculateInterest || true;
     this.status = this.loanDetailsData?.status?.value;
     this.loanStatus = this.loanDetailsData?.status;
@@ -178,6 +183,32 @@ export class LoansViewComponent extends LoanProductBaseComponent implements OnIn
       this.entityType = 'Center';
     }
     this.loanDelinquencyClassification();
+  }
+
+  ngAfterViewInit(): void {
+    this.scrollActiveTabIntoView();
+  }
+
+  showFactsStrip(): boolean {
+    const data = this.loanDetailsData;
+    if (!data) {
+      return false;
+    }
+    if (data.summary || data.externalId || data.proposedPrincipal != null) {
+      return true;
+    }
+    if (data.delinquencyRange || data.delinquent?.pastDueDays > 0) {
+      return true;
+    }
+    return this.loanProductService.isWorkingCapital && !!data.balance;
+  }
+
+  private scrollActiveTabIntoView(): void {
+    setTimeout(() => {
+      document
+        .querySelector('.navigation-tabs .mat-mdc-tab-link.mdc-tab--active')
+        ?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+    }, 0);
   }
 
   /**

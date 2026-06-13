@@ -1,0 +1,54 @@
+<!--
+  Copyright since 2025 Mifos Initiative
+
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button
+      type="button"
+      class="icon-button"
+      (click)="menuToggle.emit()"
+      [attr.aria-label]="'labels.menus.Main Items' | translate"
+    >
+      <mifosx-m3-icon name="menu" [size]="20" />
+    </button>
+  </div>
+
+  <div class="topbar-right">
+    <button
+      type="button"
+      class="search-trigger"
+      (click)="searchOpen.emit()"
+      [attr.aria-label]="'labels.heading.Search' | translate"
+    >
+      <mifosx-m3-icon name="search" [size]="18" />
+      <kbd class="search-kbd">{{ searchShortcut }}</kbd>
+    </button>
+
+    <ng-container *mifosxHasPermission="'READ_NOTIFICATION'">
+      <mifosx-notifications-tray class="topbar-notifications" />
+    </ng-container>
+
+    <mifosx-theme-toggle class="topbar-theme" />
+
+    <mifosx-language-selector class="topbar-language" />
+
+    <button type="button" class="user-button" (click)="userMenu.toggle($event)" aria-haspopup="menu">
+      <mifosx-initials-avatar [name]="username" [size]="28" />
+      <span class="user-name">{{ username }}</span>
+      <mifosx-m3-icon name="expand_more" [size]="16" />
+    </button>
+    <p-menu #userMenu [model]="userMenuItems" [popup]="true" appendTo="body">
+      <ng-template #item let-menuItem>
+        <div class="user-menu-item">
+          <mifosx-m3-icon [name]="menuItem.icon" [size]="18" />
+          <span>{{ menuItem.label }}</span>
+        </div>
+      </ng-template>
+    </p-menu>
+  </div>
+</header>

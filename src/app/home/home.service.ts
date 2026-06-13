@@ -12,6 +12,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 /** rxjs Imports */
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /**
  * Home Service
@@ -21,6 +22,45 @@ import { Observable } from 'rxjs';
 })
 export class HomeService {
   private http = inject(HttpClient);
+
+  /**
+   * Total number of clients across the institution.
+   * @returns {Observable<number>}
+   */
+  getClientsCount(): Observable<number> {
+    const httpParams = new HttpParams().set('limit', '1').set('offset', '0');
+    return this.http
+      .get('/clients', { params: httpParams })
+      .pipe(map((response: any) => response.totalFilteredRecords));
+  }
+
+  /**
+   * Total number of loan accounts across the institution.
+   * @returns {Observable<number>}
+   */
+  getLoanAccountsCount(): Observable<number> {
+    const httpParams = new HttpParams().set('limit', '1').set('offset', '0');
+    return this.http.get('/loans', { params: httpParams }).pipe(map((response: any) => response.totalFilteredRecords));
+  }
+
+  /**
+   * Total number of savings accounts across the institution.
+   * @returns {Observable<number>}
+   */
+  getSavingsAccountsCount(): Observable<number> {
+    const httpParams = new HttpParams().set('limit', '1').set('offset', '0');
+    return this.http
+      .get('/savingsaccounts', { params: httpParams })
+      .pipe(map((response: any) => response.totalFilteredRecords));
+  }
+
+  /**
+   * Total number of offices.
+   * @returns {Observable<number>}
+   */
+  getOfficesCount(): Observable<number> {
+    return this.http.get('/offices').pipe(map((response: any) => (Array.isArray(response) ? response.length : 0)));
+  }
 
   /**
    * @param {number} officeId Office Id.

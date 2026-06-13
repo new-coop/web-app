@@ -26,6 +26,9 @@ import { DocumentationLinkPipe } from '@pipes/documentation-link.pipe';
 import { TranslatePipe as NgxTranslatePipe } from '@ngx-translate/core';
 import { TranslatePipe } from '@pipes/translate.pipe';
 import { HasPermissionDirective } from './directives/has-permission/has-permission.directive';
+import { TouchOnSubmitDirective } from './directives/touch-on-submit.directive';
+import { ValidateOnBlurDirective } from './directives/validate-on-blur.directive';
+import { FormWorkspaceComponent } from './shared/form-workspace/form-workspace.component';
 
 export const STANDALONE_SHARED_IMPORTS = [
   CommonModule,
@@ -54,10 +57,16 @@ export const STANDALONE_SHARED_IMPORTS = [
   DateFormatPipe,
   DocumentationLinkPipe,
   HasPermissionDirective,
+  TouchOnSubmitDirective,
+  ValidateOnBlurDirective,
+  FormWorkspaceComponent,
 
   // Pipes and Directives
   NgxTranslatePipe,
   TranslatePipe
 ];
+export { FormWorkspaceComponent } from './shared/form-workspace/form-workspace.component';
 export { M3ButtonComponent } from './shared/m3-ui/m3-button/m3-button.component';
 export { HasPermissionDirective } from './directives/has-permission/has-permission.directive';
+export { TouchOnSubmitDirective } from './directives/touch-on-submit.directive';
+export { ValidateOnBlurDirective } from './directives/validate-on-blur.directive';

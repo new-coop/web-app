@@ -766,7 +766,8 @@
       "DONE": "Fertig",
       "Submitting": "Wird gesendet",
       "OK": "OK",
-      "undo_account_transfer": "Kontotransfer rückgängig machen"
+      "undo_account_transfer": "Kontotransfer rückgängig machen",
+      "View all results": "Alle Ergebnisse anzeigen"
     },
     "catalogs": {
       "Interest payment waiver": "Zinszahlungsverzicht",
@@ -1563,7 +1564,23 @@
       "identifier id": "Identifikator-ID",
       "savings-transaction-datatable-tab works": "saving-transaction-datatable-tab funktioniert",
       "successfully select option": "erfolgreich. Bitte wählen Sie eine der folgenden Optionen aus, um fortzufahren.",
-      "undo_account_transfer": "Kontotransfer rückgängig machen"
+      "undo_account_transfer": "Kontotransfer rückgängig machen",
+      "Quick Actions": "Quick Actions",
+      "Search": "Suchen",
+      "Customization": "Anpassung",
+      "Security and Oversight": "Sicherheit und Aufsicht",
+      "Automation and Integrations": "Automatisierung und Integrationen",
+      "Configuration": "Konfiguration",
+      "About": "Über",
+      "Structure and Staff": "Struktur und Personal",
+      "Loans and Funds": "Kredite und Fonds",
+      "Payments and Cash": "Zahlungen und Kasse",
+      "Tools": "Werkzeuge",
+      "Loans": "Kredite",
+      "Deposits and Shares": "Einlagen und Anteile",
+      "Pricing and Rules": "Preise und Regeln",
+      "Ledger Setup": "Hauptbuch-Einrichtung",
+      "Period Operations": "Periodenvorgänge"
     },
     "inputs": {
       "# Remittance": "# Überweisung",
@@ -3146,6 +3163,7 @@
       "Clients": "Kunden",
       "Close": "Schließen",
       "Close (as Rescheduled)": "Schließen (wie geplant)",
+      "Collapse Sidebar": "Seitenleiste einklappen",
       "Collection Sheet": "Sammelblatt",
       "Configuration Wizard": "Konfigurationsassistent",
       "Contract Termination": "Vertragsbeendigung",
@@ -3159,6 +3177,7 @@
       "Disburse to Savings": "An die Ersparnisse auszahlen",
       "Discount Fee": "Rabattgebühr",
       "Edit Repayment Schedule": "Bearbeiten Sie den Rückzahlungsplan",
+      "Expand Sidebar": "Seitenleiste ausklappen",
       "Foreclosure": "Zwangsvollstreckung",
       "Frequent Postings": "Häufige Beiträge",
       "Frequently Accessed": "Häufig aufgerufen",
@@ -3239,7 +3258,10 @@
       "Tasks": "Aufgaben",
       "Remittances": "Überweisungen",
       "Process Remittance": "Überweisung bearbeiten",
-      "Undo Write-off": "Abschreibung rückgängig machen"
+      "Undo Write-off": "Abschreibung rückgängig machen",
+      "Home": "Start",
+      "Operations": "Betrieb",
+      "Administration": "Verwaltung"
     },
     "placeholders": {
       "Add new server": "Neuen Server hinzufügen",
@@ -4034,7 +4056,20 @@
       "username": "Nutzername",
       "withhold tax for this account": "für dieses Konto die Steuer einbehalten",
       "withoutCategory": "Ohne Kategorie",
-      "“Maker-Checker” principle requires every tasks": "Das „Maker-Checker“-Prinzip erfordert, dass jede Aufgabe von zwei Personen erledigt wird, um das Risiko von Fehlern und Missbrauch zu verringern. Eine Person leitet den Prozess ein und die zweite Person schließt ihn ab."
+      "“Maker-Checker” principle requires every tasks": "Das „Maker-Checker“-Prinzip erfordert, dass jede Aufgabe von zwei Personen erledigt wird, um das Risiko von Fehlern und Missbrauch zu verringern. Eine Person leitet den Prozess ein und die zweite Person schließt ihn ab.",
+      "Good Morning": "Good Morning",
+      "Good Afternoon": "Good Afternoon",
+      "Good Evening": "Good Evening",
+      "No results found": "Keine Ergebnisse gefunden",
+      "Search settings": "Einstellungen durchsuchen",
+      "No settings match your search": "Keine Einstellungen entsprechen Ihrer Suche",
+      "Configure data, security, automation and platform behavior": "Konfigurieren Sie Daten, Sicherheit, Automatisierung und Plattformverhalten",
+      "Manage your organization structure, staff, funds and tools": "Verwalten Sie Ihre Organisationsstruktur, Mitarbeiter, Fonds und Werkzeuge",
+      "Define and maintain the products your institution offers": "Definieren und pflegen Sie die Produkte Ihrer Institution",
+      "Record, search and automate journal entries across your ledger": "Erfassen, suchen und automatisieren Sie Journalbuchungen in Ihrem Hauptbuch",
+      "Run portfolio, financial and organization reports": "Führen Sie Portfolio-, Finanz- und Organisationsberichte aus",
+      "Search reports": "Berichte durchsuchen",
+      "No reports match your search": "Keine Berichte entsprechen Ihrer Suche"
     },
     "permissions": {
       "actions": {

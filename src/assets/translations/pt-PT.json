@@ -764,7 +764,8 @@
       "DONE": "Concluir",
       "Submitting": "Enviando",
       "OK": "OK",
-      "undo_account_transfer": "Reverter transferência de conta"
+      "undo_account_transfer": "Reverter transferência de conta",
+      "View all results": "Ver todos os resultados"
     },
     "catalogs": {
       "Interest payment waiver": "Isenção de pagamento de juros",
@@ -1560,7 +1561,23 @@
       "identifier id": "ID do identificador",
       "savings-transaction-datatable-tab works": "poupança-transação-datatable-tab funciona",
       "successfully select option": "com sucesso. Selecione uma das opções abaixo para prosseguir.",
-      "undo_account_transfer": "Reverter transferência de conta"
+      "undo_account_transfer": "Reverter transferência de conta",
+      "Quick Actions": "Quick Actions",
+      "Search": "Pesquisar",
+      "Customization": "Personalização",
+      "Security and Oversight": "Segurança e supervisão",
+      "Automation and Integrations": "Automação e integrações",
+      "Configuration": "Configuração",
+      "About": "Sobre",
+      "Structure and Staff": "Estrutura e equipe",
+      "Loans and Funds": "Empréstimos e fundos",
+      "Payments and Cash": "Pagamentos e caixa",
+      "Tools": "Ferramentas",
+      "Loans": "Empréstimos",
+      "Deposits and Shares": "Depósitos e ações",
+      "Pricing and Rules": "Preços e regras",
+      "Ledger Setup": "Configuração do razão",
+      "Period Operations": "Operações de período"
     },
     "inputs": {
       "# Remittance": "# Remessa",
@@ -3143,6 +3160,7 @@
       "Clients": "Clientes",
       "Close": "Fechar",
       "Close (as Rescheduled)": "Fechar (conforme reprogramado)",
+      "Collapse Sidebar": "Recolher barra lateral",
       "Collection Sheet": "Folha de coleta",
       "Configuration Wizard": "Assistente de configuração",
       "Contract Termination": "Rescisão de contrato",
@@ -3156,6 +3174,7 @@
       "Disburse to Savings": "Desembolsar para poupança",
       "Discount Fee": "Taxa de Desconto",
       "Edit Repayment Schedule": "Editar cronograma de reembolso",
+      "Expand Sidebar": "Expandir barra lateral",
       "Foreclosure": "Execução hipotecária",
       "Frequent Postings": "Postagens frequentes",
       "Frequently Accessed": "Acessado com frequência",
@@ -3236,7 +3255,10 @@
       "Tasks": "Tarefas",
       "Remittances": "Remessas",
       "Process Remittance": "Processar remessa",
-      "Undo Write-off": "Desfazer abatimento"
+      "Undo Write-off": "Desfazer abatimento",
+      "Home": "Início",
+      "Operations": "Operações",
+      "Administration": "Administração"
     },
     "placeholders": {
       "Add new server": "Adicionar novo servidor",
@@ -4032,7 +4054,20 @@
       "username": "nome de usuário",
       "withhold tax for this account": "reter imposto para esta conta",
       "withoutCategory": "Sem categoria",
-      "“Maker-Checker” principle requires every tasks": "O princípio “Maker-Checker” exige que todas as tarefas sejam concluídas por duas pessoas para reduzir a chance de erros e uso indevido. Uma pessoa inicia o processo e a segunda o conclui."
+      "“Maker-Checker” principle requires every tasks": "O princípio “Maker-Checker” exige que todas as tarefas sejam concluídas por duas pessoas para reduzir a chance de erros e uso indevido. Uma pessoa inicia o processo e a segunda o conclui.",
+      "Good Morning": "Good Morning",
+      "Good Afternoon": "Good Afternoon",
+      "Good Evening": "Good Evening",
+      "No results found": "Nenhum resultado encontrado",
+      "Search settings": "Pesquisar configurações",
+      "No settings match your search": "Nenhuma configuração corresponde à sua pesquisa",
+      "Configure data, security, automation and platform behavior": "Configure dados, segurança, automação e comportamento da plataforma",
+      "Manage your organization structure, staff, funds and tools": "Gerencie a estrutura da sua organização, equipe, fundos e ferramentas",
+      "Define and maintain the products your institution offers": "Defina e mantenha os produtos que sua instituição oferece",
+      "Record, search and automate journal entries across your ledger": "Registre, pesquise e automatize lançamentos contábeis no seu razão",
+      "Run portfolio, financial and organization reports": "Execute relatórios de carteira, financeiros e organizacionais",
+      "Search reports": "Pesquisar relatórios",
+      "No reports match your search": "Nenhum relatório corresponde à sua pesquisa"
     },
     "permissions": {
       "actions": {

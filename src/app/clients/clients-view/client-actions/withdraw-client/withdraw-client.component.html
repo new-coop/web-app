@@ -6,58 +6,60 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-card>
-    <form [formGroup]="withdrawClientForm" (ngSubmit)="submit()">
-      <mat-card-content>
-        <div class="layout-column">
-          <mat-form-field (click)="withdrawalDatePicker.open()">
-            <mat-label>{{ 'labels.inputs.Withdrawal Date' | translate }}</mat-label>
-            <input
-              matInput
-              [min]="minDate"
-              [max]="maxDate"
-              [matDatepicker]="withdrawalDatePicker"
-              required
-              formControlName="withdrawalDate"
-            />
-            <mat-datepicker-toggle matSuffix [for]="withdrawalDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #withdrawalDatePicker></mat-datepicker>
-            @if (withdrawClientForm.controls.withdrawalDate.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Withdrawal Date' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
-
-          <mat-form-field class="flex-48">
-            <mat-label>{{ 'labels.inputs.Withdrawal Reason' | translate }}</mat-label>
-            <mat-select formControlName="withdrawalReasonId">
-              @for (reason of withdrawalData; track reason) {
-                <mat-option [value]="reason.id">
-                  {{ reason.name }}
-                </mat-option>
+<div class="container form-page form-page--narrow">
+  <mifosx-form-workspace eyebrow="labels.heading.Clients" title="labels.heading.Withdraw Client">
+    <form [formGroup]="withdrawClientForm" (ngSubmit)="submit()" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
+            <mat-form-field (click)="withdrawalDatePicker.open()">
+              <mat-label>{{ 'labels.inputs.Withdrawal Date' | translate }}</mat-label>
+              <input
+                matInput
+                [min]="minDate"
+                [max]="maxDate"
+                [matDatepicker]="withdrawalDatePicker"
+                required
+                formControlName="withdrawalDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="withdrawalDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #withdrawalDatePicker></mat-datepicker>
+              @if (withdrawClientForm.controls.withdrawalDate.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Withdrawal Date' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
               }
-            </mat-select>
-            @if (withdrawClientForm.controls.withdrawalReasonId.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Withdrawal Reason' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
-        </div>
-      </mat-card-content>
+            </mat-form-field>
 
-      <mat-card-actions class="layout-row align-center gap-5px responsive-column">
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Withdrawal Reason' | translate }}</mat-label>
+              <mat-select formControlName="withdrawalReasonId">
+                @for (reason of withdrawalData; track reason) {
+                  <mat-option [value]="reason.id">
+                    {{ reason.name }}
+                  </mat-option>
+                }
+              </mat-select>
+              @if (withdrawClientForm.controls.withdrawalReasonId.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Withdrawal Reason' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
+      <footer class="form-workspace-footer">
         <button type="button" mat-raised-button [routerLink]="['../../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button mat-raised-button color="primary" [disabled]="!withdrawClientForm.valid">
+        <button mat-raised-button color="primary" type="submit">
           {{ 'labels.buttons.Confirm' | translate }}
         </button>
-      </mat-card-actions>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>

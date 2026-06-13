@@ -9,18 +9,22 @@
 .dashboard-shell {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1rem;
 }
 
 .filter-card {
-  padding: 16px;
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
+  background: var(--mifos-surface-0, #fff);
+  border: 1px solid var(--mifos-surface-200, #e4e4e7);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgb(15 23 42 / 5%));
 }
 
 .filter-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .office-field {
@@ -31,13 +35,13 @@
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* stylelint-disable-line unit-allowed-list */
-  gap: 16px;
+  gap: 1rem;
 }
 
 .chart-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr)); /* stylelint-disable-line unit-allowed-list */
-  gap: 16px;
+  gap: 1rem;
 }
 
 .widget-wide {
@@ -49,8 +53,15 @@
 }
 
 .empty-dashboard {
-  padding: 24px;
+  padding: 1.5rem;
   text-align: center;
+  color: var(--mifos-text-muted, #71717a);
+}
+
+:host-context(.dark-theme) {
+  .filter-card {
+    box-shadow: none;
+  }
 }
 
 @media screen and (width <= 1024px) {

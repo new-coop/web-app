@@ -111,6 +111,11 @@ export class CreateFinancialActivityMappingComponent implements OnInit {
    * if successful redirects to view created account.
    */
   submit() {
+    if (this.financialActivityMappingForm.invalid) {
+      this.financialActivityMappingForm.markAllAsTouched();
+      return;
+    }
+
     this.accountingService
       .createFinancialActivityAccount(this.financialActivityMappingForm.value)
       .subscribe((response: any) => {

@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -31,7 +31,7 @@ import {
 } from '@angular/material/table';
 import { MatIconButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { DateFormatPipe } from '../../../pipes/date-format.pipe';
 import { FormatNumberPipe } from '../../../pipes/format-number.pipe';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
@@ -63,6 +63,7 @@ import { LoanAccountTabBaseComponent } from '../loan-account-tab-base.component'
 })
 export class LoanTermVariationsTabComponent extends LoanAccountTabBaseComponent {
   private readonly destroyRef = inject(DestroyRef);
+  private readonly cdr = inject(ChangeDetectorRef);
   private route = inject(ActivatedRoute);
   private dates = inject(Dates);
   private settingsService = inject(SettingsService);
@@ -211,6 +212,7 @@ export class LoanTermVariationsTabComponent extends LoanAccountTabBaseComponent 
           data: this.principalAmountData
         });
       }
+      this.cdr.markForCheck();
     });
   }
 

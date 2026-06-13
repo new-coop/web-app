@@ -6,38 +6,40 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-card>
-    <form [formGroup]="clientSavingsAccountForm" (ngSubmit)="submit()">
-      <mat-card-content>
-        <div class="layout-column">
-          <mat-form-field class="flex-48">
-            <mat-label>{{ 'labels.inputs.Default Savings Account' | translate }}</mat-label>
-            <mat-select formControlName="savingsAccountId">
-              @for (account of savingsAccounts; track account) {
-                <mat-option [value]="account.id">
-                  {{ account.accountNo }}
-                </mat-option>
+<div class="container form-page form-page--narrow">
+  <mifosx-form-workspace eyebrow="labels.heading.Clients" title="labels.heading.Update Client Savings Account">
+    <form [formGroup]="clientSavingsAccountForm" (ngSubmit)="submit()" class="form-workspace-form">
+      <div class="form-workspace-body">
+        <section class="form-section">
+          <h2 class="form-section-title">{{ 'labels.heading.General' | translate }}</h2>
+          <div class="form-grid">
+            <mat-form-field>
+              <mat-label>{{ 'labels.inputs.Default Savings Account' | translate }}</mat-label>
+              <mat-select formControlName="savingsAccountId">
+                @for (account of savingsAccounts; track account) {
+                  <mat-option [value]="account.id">
+                    {{ account.accountNo }}
+                  </mat-option>
+                }
+              </mat-select>
+              @if (clientSavingsAccountForm.controls.savingsAccountId.hasError('required')) {
+                <mat-error>
+                  {{ 'labels.inputs.Account' | translate }} {{ 'labels.commons.is' | translate }}
+                  <strong>{{ 'labels.commons.required' | translate }}</strong>
+                </mat-error>
               }
-            </mat-select>
-            @if (clientSavingsAccountForm.controls.savingsAccountId.hasError('required')) {
-              <mat-error>
-                {{ 'labels.inputs.Account' | translate }} {{ 'labels.commons.is' | translate }}
-                <strong>{{ 'labels.commons.required' | translate }}</strong>
-              </mat-error>
-            }
-          </mat-form-field>
-        </div>
-      </mat-card-content>
-
-      <mat-card-actions class="layout-row align-center gap-5px responsive-column">
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
+      <footer class="form-workspace-footer">
         <button type="button" mat-raised-button [routerLink]="['../../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button mat-raised-button color="primary" [disabled]="!clientSavingsAccountForm.valid">
+        <button mat-raised-button color="primary" type="submit">
           {{ 'labels.buttons.Confirm' | translate }}
         </button>
-      </mat-card-actions>
+      </footer>
     </form>
-  </mat-card>
+  </mifosx-form-workspace>
 </div>

@@ -36,7 +36,7 @@ import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.co
 import { MatFormField, MatLabel, MatError, MatHint } from '@angular/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatButton, MatIconButton } from '@angular/material/button';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**

@@ -57,12 +57,13 @@ import {
 import { OfficeTreeService } from './office-tree-service.service';
 import { TreeControlService } from 'app/shared/common-logic/tree-control.service';
 import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { DatePipe } from '@angular/common';
 import { MatTabGroup, MatTab } from '@angular/material/tabs';
 import { ExternalIdentifierComponent } from '../../shared/external-identifier/external-identifier.component';
+import { TableNameCellComponent } from '../../shared/ui/table-name-cell/table-name-cell.component';
 import { DateFormatPipe } from '../../pipes/date-format.pipe';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
@@ -92,6 +93,7 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
     MatRow,
     MatPaginator,
     MatTree,
+    TableNameCellComponent,
     MatTreeNodeDef,
     MatTreeNode,
     MatTreeNodeToggle,

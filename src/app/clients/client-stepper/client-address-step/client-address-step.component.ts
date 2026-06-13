@@ -19,17 +19,8 @@ import { SelectBase } from 'app/shared/form-dialog/formfield/model/select-base';
 import { TranslateService } from '@ngx-translate/core';
 import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
 import { FormDialogComponent } from 'app/shared/form-dialog/form-dialog.component';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import {
-  MatAccordion,
-  MatExpansionPanel,
-  MatExpansionPanelHeader,
-  MatExpansionPanelTitle,
-  MatExpansionPanelDescription
-} from '@angular/material/expansion';
-import { MatDivider } from '@angular/material/divider';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { MatStepperPrevious, MatStepperNext } from '@angular/material/stepper';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**
@@ -42,15 +33,7 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
     FaIconComponent,
-    MatAccordion,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle,
-    MatExpansionPanelDescription,
-    MatDivider,
-    MatSlideToggle,
-    MatStepperPrevious,
-    MatStepperNext
+    MatSlideToggle
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

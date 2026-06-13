@@ -19,11 +19,11 @@ import { AuthenticationService } from '../../core/authentication/authentication.
 /** Custom Validators */
 import { confirmPasswordValidator } from './confirm-password.validator';
 import { PasswordsUtility } from 'app/core/utils/passwords-utility';
-import { MatDivider } from '@angular/material/divider';
-import { MatFormField, MatPrefix, MatLabel, MatSuffix, MatError } from '@angular/material/form-field';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatPrefix } from '@angular/material/form-field';
+import { MatIconButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { M3IconComponent } from '../../shared/m3-ui/m3-icon/m3-icon.component';
+import { M3ButtonComponent } from '../../shared/m3-ui/m3-button/m3-button.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**
@@ -35,11 +35,11 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   styleUrls: ['./reset-password.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    MatDivider,
     MatPrefix,
-    FaIconComponent,
     MatIconButton,
-    MatProgressSpinner
+    MatProgressSpinner,
+    M3IconComponent,
+    M3ButtonComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

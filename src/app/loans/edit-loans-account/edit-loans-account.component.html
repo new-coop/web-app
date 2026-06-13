@@ -6,94 +6,100 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-stepper
-    orientation="vertical"
-    [linear]="false"
-    class="mat-elevation-z8"
-    labelPosition="bottom"
-    #loansAccountStepper
+<div class="container form-page">
+  <mifosx-form-workspace
+    eyebrow="labels.heading.Loans"
+    title="labels.heading.Edit Loans Account"
+    [showRequiredNote]="false"
   >
-    <ng-template matStepperIcon="number">
-      <fa-icon icon="pencil-alt" size="sm"></fa-icon>
-    </ng-template>
+    <mat-stepper
+      orientation="vertical"
+      [linear]="false"
+      class="form-workspace-stepper"
+      labelPosition="bottom"
+      #loansAccountStepper
+    >
+      <ng-template matStepperIcon="number">
+        <fa-icon icon="pencil-alt" size="sm"></fa-icon>
+      </ng-template>
 
-    <ng-template matStepperIcon="edit">
-      <fa-icon icon="pencil-alt" size="sm"></fa-icon>
-    </ng-template>
+      <ng-template matStepperIcon="edit">
+        <fa-icon icon="pencil-alt" size="sm"></fa-icon>
+      </ng-template>
 
-    <ng-template matStepperIcon="done">
-      <fa-icon icon="check" size="sm"></fa-icon>
-    </ng-template>
+      <ng-template matStepperIcon="done">
+        <fa-icon icon="check" size="sm"></fa-icon>
+      </ng-template>
 
-    <ng-template matStepperIcon="error">
-      <fa-icon icon="exclamation-triangle" size="lg"></fa-icon>
-    </ng-template>
+      <ng-template matStepperIcon="error">
+        <fa-icon icon="exclamation-triangle" size="lg"></fa-icon>
+      </ng-template>
 
-    <ng-template matStepperIcon="preview">
-      <fa-icon icon="eye" size="sm"></fa-icon>
-    </ng-template>
+      <ng-template matStepperIcon="preview">
+        <fa-icon icon="eye" size="sm"></fa-icon>
+      </ng-template>
 
-    <mat-step [stepControl]="loansAccountDetailsForm">
-      <ng-template matStepLabel>{{ 'labels.inputs.DETAILS' | translate }}</ng-template>
+      <mat-step [stepControl]="loansAccountDetailsForm">
+        <ng-template matStepLabel>{{ 'labels.inputs.DETAILS' | translate }}</ng-template>
 
-      <mifosx-loans-account-details-step
-        [loansAccountTemplate]="loansAccountAndTemplate"
-        [loanProductsBasicDetails]="loanProductsBasicDetails"
-        (loansAccountProductTemplate)="setTemplate($event)"
-        (loansProductType)="setProductType($event)"
-      >
-      </mifosx-loans-account-details-step>
-    </mat-step>
-
-    <mat-step [stepControl]="loansAccountTermsForm">
-      <ng-template matStepLabel>{{ 'labels.inputs.TERMS' | translate }}</ng-template>
-
-      <mifosx-loans-account-terms-step
-        [loansAccountProductTemplate]="loansAccountProductTemplate"
-        [loansAccountTemplate]="loansAccountAndTemplate"
-        [collateralOptions]="collateralOptions"
-      >
-      </mifosx-loans-account-terms-step>
-    </mat-step>
-
-    @if (loanProductService.isLoanProduct) {
-      <mat-step>
-        <ng-template matStepLabel>{{ 'labels.inputs.CHARGES' | translate }}</ng-template>
-
-        <mifosx-loans-account-charges-step
-          [loansAccountProductTemplate]="loansAccountProductTemplate"
+        <mifosx-loans-account-details-step
           [loansAccountTemplate]="loansAccountAndTemplate"
-          [loansAccountFormValid]="loansAccountFormValidAndNotPristine"
-        >
-        </mifosx-loans-account-charges-step>
-      </mat-step>
-
-      <mat-step>
-        <ng-template matStepLabel>{{ 'labels.inputs.REPAYMENT SCHEDULE' | translate }}</ng-template>
-
-        <mifosx-loans-account-schedule-step
-          [loansAccountTemplate]="loansAccountAndTemplate"
-          [loansAccountProductTemplate]="loansAccountProductTemplate"
-          [loansAccount]="loansAccount"
-          [currencyCode]="currencyCode"
-        >
-        </mifosx-loans-account-schedule-step>
-      </mat-step>
-    }
-
-    @if (loansAccountFormValidAndNotPristine) {
-      <mat-step state="preview" completed>
-        <ng-template matStepLabel>{{ 'labels.inputs.PREVIEW' | translate }}</ng-template>
-        <mifosx-loans-account-preview-step
-          [loansAccountTemplate]="loansAccountAndTemplate"
-          [loansAccountProductTemplate]="loansAccountProductTemplate"
-          [loansAccount]="loansAccount"
           [loanProductsBasicDetails]="loanProductsBasicDetails"
-          (submitEvent)="submit()"
+          (loansAccountProductTemplate)="setTemplate($event)"
+          (loansProductType)="setProductType($event)"
         >
-        </mifosx-loans-account-preview-step>
+        </mifosx-loans-account-details-step>
       </mat-step>
-    }
-  </mat-stepper>
+
+      <mat-step [stepControl]="loansAccountTermsForm">
+        <ng-template matStepLabel>{{ 'labels.inputs.TERMS' | translate }}</ng-template>
+
+        <mifosx-loans-account-terms-step
+          [loansAccountProductTemplate]="loansAccountProductTemplate"
+          [loansAccountTemplate]="loansAccountAndTemplate"
+          [collateralOptions]="collateralOptions"
+        >
+        </mifosx-loans-account-terms-step>
+      </mat-step>
+
+      @if (loanProductService.isLoanProduct) {
+        <mat-step>
+          <ng-template matStepLabel>{{ 'labels.inputs.CHARGES' | translate }}</ng-template>
+
+          <mifosx-loans-account-charges-step
+            [loansAccountProductTemplate]="loansAccountProductTemplate"
+            [loansAccountTemplate]="loansAccountAndTemplate"
+            [loansAccountFormValid]="loansAccountFormValidAndNotPristine"
+          >
+          </mifosx-loans-account-charges-step>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>{{ 'labels.inputs.REPAYMENT SCHEDULE' | translate }}</ng-template>
+
+          <mifosx-loans-account-schedule-step
+            [loansAccountTemplate]="loansAccountAndTemplate"
+            [loansAccountProductTemplate]="loansAccountProductTemplate"
+            [loansAccount]="loansAccount"
+            [currencyCode]="currencyCode"
+          >
+          </mifosx-loans-account-schedule-step>
+        </mat-step>
+      }
+
+      @if (loansAccountFormValidAndNotPristine) {
+        <mat-step state="preview" completed>
+          <ng-template matStepLabel>{{ 'labels.inputs.PREVIEW' | translate }}</ng-template>
+          <mifosx-loans-account-preview-step
+            [loansAccountTemplate]="loansAccountAndTemplate"
+            [loansAccountProductTemplate]="loansAccountProductTemplate"
+            [loansAccount]="loansAccount"
+            [loanProductsBasicDetails]="loanProductsBasicDetails"
+            (submitEvent)="submit()"
+          >
+          </mifosx-loans-account-preview-step>
+        </mat-step>
+      }
+    </mat-stepper>
+  </mifosx-form-workspace>
 </div>

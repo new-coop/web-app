@@ -9,6 +9,7 @@
 /** Angular Imports */
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnInit,
   TemplateRef,
@@ -22,8 +23,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 /** rxjs Imports */
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { Observable, forkJoin, of } from 'rxjs';
+import { startWith, map, catchError } from 'rxjs/operators';
 
 /** Custom Imports. */
 import { activities } from './activities';
@@ -34,14 +35,30 @@ import { AuthenticationService } from '../core/authentication/authentication.ser
 import { PopoverService } from '../configuration-wizard/popover/popover.service';
 import { ConfigurationWizardService } from '../configuration-wizard/configuration-wizard.service';
 import { SettingsService } from 'app/settings/settings.service';
+import { HomeService } from './home.service';
 
 /** Custom Components */
 import { NextStepDialogComponent } from '../configuration-wizard/next-step-dialog/next-step-dialog.component';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardImage } from '@angular/material/card';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
 import { AsyncPipe } from '@angular/common';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
+
+/** Key metric displayed on the home dashboard. */
+interface KpiCard {
+  labelKey: string;
+  icon: string;
+  theme: 'navy' | 'gold' | 'green' | 'slate';
+  value: number | null;
+  loaded: boolean;
+}
+
+/** Shortcut tile displayed on the home dashboard. */
+interface QuickAction {
+  labelKey: string;
+  icon: string;
+  path: string;
+}
 
 /**
  * Home component.
@@ -54,11 +71,9 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
     FaIconComponent,
-    MatCardHeader,
-    MatCardTitle,
+    WarningDialogComponent,
     MatAutocompleteTrigger,
     MatAutocomplete,
-    MatCardImage,
     AsyncPipe
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -71,6 +86,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private configurationWizardService = inject(ConfigurationWizardService);
   private popoverService = inject(PopoverService);
   private settingsService = inject(SettingsService);
+  private homeService = inject(HomeService);
+  private cdr = inject(ChangeDetectorRef);
 
   /** Username of authenticated user. */
   username: string;
@@ -84,6 +101,28 @@ export class HomeComponent implements OnInit, AfterViewInit {
   filteredActivities: Observable<any[]>;
   /** All User Activities. */
   allActivities: any[] = activities;
+  /** Current date, shown in the hero header. */
+  today = new Date();
+  /** Translation key for the time-of-day greeting. */
+  greetingKey = this.resolveGreetingKey();
+
+  /** Key metrics shown at a glance. */
+  kpiCards: KpiCard[] = [
+    { labelKey: 'labels.heading.Clients', icon: 'users', theme: 'navy', value: null, loaded: false },
+    { labelKey: 'labels.heading.Loan Accounts', icon: 'hand-holding-usd', theme: 'gold', value: null, loaded: false },
+    { labelKey: 'labels.heading.Savings Accounts', icon: 'piggy-bank', theme: 'green', value: null, loaded: false },
+    { labelKey: 'labels.heading.Offices', icon: 'building', theme: 'slate', value: null, loaded: false }
+  ];
+
+  /** Most common day-to-day destinations. */
+  quickActions: QuickAction[] = [
+    { labelKey: 'labels.buttons.Create Client', icon: 'plus', path: '/clients/create' },
+    { labelKey: 'labels.menus.Clients', icon: 'users', path: '/clients' },
+    { labelKey: 'labels.heading.Loan Products', icon: 'hand-holding-usd', path: '/products/loan-products' },
+    { labelKey: 'labels.menus.Accounting', icon: 'book', path: '/accounting' },
+    { labelKey: 'labels.menus.Reports', icon: 'chart-line', path: '/reports' },
+    { labelKey: 'labels.menus.Organization', icon: 'sitemap', path: '/organization' }
+  ];
 
   /* Reference of dashboard button */
   @ViewChild('buttonDashboard', { static: false }) buttonDashboard: ElementRef<any>;
@@ -106,10 +145,36 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.username = credentials.username;
     this.tenant = this.tenantIdentifier();
     this.setFilteredActivities();
-    if (!this.authenticationService.hasDialogBeenShown()) {
-      this.dialog.open(WarningDialogComponent);
-      this.authenticationService.showDialog();
+    this.loadKpis();
+  }
+
+  /**
+   * Loads headline metrics; each one degrades gracefully to an em dash on error.
+   */
+  private loadKpis(): void {
+    forkJoin([
+      this.homeService.getClientsCount().pipe(catchError(() => of(null))),
+      this.homeService.getLoanAccountsCount().pipe(catchError(() => of(null))),
+      this.homeService.getSavingsAccountsCount().pipe(catchError(() => of(null))),
+      this.homeService.getOfficesCount().pipe(catchError(() => of(null)))
+    ]).subscribe((values: (number | null)[]) => {
+      values.forEach((value, index) => {
+        this.kpiCards[index].value = value;
+        this.kpiCards[index].loaded = true;
+      });
+      this.cdr.markForCheck();
+    });
+  }
+
+  /**
+   * Greeting translation key based on local time of day.
+   */
+  private resolveGreetingKey(): string {
+    const hour = new Date().getHours();
+    if (hour < 12) {
+      return 'labels.text.Good Morning';
     }
+    return hour < 18 ? 'labels.text.Good Afternoon' : 'labels.text.Good Evening';
   }
 
   /**
@@ -216,14 +281,5 @@ export class HomeComponent implements OnInit, AfterViewInit {
       return 'default';
     }
     return this.settingsService.tenantIdentifier;
-  }
-
-  onImageMissing(event: Event): void {
-    const target = event.currentTarget;
-    if (!(target instanceof HTMLImageElement)) {
-      return;
-    }
-    target.onerror = null;
-    target.src = `assets/images/default_home.png`;
   }
 }

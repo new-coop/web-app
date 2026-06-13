@@ -12,34 +12,16 @@
 @mixin dashboard-component-theme($theme) {
   $primary: map.get($theme, primary);
 
-  mifosx-dashboard {
-    .recent-activities,
-    .frequent-activities {
+  mifosx-amount-collected-pie,
+  mifosx-amount-disbursed-pie,
+  mifosx-client-trends-bar {
+    .card {
+      // Surface header with a subtle primary accent underline
+      // instead of the former solid primary block.
       .header {
-        background-color: mat.m2-get-color-from-palette($primary, 500);
-        color: mat.m2-get-contrast-color-from-palette($primary, 500);
-      }
-    }
-
-    mifosx-amount-collected-pie,
-    mifosx-amount-disbursed-pie,
-    mifosx-client-trends-bar {
-      .card {
-        .header {
-          background-color: mat.m2-get-color-from-palette($primary, 500);
-          color: mat.m2-get-contrast-color-from-palette($primary, 500);
-
-          mat-label,
-          .mat-select-value,
-          .mat-select-arrow {
-            color: mat.m2-get-contrast-color-from-palette($primary, 500);
-          }
-
-          .mat-form-field-underline,
-          .mat-form-field-ripple {
-            background-color: mat.m2-get-contrast-color-from-palette($primary, 500);
-          }
-        }
+        background-color: transparent;
+        color: inherit;
+        border-bottom: 2px solid mat.m2-get-color-from-palette($primary, 500, 0.14);
       }
     }
   }

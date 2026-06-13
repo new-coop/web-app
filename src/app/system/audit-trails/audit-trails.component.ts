@@ -24,7 +24,7 @@ import { SettingsService } from 'app/settings/settings.service';
 import { merge } from 'rxjs';
 import { tap, debounceTime, distinctUntilChanged, startWith, map } from 'rxjs/operators';
 import { Dates } from 'app/core/utils/dates';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { AsyncPipe } from '@angular/common';
 import { MatOption, MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -42,6 +42,8 @@ import {
 } from '@angular/material/table';
 import { DatetimeFormatPipe } from '../../pipes/datetime-format.pipe';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { TableNameCellComponent } from '../../shared/ui/table-name-cell/table-name-cell.component';
+import { StatusBadgeComponent } from '../../shared/ui/status-badge/status-badge.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**
@@ -71,7 +73,9 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
     MatRow,
     MatPaginator,
     AsyncPipe,
-    DatetimeFormatPipe
+    DatetimeFormatPipe,
+    TableNameCellComponent,
+    StatusBadgeComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

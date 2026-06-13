@@ -27,7 +27,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { PopoverService } from '../../configuration-wizard/popover/popover.service';
 import { ConfigurationWizardService } from '../../configuration-wizard/configuration-wizard.service';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 
 /**
  * Users component.
@@ -38,7 +38,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   styleUrls: ['./users.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    FontAwesomeModule,
+    FaIconComponent,
     MatPaginatorModule,
     MatSortModule,
     MatTableModule

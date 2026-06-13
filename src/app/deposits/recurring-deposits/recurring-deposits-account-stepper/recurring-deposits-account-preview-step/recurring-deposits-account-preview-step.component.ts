@@ -23,7 +23,7 @@ import {
   MatRowDef,
   MatRow
 } from '@angular/material/table';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatStepperPrevious } from '@angular/material/stepper';
 import { FindPipe } from '../../../../pipes/find.pipe';
 import { DateFormatPipe } from '../../../../pipes/date-format.pipe';

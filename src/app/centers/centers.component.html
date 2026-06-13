@@ -6,20 +6,23 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<mat-card class="container">
-  <div class="layout-column layout-gt-sm-row align-gt-sm-start-center">
-    <div class="search-box m-r-30">
-      <mat-form-field class="search-box">
-        <input matInput placeholder="{{ 'labels.text.SearchByName' | translate }}" [formControl]="name" />
+<div class="table-card">
+  <div class="table-toolbar">
+    <div class="toolbar-search layout-row gap-12px">
+      <mat-form-field class="flex-fill">
+        <mat-label>{{ 'labels.text.SearchByName' | translate }}</mat-label>
+        <input matInput [formControl]="name" />
       </mat-form-field>
-      <mat-form-field class="search-box">
-        <input matInput placeholder="{{ 'labels.text.SearchByExternalID' | translate }}" [formControl]="externalId" />
+      <mat-form-field class="flex-fill">
+        <mat-label>{{ 'labels.text.SearchByExternalID' | translate }}</mat-label>
+        <input matInput [formControl]="externalId" />
       </mat-form-field>
-      <mat-checkbox #showClosedCenters labelPosition="after" (change)="changeShowClosedCenters()" class="m-r-10">
+    </div>
+
+    <div class="toolbar-actions">
+      <mat-checkbox #showClosedCenters labelPosition="after" (change)="changeShowClosedCenters()">
         {{ 'labels.inputs.Show Closed Centers' | translate }}
       </mat-checkbox>
-    </div>
-    <div class="action-button gap-25px">
       <button
         mat-raised-button
         color="primary"
@@ -34,44 +37,46 @@
     </div>
   </div>
 
-  <table mat-table [dataSource]="dataSource" matSort class="bordered-table">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'labels.inputs.name' | translate }}</th>
-      <td mat-cell *matCellDef="let center">{{ center.name }}</td>
-    </ng-container>
+  <div class="table-scroll">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'labels.inputs.name' | translate }}</th>
+        <td mat-cell *matCellDef="let center">
+          <mifosx-table-name-cell [name]="center.name" />
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="accountNo">
-      <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Account' | translate }} #</th>
-      <td mat-cell *matCellDef="let center">{{ center.accountNo }}</td>
-    </ng-container>
+      <ng-container matColumnDef="accountNo">
+        <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Account' | translate }} #</th>
+        <td mat-cell *matCellDef="let center">{{ center.accountNo }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="externalId">
-      <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.External Id' | translate }}</th>
-      <td mat-cell *matCellDef="let center">{{ center.externalId }}</td>
-    </ng-container>
+      <ng-container matColumnDef="externalId">
+        <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.External Id' | translate }}</th>
+        <td mat-cell *matCellDef="let center">{{ center.externalId }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Status' | translate }}</th>
-      <td mat-cell *matCellDef="let row">
-        <div [ngClass]="row.status.code | statusLookup">
-          <fa-icon icon="stop"></fa-icon>
-        </div>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Status' | translate }}</th>
+        <td mat-cell *matCellDef="let row">
+          <mifosx-status-badge [code]="row.status?.code ?? ''" [label]="row.status?.value" />
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="officeName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'labels.inputs.Office Name' | translate }}</th>
-      <td mat-cell *matCellDef="let center">{{ center.officeName }}</td>
-    </ng-container>
+      <ng-container matColumnDef="officeName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'labels.inputs.Office Name' | translate }}</th>
+        <td mat-cell *matCellDef="let center">{{ center.officeName }}</td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr
-      mat-row
-      *matRowDef="let row; columns: displayedColumns"
-      [routerLink]="[row.id, 'general']"
-      class="select-row"
-    ></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        [routerLink]="[row.id, 'general']"
+        class="select-row"
+      ></tr>
+    </table>
+  </div>
 
   <mat-paginator
     [length]="dataSource?.records$ | async"
@@ -79,4 +84,4 @@
     [pageSizeOptions]="[10, 25, 50, 100]"
     showFirstLastButtons
   ></mat-paginator>
-</mat-card>
+</div>
