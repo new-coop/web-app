@@ -46,7 +46,13 @@
         <button type="button" mat-raised-button [routerLink]="['../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button mat-raised-button color="primary" type="submit" *mifosxHasPermission="'CREATE_PROVISIONING_ENTRIES'">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="provisioningEntryForm.invalid"
+          *mifosxHasPermission="'CREATE_PROVISIONING_ENTRIES'"
+        >
           {{ 'labels.buttons.Submit' | translate }}
         </button>
       </footer>

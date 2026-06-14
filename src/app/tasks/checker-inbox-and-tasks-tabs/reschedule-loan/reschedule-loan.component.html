@@ -7,9 +7,9 @@
 -->
 
 @if (loans && loans.length > 0) {
-  <div class="tab-container mat-typography">
-    <div class="tasks-header">
-      <mat-form-field class="tasks-search-field">
+  <div class="table-card">
+    <div class="table-toolbar">
+      <mat-form-field class="toolbar-search">
         <input
           #filterInput
           matInput
@@ -17,91 +17,94 @@
           (keyup)="applyFilter(filterInput.value)"
         />
       </mat-form-field>
-      <button
-        mat-raised-button
-        color="success"
-        *mifosxHasPermission="'APPROVE_LOANRESCHEDULE'"
-        (click)="bulkLoanReschedule('Approve')"
-        class="tasks-action-btn"
-      >
-        <fa-icon icon="check" class="m-r-10"></fa-icon>{{ 'labels.buttons.Approve' | translate }}
-      </button>
-      <button
-        mat-raised-button
-        color="reject"
-        *mifosxHasPermission="'APPROVE_LOANRESCHEDULE'"
-        (click)="bulkLoanReschedule('Reject')"
-        class="tasks-action-btn"
-      >
-        <fa-icon icon="times" class="m-r-10"></fa-icon>{{ 'labels.buttons.Reject' | translate }}
-      </button>
+      <div class="toolbar-actions">
+        @if (selection?.hasValue()) {
+          <span class="tasks-selection-hint">
+            {{ 'labels.text.Tasks selected count' | translate: { count: selectedCount } }}
+          </span>
+        }
+        <mifosx-m3-button
+          variant="filled"
+          size="compact"
+          icon="check"
+          *mifosxHasPermission="'APPROVE_LOANRESCHEDULE'"
+          [label]="'labels.buttons.Approve' | translate"
+          (clicked)="bulkLoanReschedule('Approve')"
+        />
+        <mifosx-m3-button
+          variant="outlined"
+          size="compact"
+          icon="close"
+          *mifosxHasPermission="'APPROVE_LOANRESCHEDULE'"
+          [label]="'labels.buttons.Reject' | translate"
+          (clicked)="bulkLoanReschedule('Reject')"
+        />
+      </div>
     </div>
-    <table mat-table [dataSource]="dataSource">
-      <ng-container matColumnDef="select">
-        <th mat-header-cell *matHeaderCellDef>
-          <mat-checkbox
-            (change)="$event ? masterToggle() : null"
-            [checked]="selection.hasValue() && isAllSelected()"
-            [indeterminate]="selection.hasValue() && !isAllSelected()"
-            [aria-label]="checkboxLabel()"
+    <div class="table-scroll">
+      <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox
+              (change)="$event ? masterToggle() : null"
+              [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()"
+              [aria-label]="checkboxLabel()"
+            >
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox
+              (click)="$event.stopPropagation()"
+              (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)"
+              [aria-label]="checkboxLabel(row)"
+            >
+            </mat-checkbox>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="client">
+          <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Client' | translate }}</th>
+          <td
+            mat-cell
+            *matCellDef="let loan"
+            class="view-details"
+            [routerLink]="['../../clients', loan.clientId, 'general']"
           >
-          </mat-checkbox>
-        </th>
-        <td mat-cell *matCellDef="let row">
-          <mat-checkbox
-            (click)="$event.stopPropagation()"
-            (change)="$event ? selection.toggle(row) : null"
-            [checked]="selection.isSelected(row)"
-            [aria-label]="checkboxLabel(row)"
+            {{ loan.clientName }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="rescheduleRequestNo">
+          <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Reschedule Request' | translate }}#</th>
+          <td mat-cell *matCellDef="let loan">{{ loan.id }}</td>
+        </ng-container>
+        <ng-container matColumnDef="loanAccountNo">
+          <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Loan Account' | translate }}#</th>
+          <td
+            mat-cell
+            *matCellDef="let loan"
+            class="view-details"
+            [routerLink]="['../../clients', loan.clientId, 'loans', loan.loanId, 'general']"
           >
-          </mat-checkbox>
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="client">
-        <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Client' | translate }}</th>
-        <td
-          mat-cell
-          *matCellDef="let loan"
-          class="view-details"
-          [routerLink]="['../../clients', loan.clientId, 'general']"
-        >
-          {{ loan.clientName }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="rescheduleRequestNo">
-        <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Reschedule Request' | translate }}#</th>
-        <td mat-cell *matCellDef="let loan">{{ loan.id }}</td>
-      </ng-container>
-      <ng-container matColumnDef="loanAccountNo">
-        <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Loan Account' | translate }}#</th>
-        <td
-          mat-cell
-          *matCellDef="let loan"
-          class="view-details"
-          [routerLink]="['../../clients', loan.clientId, 'loans', loan.loanId, 'general']"
-        >
-          {{ loan.loanAccountNumber }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="rescheduleForm">
-        <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Reschedule Form' | translate }}</th>
-        <td mat-cell *matCellDef="let loan">{{ loan.rescheduleFromDate | dateFormat }}</td>
-      </ng-container>
-      <ng-container matColumnDef="rescheduleReason">
-        <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Reschedule Reason' | translate }}</th>
-        <td mat-cell *matCellDef="let loan">{{ loan.rescheduleReasonCodeValue.name }}</td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
-    </table>
+            {{ loan.loanAccountNumber }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="rescheduleForm">
+          <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Reschedule Form' | translate }}</th>
+          <td mat-cell *matCellDef="let loan">{{ loan.rescheduleFromDate | dateFormat }}</td>
+        </ng-container>
+        <ng-container matColumnDef="rescheduleReason">
+          <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Reschedule Reason' | translate }}</th>
+          <td mat-cell *matCellDef="let loan">{{ loan.rescheduleReasonCodeValue.name }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
+      </table>
+    </div>
   </div>
-}
-
-@if (loans?.length === 0) {
-  <div class="alert">
-    <div class="message">
-      <i class="fa fa-exclamation-circle alert-check"></i>
-      {{ 'labels.text.No pending rescheduled loan available for this account' | translate }}
-    </div>
+} @else {
+  <div class="tasks-empty">
+    <mifosx-m3-icon name="event_repeat" [size]="32" />
+    <p>{{ 'labels.text.No pending rescheduled loan available for this account' | translate }}</p>
   </div>
 }

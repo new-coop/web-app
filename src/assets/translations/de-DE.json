@@ -1,4 +1,4 @@
-﻿{
+{
   "APP_NAME": "Mifos® X WebApp",
   "Logged in as": "Angemeldet als",
   "Remember me": "Erinnere dich an mich",
@@ -1206,6 +1206,7 @@
       "Contact Information": "Kontaktinformationen",
       "Contract Termination": "Vertragsbeendigung",
       "Create Charge": "Ladung erstellen",
+      "Create Client": "Client erstellen",
       "Create Closure": "Abschluss erstellen",
       "Create Code": "Code erstellen",
       "Create Data Table": "Erstellen Sie eine Datentabelle",
@@ -1580,7 +1581,11 @@
       "Deposits and Shares": "Einlagen und Anteile",
       "Pricing and Rules": "Preise und Regeln",
       "Ledger Setup": "Hauptbuch-Einrichtung",
-      "Period Operations": "Periodenvorgänge"
+      "Period Operations": "Periodenvorgänge",
+      "Create Breach Configuration": "Verstoßkonfiguration erstellen",
+      "Edit Breach Configuration": "Verstoßkonfiguration bearbeiten",
+      "Create Near Breach Configuration": "Konfiguration der Beinahe-Verletzung erstellen",
+      "Edit Near Breach Configuration": "Konfiguration der Beinahe-Verletzung bearbeiten"
     },
     "inputs": {
       "# Remittance": "# Überweisung",
@@ -3433,6 +3438,7 @@
       "Create Accounting Rule": "Erstellen Sie eine Abrechnungsregel",
       "Create Adhoc Query": "Erstellen Sie eine Ad-hoc-Abfrage",
       "Create Breach": "Verstoss erstellen",
+      "Create Breach Configuration": "Verstoßkonfiguration erstellen",
       "Create Center": "Zentrum erstellen",
       "Create Charge": "Ladung erstellen",
       "Create Client": "Client erstellen",
@@ -3460,6 +3466,7 @@
       "Create Loan Product": "Darlehensprodukt erstellen",
       "Create Loans Account": "Erstellen Sie ein Kreditkonto",
       "Create Near Breach": "Beinahe-Verstoss erstellen",
+      "Create Near Breach Configuration": "Konfiguration der Beinahe-Verletzung erstellen",
       "Create New GL Account": "Mit dieser Option können Sie neue Hauptbuchkonten erstellen.",
       "Create Office": "Büro erstellen",
       "Create Payment Type": "Zahlungsart erstellen",
@@ -3549,6 +3556,7 @@
       "Edit Adhoc Query": "Ad-hoc-Abfrage bearbeiten",
       "Edit Amazon S3 Configuration": "Bearbeiten Sie die Amazon S3-Konfiguration",
       "Edit Breach": "Verstoss bearbeiten",
+      "Edit Breach Configuration": "Verstoßkonfiguration bearbeiten",
       "Edit Cashier": "Kassierer bearbeiten",
       "Edit Center": "Bearbeitungszentrum",
       "Edit Charge": "Gebühr bearbeiten",
@@ -3572,6 +3580,7 @@
       "Edit Hook": "Hook bearbeiten",
       "Edit Loan Product": "Darlehensprodukt bearbeiten",
       "Edit Near Breach": "Beinahe-Verstoss bearbeiten",
+      "Edit Near Breach Configuration": "Konfiguration der Beinahe-Verletzung bearbeiten",
       "Edit Notification Configuration": "Bearbeiten Sie die Benachrichtigungskonfiguration",
       "Edit Office": "Büro bearbeiten",
       "Edit Payment Type": "Zahlungsart bearbeiten",

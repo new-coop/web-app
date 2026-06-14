@@ -140,7 +140,6 @@ function stripLayoutWrapper(content) {
 function normalizeFooterActions(actions) {
   let footer = actions.trim();
   footer = footer.replace(/^<mat-card-actions[^>]*>/, '').replace(/<\/mat-card-actions>$/, '');
-  footer = footer.replace(/\[disabled\]="![\w.]+\.valid(?:\s*\|\|\s*[^"]+)?"/g, '');
   footer = footer.replace(/\s{2,}/g, ' ');
   footer = footer.replace(/(<button[^>]*mat-raised-button[^>]*color="primary"[^>]*)(>)/g, (m, start, end) => {
     if (start.includes('type=')) {

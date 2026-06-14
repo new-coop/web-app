@@ -5,13 +5,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+:host {
+  display: inline-flex;
+  align-items: center;
+}
+
+.language-compact-active {
+  font-weight: 600;
+}
+
 // ===== Base Language Selector Styles =====
 #language-selector {
   &.mat-mdc-form-field {
     // Default styles (fill variant)
     &:not(.outlined-variant) {
-      margin-left: 10px;
-
       .mat-mdc-text-field-wrapper {
         padding-bottom: 0;
       }
@@ -19,6 +27,10 @@
 
     // Outlined variant styles (used in login)
     &.outlined-variant {
+      .mat-mdc-form-field-icon-prefix {
+        padding: 0 0.35rem 0 0.5rem;
+      }
+
       .mat-mdc-text-field-wrapper {
         padding: 0;
       }

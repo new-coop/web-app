@@ -10,11 +10,9 @@ import { Injectable } from '@angular/core';
 import { NavHubItem } from './nav-hub.component';
 
 const STORAGE_KEY = 'mifosXNavHubRecent';
-const VISITED_KEY = 'mifosXNavHubVisited';
 const MAX_RECENT = 3;
 
 type RecentStore = Record<string, NavHubItem[]>;
-type VisitedStore = Record<string, string[]>;
 
 /**
  * Persists recently visited nav-hub cards per module scope (localStorage).
@@ -43,29 +41,6 @@ export class NavHubRecentService {
     ].slice(0, MAX_RECENT);
     store[scope] = next;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
-    this.recordExplored(scope, item);
-  }
-
-  getExploredKeys(scope: string): string[] {
-    return this.readVisitedStore()[scope] ?? [];
-  }
-
-  hasExplored(scope: string, item: NavHubItem): boolean {
-    return this.getExploredKeys(scope).includes(this.linkKey(item));
-  }
-
-  private recordExplored(scope: string, item: NavHubItem): void {
-    const key = this.linkKey(item);
-    const store = this.readVisitedStore();
-    const visited = store[scope] ?? [];
-    if (visited.includes(key)) {
-      return;
-    }
-    store[scope] = [
-      ...visited,
-      key
-    ];
-    localStorage.setItem(VISITED_KEY, JSON.stringify(store));
   }
 
   private toStoredItem(item: NavHubItem): NavHubItem {
@@ -87,15 +62,6 @@ export class NavHubRecentService {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       return raw ? (JSON.parse(raw) as RecentStore) : {};
-    } catch {
-      return {};
-    }
-  }
-
-  private readVisitedStore(): VisitedStore {
-    try {
-      const raw = localStorage.getItem(VISITED_KEY);
-      return raw ? (JSON.parse(raw) as VisitedStore) : {};
     } catch {
       return {};
     }

@@ -21,7 +21,6 @@ import { FormfieldBase } from './formfield/model/formfield-base';
 
 import { FormGroupService } from './form-group.service';
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { NgClass } from '@angular/common';
 import { FormfieldComponent } from './formfield/formfield.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
@@ -36,7 +35,6 @@ const layoutGap = 2;
     MatDialogTitle,
     CdkScrollable,
     MatDialogContent,
-    NgClass,
     FormfieldComponent,
     MatDialogActions,
     MatDialogClose

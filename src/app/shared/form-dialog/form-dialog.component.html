@@ -6,26 +6,26 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<h1 mat-dialog-title>{{ data.title }}</h1>
+<h2 mat-dialog-title class="form-dialog-title">{{ data.title }}</h2>
 
-<div
-  mat-dialog-content
-  [formGroup]="form"
-  [ngClass]="[
-    layout.columns > 1 ? 'flex flex-wrap gap-' + layout.gap + 'percent' : 'layout-column',
-    'responsive-column'
-  ]"
->
-  @for (formfield of formfields; track formfield) {
-    <div [ngClass]="'flex-' + layout.flex + ' responsive-flex-full'">
-      <mifosx-formfield [formfield]="formfield" [form]="form" class="flex-fill"></mifosx-formfield>
-    </div>
-  }
-</div>
+<mat-dialog-content class="form-dialog-content">
+  <form [formGroup]="form" class="form-dialog-form" [class.form-grid]="layout.columns > 1">
+    @for (formfield of formfields; track formfield) {
+      @if (layout.columns > 1) {
+        <mifosx-formfield [formfield]="formfield" [form]="form"></mifosx-formfield>
+      } @else {
+        <mifosx-formfield [formfield]="formfield" [form]="form" class="flex-fill"></mifosx-formfield>
+      }
+    }
+  </form>
+</mat-dialog-content>
 
-<mat-dialog-actions class="layout-row layout-xs-column layout-align-center gap-2percent" align="end">
-  <button mat-raised-button mat-dialog-close>{{ 'labels.buttons.' + layout.cancelButtonText | translate }}</button>
+<mat-dialog-actions align="end" class="form-dialog-actions">
+  <button type="button" mat-raised-button mat-dialog-close>
+    {{ 'labels.buttons.' + layout.cancelButtonText | translate }}
+  </button>
   <button
+    type="button"
     mat-raised-button
     color="primary"
     [mat-dialog-close]="{ data: form }"

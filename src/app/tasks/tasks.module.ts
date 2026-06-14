@@ -16,6 +16,8 @@ import { DirectivesModule } from '../directives/directives.module';
 
 /** Custom Components */
 import { CheckerInboxAndTasksComponent } from './checker-inbox-and-tasks/checker-inbox-and-tasks.component';
+import { TasksAllPendingComponent } from './checker-inbox-and-tasks-tabs/tasks-all-pending/tasks-all-pending.component';
+import { TasksQueueRedirectComponent } from './tasks-queue-redirect.component';
 import { CheckerInboxComponent } from './checker-inbox-and-tasks-tabs/checker-inbox/checker-inbox.component';
 import { ClientApprovalComponent } from './checker-inbox-and-tasks-tabs/client-approval/client-approval.component';
 import { LoanApprovalComponent } from './checker-inbox-and-tasks-tabs/loan-approval/loan-approval.component';
@@ -34,6 +36,8 @@ import { ViewCheckerInboxComponent } from './view-checker-inbox/view-checker-inb
     DirectivesModule,
     PipesModule,
     CheckerInboxAndTasksComponent,
+    TasksAllPendingComponent,
+    TasksQueueRedirectComponent,
     CheckerInboxComponent,
     ClientApprovalComponent,
     LoanApprovalComponent,

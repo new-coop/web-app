@@ -7,7 +7,7 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UntypedFormGroup, UntypedFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 
@@ -38,6 +38,7 @@ export class EditGlAccountComponent implements OnInit {
   private accountingService = inject(AccountingService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   /** GL account form. */
   glAccountForm: UntypedFormGroup;
@@ -133,9 +134,11 @@ export class EditGlAccountComponent implements OnInit {
           this.tagData = this.glAccount.allowedExpensesTagOptions;
           break;
       }
+      this.cdr.markForCheck();
     });
 
     this.glAccountForm.get('type').setValue(this.glAccount.type.id);
+    this.cdr.markForCheck();
   }
 
   /**

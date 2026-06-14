@@ -17,7 +17,9 @@ import {
 } from '@angular/forms';
 import { MatInput } from '@angular/material/input';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { MatPrefix } from '@angular/material/form-field';
+import { M3IconComponent } from 'app/shared/m3-ui/m3-icon/m3-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 @Component({
@@ -26,7 +28,9 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   styleUrls: ['./input-password.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    MatIcon
+    MatPrefix,
+    MatIconButton,
+    M3IconComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

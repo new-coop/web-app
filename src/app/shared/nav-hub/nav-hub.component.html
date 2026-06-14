@@ -36,33 +36,6 @@
     </label>
   </header>
 
-  @if (showExplorationProgress()) {
-    <div
-      class="hub-exploration"
-      [class.hub-exploration--complete]="explorationPercent() === 100"
-      role="status"
-      [attr.aria-label]="
-        'labels.text.Hub exploration aria' | translate: { explored: exploredCount(), total: totalExplorable() }
-      "
-    >
-      <div class="hub-exploration-header">
-        <span class="hub-exploration-label">
-          @if (explorationPercent() === 100) {
-            <mifosx-m3-icon name="emoji_events" [size]="16" class="hub-exploration-trophy" />
-          }
-          {{ 'labels.text.Hub exploration progress' | translate }}
-        </span>
-        <span class="hub-exploration-stats">{{ exploredCount() }} / {{ totalExplorable() }}</span>
-      </div>
-      <div class="hub-exploration-track">
-        <div class="hub-exploration-fill" [style.width.%]="explorationPercent()"></div>
-      </div>
-      @if (explorationPercent() === 100) {
-        <p class="hub-exploration-complete-msg">{{ 'labels.text.Hub fully explored' | translate }}</p>
-      }
-    </div>
-  }
-
   @if (featuredItems().length > 0) {
     <section class="hub-section hub-section-featured">
       <h2 class="hub-section-label">{{ featuredSectionLabel() | translate }}</h2>
@@ -116,7 +89,6 @@
 <ng-template #card let-item>
   <a
     class="hub-card"
-    [class.hub-card--explored]="isExplored(item)"
     [class.disabled]="item.disabled"
     [attr.id]="item.anchorId ?? null"
     [routerLink]="item.disabled ? null : item.link"
@@ -128,11 +100,6 @@
     <span class="hub-card-icon">
       <mifosx-m3-icon [name]="item.icon" [size]="22" />
     </span>
-    @if (isExplored(item)) {
-      <span class="hub-card-explored" [attr.aria-label]="'labels.text.Task explored' | translate">
-        <mifosx-m3-icon name="check_circle" [size]="16" />
-      </span>
-    }
     <span class="hub-card-body">
       <span class="hub-card-title">{{ item.label | translate }}</span>
       @if (item.description) {

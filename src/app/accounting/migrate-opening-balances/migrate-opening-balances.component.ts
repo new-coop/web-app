@@ -9,6 +9,7 @@
 /** Angular Imports */
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnInit,
   TemplateRef,
@@ -64,6 +65,7 @@ export class MigrateOpeningBalancesComponent implements OnInit, AfterViewInit {
   private configurationWizardService = inject(ConfigurationWizardService);
   private popoverService = inject(PopoverService);
   private translateService = inject(TranslateService);
+  private cdr = inject(ChangeDetectorRef);
 
   /** Minimum opening balances date allowed. */
   minDate = new Date(2000, 0, 1);
@@ -191,7 +193,9 @@ export class MigrateOpeningBalancesComponent implements OnInit, AfterViewInit {
             this.debitsSum += value.value.debit;
             this.creditsSum += value.value.credit;
           });
+          this.cdr.markForCheck();
         });
+        this.cdr.markForCheck();
       });
   }
 

@@ -13,6 +13,7 @@
         [disabled]="isDisabled"
         [attr.aria-busy]="loading || null"
         [attr.aria-label]="ariaLabel || null"
+        [attr.trailing-icon]="trailingIconOnly || null"
         (click)="onClick($event)"
       >
         <ng-container *ngTemplateOutlet="buttonInner" />
@@ -24,6 +25,7 @@
         [disabled]="isDisabled"
         [attr.aria-busy]="loading || null"
         [attr.aria-label]="ariaLabel || null"
+        [attr.trailing-icon]="trailingIconOnly || null"
         (click)="onClick($event)"
       >
         <ng-container *ngTemplateOutlet="buttonInner" />
@@ -35,6 +37,7 @@
         [disabled]="isDisabled"
         [attr.aria-busy]="loading || null"
         [attr.aria-label]="ariaLabel || null"
+        [attr.trailing-icon]="trailingIconOnly || null"
         (click)="onClick($event)"
       >
         <ng-container *ngTemplateOutlet="buttonInner" />
@@ -46,6 +49,7 @@
         [disabled]="isDisabled"
         [attr.aria-busy]="loading || null"
         [attr.aria-label]="ariaLabel || null"
+        [attr.trailing-icon]="trailingIconOnly || null"
         (click)="onClick($event)"
       >
         <ng-container *ngTemplateOutlet="buttonInner" />
@@ -57,6 +61,7 @@
         [disabled]="isDisabled"
         [attr.aria-busy]="loading || null"
         [attr.aria-label]="ariaLabel || null"
+        [attr.trailing-icon]="trailingIconOnly || null"
         (click)="onClick($event)"
       >
         <ng-container *ngTemplateOutlet="buttonInner" />
@@ -69,13 +74,23 @@
   @if (loading) {
     <span class="m3-button-spinner" aria-hidden="true"></span>
   } @else if (icon) {
-    <mifosx-m3-icon [name]="icon" [size]="iconSize" class="m3-button-icon-leading" />
+    <span slot="icon" class="m3-button-icon-leading">
+      <mifosx-m3-icon [name]="icon" [size]="iconSize" />
+    </span>
   }
   @if (label) {
     <span class="m3-button-label">{{ label }}</span>
   }
   <ng-content />
   @if (trailingIcon && !loading) {
-    <mifosx-m3-icon [name]="trailingIcon" [size]="iconSize" class="m3-button-icon-trailing" />
+    @if (trailingIconOnly) {
+      <span slot="icon" class="m3-button-icon-trailing">
+        <mifosx-m3-icon [name]="trailingIcon" [size]="iconSize" />
+      </span>
+    } @else {
+      <span class="m3-button-icon-trailing">
+        <mifosx-m3-icon [name]="trailingIcon" [size]="iconSize" />
+      </span>
+    }
   }
 </ng-template>

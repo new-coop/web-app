@@ -7,7 +7,7 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
@@ -32,7 +32,7 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditFamilyMemberComponent implements OnInit {
+export class EditFamilyMemberComponent {
   private formBuilder = inject(FormBuilder);
   private dateUtils = inject(Dates);
   private router = inject(Router);
@@ -40,6 +40,7 @@ export class EditFamilyMemberComponent implements OnInit {
   private clientsService = inject(ClientsService);
   private settingsService = inject(SettingsService);
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
   /** Maximum Due Date allowed. */
   maxDate = new Date();
@@ -64,23 +65,51 @@ export class EditFamilyMemberComponent implements OnInit {
       .subscribe((data: { clientTemplate: any; editFamilyMember: any }) => {
         this.addFamilyMemberTemplate = data.clientTemplate.familyMemberOptions;
         this.familyMemberDetails = data.editFamilyMember;
+        this.maxDate = this.settingsService.businessDate;
+        this.createEditFamilyMemberForm(this.familyMemberDetails);
+        this.configureOptionalCatalogControls();
+        this.editFamilyMemberForm
+          .get('dateOfBirth')
+          ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe((dateOfBirth: any) => {
+            if (dateOfBirth) {
+              this.setAgeValue(this.calculateAge(dateOfBirth));
+            } else {
+              this.setAgeValue('');
+            }
+          });
+        this.cdr.markForCheck();
       });
   }
 
-  ngOnInit() {
-    this.maxDate = this.settingsService.businessDate;
-    this.createEditFamilyMemberForm(this.familyMemberDetails);
-    this.editFamilyMemberForm
-      .get('dateOfBirth')
-      .valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((dateOfBirth: any) => {
-        if (dateOfBirth) {
-          const age = this.calculateAge(dateOfBirth);
-          this.editFamilyMemberForm.get('age').setValue(age);
-        } else {
-          this.editFamilyMemberForm.get('age').setValue('');
-        }
-      });
+  /**
+   * Disables optional catalog fields when their option lists are empty.
+   */
+  private configureOptionalCatalogControls(): void {
+    if (!this.editFamilyMemberForm || !this.addFamilyMemberTemplate) {
+      return;
+    }
+
+    if (!this.addFamilyMemberTemplate.professionIdOptions?.length) {
+      this.editFamilyMemberForm.get('professionId')?.disable({ emitEvent: false });
+    }
+    if (!this.addFamilyMemberTemplate.maritalStatusIdOptions?.length) {
+      this.editFamilyMemberForm.get('maritalStatusId')?.disable({ emitEvent: false });
+    }
+  }
+
+  /**
+   * Updates the read-only age control without using a template disabled attribute.
+   */
+  private setAgeValue(age: number | ''): void {
+    const ageControl = this.editFamilyMemberForm?.get('age');
+    if (!ageControl) {
+      return;
+    }
+
+    ageControl.enable({ emitEvent: false });
+    ageControl.setValue(age, { emitEvent: false });
+    ageControl.disable({ emitEvent: false });
   }
 
   /**
@@ -129,8 +158,8 @@ export class EditFamilyMemberComponent implements OnInit {
         familyMember.genderId,
         Validators.required
       ],
-      professionId: [familyMember.professionId],
-      maritalStatusId: [familyMember.maritalStatusId],
+      professionId: [familyMember.professionId ?? null],
+      maritalStatusId: [familyMember.maritalStatusId ?? null],
       dateOfBirth: [
         familyMember.dateOfBirth ? this.dateUtils.formatDate(familyMember.dateOfBirth, 'yyyy-MM-dd') : null
       ]

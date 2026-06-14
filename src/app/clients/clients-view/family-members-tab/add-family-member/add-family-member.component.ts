@@ -7,7 +7,7 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
@@ -40,6 +40,7 @@ export class AddFamilyMemberComponent implements OnInit {
   private clientsService = inject(ClientsService);
   private settingsService = inject(SettingsService);
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
   /** Maximum Due Date allowed. */
   maxDate = new Date();
@@ -63,24 +64,61 @@ export class AddFamilyMemberComponent implements OnInit {
   constructor() {
     this.route.data.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((data: { clientTemplate: any }) => {
       this.addFamilyMemberTemplate = data.clientTemplate.familyMemberOptions;
+      this.configureOptionalCatalogControls();
+      this.cdr.markForCheck();
     });
     this.clientId = this.route.parent.parent.snapshot.params['clientId'];
   }
 
   ngOnInit() {
+    if (!this.addFamilyMemberTemplate) {
+      this.addFamilyMemberTemplate = this.route.snapshot.data['clientTemplate']?.familyMemberOptions;
+    }
+
     this.maxDate = this.settingsService.businessDate;
     this.createAddFamilyMemberForm();
+    this.configureOptionalCatalogControls();
     this.addFamilyMemberForm
       .get('dateOfBirth')
       .valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((dateOfBirth: any) => {
         if (dateOfBirth) {
-          const age = this.calculateAge(dateOfBirth);
-          this.addFamilyMemberForm.get('age').setValue(age);
+          this.setAgeValue(this.calculateAge(dateOfBirth));
         } else {
-          this.addFamilyMemberForm.get('age').setValue('');
+          this.setAgeValue('');
         }
       });
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Disables optional catalog fields when their option lists are empty.
+   */
+  private configureOptionalCatalogControls(): void {
+    if (!this.addFamilyMemberForm || !this.addFamilyMemberTemplate) {
+      return;
+    }
+
+    if (!this.addFamilyMemberTemplate.professionIdOptions?.length) {
+      this.addFamilyMemberForm.get('professionId')?.disable({ emitEvent: false });
+    }
+    if (!this.addFamilyMemberTemplate.maritalStatusIdOptions?.length) {
+      this.addFamilyMemberForm.get('maritalStatusId')?.disable({ emitEvent: false });
+    }
+  }
+
+  /**
+   * Updates the read-only age control without using a template disabled attribute.
+   */
+  private setAgeValue(age: number | ''): void {
+    const ageControl = this.addFamilyMemberForm?.get('age');
+    if (!ageControl) {
+      return;
+    }
+
+    ageControl.enable({ emitEvent: false });
+    ageControl.setValue(age, { emitEvent: false });
+    ageControl.disable({ emitEvent: false });
   }
 
   /**
@@ -121,15 +159,15 @@ export class AddFamilyMemberComponent implements OnInit {
       ],
       isDependent: [''],
       relationshipId: [
-        '',
+        null,
         Validators.required
       ],
       genderId: [
-        '',
+        null,
         Validators.required
       ],
-      professionId: [''],
-      maritalStatusId: [''],
+      professionId: [null],
+      maritalStatusId: [null],
       dateOfBirth: ['']
     });
   }

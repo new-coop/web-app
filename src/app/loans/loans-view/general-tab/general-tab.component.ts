@@ -28,6 +28,12 @@ import { LoanProductService } from 'app/products/loan-products/services/loan-pro
 import { LoanProductBaseComponent } from 'app/products/loan-products/common/loan-product-base.component';
 import { LoanSummaryBalanceComponentComponent } from './loan-summary-balance-component/loan-summary-balance-component.component';
 import { StatusBadgeComponent } from '../../../shared/ui/status-badge/status-badge.component';
+import {
+  resolveStatusBadgeConfig,
+  statusKpiIconName,
+  StatusBadgeSeverity
+} from '../../../shared/ui/status-badge/status-badge.utils';
+import { M3IconComponent } from '../../../shared/m3-ui/m3-icon/m3-icon.component';
 
 @Component({
   selector: 'mifosx-general-tab',
@@ -44,7 +50,8 @@ import { StatusBadgeComponent } from '../../../shared/ui/status-badge/status-bad
     DateFormatPipe,
     FormatNumberPipe,
     LoanSummaryBalanceComponentComponent,
-    StatusBadgeComponent
+    StatusBadgeComponent,
+    M3IconComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -225,6 +232,18 @@ export class GeneralTabComponent extends LoanProductBaseComponent implements OnI
       this.status === 'Rejected' ||
       this.status === 'Approved'
     );
+  }
+
+  statusKpiIconTone(): StatusBadgeSeverity {
+    return resolveStatusBadgeConfig(
+      this.loanDetails?.status?.code ?? '',
+      this.loanDetails?.inArrears,
+      this.loanDetails?.status?.value
+    ).severity;
+  }
+
+  statusKpiIconName(): string {
+    return statusKpiIconName(this.statusKpiIconTone());
   }
 
   loanProductType(): string {

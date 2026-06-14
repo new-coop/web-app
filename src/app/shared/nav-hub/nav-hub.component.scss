@@ -33,74 +33,6 @@
   animation: hub-fade-in var(--motion-base, 200ms) var(--ease-enter, ease-out) both;
 }
 
-// ---- Exploration progress (gamified hub discovery) ----
-.hub-exploration {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2, 8px);
-  padding: var(--space-3, 12px) var(--space-4, 16px);
-  background: var(--mifos-surface-50, #fafafa);
-  border: 1px solid var(--mifos-surface-200, #e4e4e7);
-  border-radius: var(--radius-lg, 12px);
-  animation: hub-fade-in var(--motion-base, 200ms) var(--ease-enter, ease-out) both;
-
-  &.hub-exploration--complete {
-    border-color: var(--mifos-surface-300, #d4d4d8);
-    background: linear-gradient(135deg, var(--mifos-surface-50, #fafafa) 0%, var(--mifos-surface-0, #fff) 100%);
-  }
-}
-
-.hub-exploration-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3, 12px);
-}
-
-.hub-exploration-label {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2, 8px);
-  font-size: var(--text-sm, 0.875rem);
-  font-weight: 600;
-  color: var(--mifos-surface-700, #3f3f46);
-}
-
-.hub-exploration-trophy ::ng-deep .m3-icon {
-  color: #b45309;
-}
-
-.hub-exploration-stats {
-  font-size: var(--text-sm, 0.875rem);
-  font-variant-numeric: tabular-nums;
-  color: var(--mifos-surface-500, #71717a);
-}
-
-.hub-exploration-track {
-  height: 6px;
-  border-radius: 999px;
-  background: var(--mifos-surface-200, #e4e4e7);
-  overflow: hidden;
-}
-
-.hub-exploration-fill {
-  height: 100%;
-  border-radius: inherit;
-  background: var(--mifos-accent-bg, #09090b);
-  transition: width var(--motion-slow, 400ms) var(--ease-enter, ease-out);
-
-  .hub-exploration--complete & {
-    background: linear-gradient(90deg, var(--mifos-accent-bg, #09090b) 0%, var(--mifos-surface-600, #52525b) 100%);
-  }
-}
-
-.hub-exploration-complete-msg {
-  margin: 0;
-  font-size: var(--text-xs, 0.75rem);
-  color: var(--mifos-surface-600, #52525b);
-  animation: hub-fade-in var(--motion-base, 200ms) var(--ease-enter, ease-out) both;
-}
-
 // ---- Local task filter (not global search) ----
 .hub-filter {
   display: flex;
@@ -267,27 +199,6 @@
     opacity: 0.5;
     pointer-events: none;
   }
-
-  &.hub-card--explored:not(:hover) {
-    border-color: var(--mifos-surface-300, #d4d4d8);
-  }
-}
-
-.hub-card-explored {
-  position: absolute;
-  top: var(--space-3, 12px);
-  right: var(--space-3, 12px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ::ng-deep .m3-icon {
-    color: #16a34a;
-  }
-
-  .hub-card:hover & {
-    opacity: 0;
-  }
 }
 
 // Noir signature on hover: tile flips to solid black
@@ -387,22 +298,6 @@
 }
 
 :host-context(.dark-theme) {
-  .hub-exploration-trophy ::ng-deep .m3-icon {
-    color: #fbbf24;
-  }
-
-  .hub-card-explored ::ng-deep .m3-icon {
-    color: #4ade80;
-  }
-
-  .hub-exploration-fill {
-    background: rgb(255 255 255 / 55%);
-
-    .hub-exploration--complete & {
-      background: linear-gradient(90deg, rgb(255 255 255 / 55%) 0%, rgb(255 255 255 / 28%) 100%);
-    }
-  }
-
   .hub-card:hover {
     border-color: rgb(161 161 170 / 40%);
     box-shadow: none;
@@ -431,14 +326,8 @@
 @media (prefers-reduced-motion: reduce) {
   .hub-subtitle,
   .hub-section-label,
-  .hub-empty,
-  .hub-exploration,
-  .hub-exploration-complete-msg {
+  .hub-empty {
     animation: none;
-  }
-
-  .hub-exploration-fill {
-    transition: none;
   }
 
   .hub-card {

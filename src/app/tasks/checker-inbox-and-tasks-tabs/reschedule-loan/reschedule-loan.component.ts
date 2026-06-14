@@ -32,10 +32,13 @@ import { ConfirmationDialogComponent } from 'app/shared/confirmation-dialog/conf
 
 /** Custom Services */
 import { TasksService } from '../../tasks.service';
+import { TasksQueueCountsService } from '../../tasks-queue-counts.service';
+import { TasksGamificationService } from '../../tasks-gamification.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { Dates } from 'app/core/utils/dates';
 import { TranslateService } from '@ngx-translate/core';
-import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
+import { M3ButtonComponent } from 'app/shared/m3-ui/m3-button/m3-button.component';
+import { M3IconComponent } from 'app/shared/m3-ui/m3-icon/m3-icon.component';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { DateFormatPipe } from '../../../pipes/date-format.pipe';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
@@ -53,7 +56,8 @@ interface RescheduleFormData {
   styleUrls: ['./reschedule-loan.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    FaIconComponent,
+    M3ButtonComponent,
+    M3IconComponent,
     MatTable,
     MatColumnDef,
     MatHeaderCellDef,
@@ -77,6 +81,8 @@ export class RescheduleLoanComponent {
   private settingsService = inject(SettingsService);
   private translateService = inject(TranslateService);
   private tasksService = inject(TasksService);
+  private queueCountsService = inject(TasksQueueCountsService);
+  private gamificationService = inject(TasksGamificationService);
   private destroyRef = inject(DestroyRef);
 
   /** Loans Data */
@@ -176,6 +182,15 @@ export class RescheduleLoanComponent {
       this.batchRequests.push(batchData);
     });
     this.tasksService.submitBatchData(this.batchRequests).subscribe((response: any) => {
+      let successCount = 0;
+      response.forEach((responseEle: any) => {
+        if (responseEle.statusCode === '200') {
+          successCount++;
+        }
+      });
+      if (successCount > 0) {
+        this.gamificationService.recordCompletions(successCount, command === 'approve' ? 'approve' : 'reject');
+      }
       this.reload();
     });
   }
@@ -184,11 +199,16 @@ export class RescheduleLoanComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  get selectedCount(): number {
+    return this.selection?.selected?.length ?? 0;
+  }
+
   /**
    * Refetches data fot the component
    * TODO: Replace by a custom reload component instead of hard-coded back-routing.
    */
   reload() {
+    this.queueCountsService.invalidate();
     const url: string = this.router.url;
     this.router
       .navigateByUrl(`/checker-inbox-and-tasks`, { skipLocationChange: true })

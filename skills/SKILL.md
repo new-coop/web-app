@@ -13,24 +13,40 @@ This file defines the procedural knowledge required for AI agents to successfull
 
 **Rules:**
 
-- Prefer Angular Material components/directives for interactive UI.
-- Use Material components where they exist (`<mat-table>`, `<mat-select>`) and Material directives on native controls where required (`<button mat-button>`, `<input matInput>`).
-- Use the 8px grid system for margins and padding using either utility classes (e.g., `class="m-b-16"`) or inline CSS (e.g., `margin-bottom: 16px;`). Arbitrary values like `10px` or `15px` are strictly prohibited.
+- Follow the **Noir design system** (see `.cursor/rules/mifos-x-style-guide.mdc` and `src/theme/_design-tokens.scss`).
+- Use CSS design tokens (`--mifos-*`, `--space-*`, `--text-*`, `--radius-*`) — never hardcode hex colors or arbitrary spacing.
+- **Landing / hub pages:** use `<mifosx-nav-hub>` with typed `NavHubSection[]` config (see `accounting.component.ts`).
+- **Buttons & icons:** use `<mifosx-m3-button>` and `<mifosx-m3-icon>`, not raw `<button>` or Font Awesome for new UI.
+- **Forms & wizards:** use global layout classes (`.form-workspace`, `.form-page`, `.form-grid`, `.form-ledger`) from `_design-tokens.scss`.
+- **Data tables & fields:** Angular Material (`<mat-table>`, `<mat-form-field>`, `<input matInput>`).
+- Spacing must use the 4px token grid (`--space-*` or multiples of 4px). Values like `10px` or `15px` are prohibited.
+- No inline `style=""` attributes in templates.
 
-**Correct Example:**
+**Correct Example (hub landing):**
 
 ```html
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>{{ 'Create.Client' | translate }}</mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="m-b-16">
-    <mat-form-field appearance="fill">
-      <mat-label>{{ 'First.Name' | translate }}</mat-label>
-      <input matInput formControlName="firstName" required />
-    </mat-form-field>
-  </mat-card-content>
-</mat-card>
+<div class="container">
+  <mifosx-nav-hub hubSubtitle="labels.text.Accounting hub welcome" filterPlaceholder="labels.text.Filter accounting tasks" [sections]="sections" />
+</div>
+```
+
+**Correct Example (form workspace):**
+
+```html
+<div class="container form-page">
+  <div class="form-workspace">
+    <header class="form-workspace-header">…</header>
+    <form class="form-workspace-form">
+      <section class="form-section">
+        <h2 class="form-section-title">{{ 'labels.heading.Details' | translate }}</h2>
+        <div class="form-grid">…</div>
+      </section>
+      <footer class="form-workspace-footer">
+        <mifosx-m3-button variant="filled" [label]="'labels.buttons.Submit' | translate" />
+      </footer>
+    </form>
+  </div>
+</div>
 ```
 
 ## 2. Forms & Data Binding Skill

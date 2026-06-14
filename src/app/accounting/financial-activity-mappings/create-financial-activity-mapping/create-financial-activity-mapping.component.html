@@ -51,6 +51,7 @@
           mat-raised-button
           color="primary"
           type="submit"
+          [disabled]="financialActivityMappingForm.invalid"
           *mifosxHasPermission="'CREATE_FINANCIALACTIVITYACCOUNT'"
         >
           {{ 'labels.buttons.Submit' | translate }}

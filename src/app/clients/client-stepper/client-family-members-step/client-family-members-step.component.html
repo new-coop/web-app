@@ -8,7 +8,7 @@
 
 <div class="mat-typography">
   <div class="layout-row align-end m-b-20">
-    <button mat-raised-button color="primary" (click)="addFamilyMember()">
+    <button type="button" mat-raised-button color="primary" (click)="addFamilyMember()">
       <fa-icon icon="plus" class="m-r-10"></fa-icon>{{ 'labels.buttons.Add' | translate }}
     </button>
   </div>
@@ -23,10 +23,10 @@
           <span class="family-member-meta">{{ member.relationship }}</span>
         </div>
         <div class="family-member-actions layout-row">
-          <button mat-button color="primary" (click)="editFamilyMember(member, i)">
+          <button type="button" mat-button color="primary" (click)="editFamilyMember(member, i)">
             <fa-icon icon="edit"></fa-icon>
           </button>
-          <button mat-button color="warn" (click)="deleteFamilyMember(member.firstName, i)">
+          <button type="button" mat-button color="warn" (click)="deleteFamilyMember(member.firstName, i)">
             <fa-icon icon="trash"></fa-icon>
           </button>
         </div>

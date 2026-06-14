@@ -180,8 +180,10 @@
               </div>
             </div>
           }
-          <div class="kpi-card">
-            <span class="kpi-icon kpi-status"><i class="fa fa-circle-info"></i></span>
+          <div class="kpi-card kpi-card--status">
+            <span class="kpi-icon" [ngClass]="'kpi-icon-tone-' + statusKpiIconTone()" aria-hidden="true">
+              <mifosx-m3-icon [name]="statusKpiIconName()" [size]="18" variant="duotone" />
+            </span>
             <div class="kpi-body">
               <mifosx-status-badge
                 [code]="loanDetails.status.code"

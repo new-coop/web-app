@@ -7,10 +7,10 @@
 -->
 <button
   type="button"
-  class="theme-toggle-btn"
+  class="theme-toggle-btn topbar-control topbar-control--icon"
   (click)="toggleTheme()"
   [attr.aria-label]="darkModeOn ? 'Switch to light mode' : 'Switch to dark mode'"
   [attr.aria-pressed]="darkModeOn"
 >
-  <mifosx-m3-icon [name]="darkModeOn ? 'light_mode' : 'dark_mode'" [size]="18" variant="outlined" />
+  <mifosx-m3-icon [name]="darkModeOn ? 'light_mode' : 'dark_mode'" [size]="20" variant="outlined" />
 </button>

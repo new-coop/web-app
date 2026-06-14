@@ -28,6 +28,7 @@ import { TranslatePipe } from '@pipes/translate.pipe';
 import { HasPermissionDirective } from './directives/has-permission/has-permission.directive';
 import { TouchOnSubmitDirective } from './directives/touch-on-submit.directive';
 import { ValidateOnBlurDirective } from './directives/validate-on-blur.directive';
+import { FieldIconDirective } from './directives/field-icon/field-icon.directive';
 import { FormWorkspaceComponent } from './shared/form-workspace/form-workspace.component';
 
 export const STANDALONE_SHARED_IMPORTS = [
@@ -59,6 +60,7 @@ export const STANDALONE_SHARED_IMPORTS = [
   HasPermissionDirective,
   TouchOnSubmitDirective,
   ValidateOnBlurDirective,
+  FieldIconDirective,
   FormWorkspaceComponent,
 
   // Pipes and Directives
@@ -70,3 +72,4 @@ export { M3ButtonComponent } from './shared/m3-ui/m3-button/m3-button.component'
 export { HasPermissionDirective } from './directives/has-permission/has-permission.directive';
 export { TouchOnSubmitDirective } from './directives/touch-on-submit.directive';
 export { ValidateOnBlurDirective } from './directives/validate-on-blur.directive';
+export { FieldIconDirective } from './directives/field-icon/field-icon.directive';

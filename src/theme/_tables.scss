@@ -94,8 +94,20 @@
 
 .toolbar-actions {
   display: flex;
+  align-items: center;
   gap: var(--space-3, 12px);
   flex-wrap: wrap;
+
+  mifosx-m3-button {
+    display: inline-flex;
+  }
+
+  md-filled-button,
+  md-outlined-button,
+  md-text-button {
+    font-weight: 500;
+    box-shadow: none;
+  }
 }
 
 .table-scroll {

@@ -101,6 +101,29 @@
           root.style.colorScheme = dark ? 'dark' : 'light';
           body.classList.add(theme);
           body.classList.remove(dark ? 'light-theme' : 'dark-theme');
+
+          var colorThemeRaw = localStorage.getItem('mifosXTheme');
+          if (colorThemeRaw) {
+            var colorTheme = JSON.parse(colorThemeRaw);
+            var themeClasses = {
+              'pictonblue-yellowgreen.css': 'pictonblue-yellowgreen-theme',
+              'indigo-pink.css': 'indigo-pink-theme',
+              'deeppurple-amber.css': 'deeppurple-amber-theme',
+              'pink-bluegrey.css': 'pink-bluegrey-theme',
+              'purple-green.css': 'purple-green-theme'
+            };
+            if (colorTheme && !colorTheme.isDefault && colorTheme.primary) {
+              var themeClass = themeClasses[colorTheme.href];
+              if (themeClass) {
+                body.classList.add(themeClass);
+              }
+              root.style.setProperty('--md-sys-color-primary', colorTheme.primary);
+              root.style.setProperty('--mifos-accent-bg', colorTheme.primary);
+              root.style.setProperty('--mifos-focus-ring', colorTheme.primary);
+              root.style.setProperty('--focus-ring-color', colorTheme.primary);
+              root.style.setProperty('--mifos-progress', colorTheme.primary);
+            }
+          }
         } catch (e) {
           /* ignore */
         }

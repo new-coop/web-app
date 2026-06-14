@@ -78,8 +78,6 @@ export class NavHubComponent implements AfterViewInit {
   sections = input.required<NavHubSection[]>();
 
   readonly query = signal('');
-  /** Bumps when a card visit is recorded so exploration progress recomputes. */
-  private readonly visitTick = signal(0);
   /** Enables one-time staggered card entrance after first paint. */
   readonly hasEntered = signal(false);
 
@@ -128,49 +126,6 @@ export class NavHubComponent implements AfterViewInit {
     return this.recentService.getRecent(scope, available);
   });
 
-  readonly totalExplorable = computed(
-    () =>
-      this.sections()
-        .flatMap((section) => section.items)
-        .filter((item) => this.isItemPermitted(item) && !item.disabled).length
-  );
-
-  readonly exploredCount = computed(() => {
-    this.visitTick();
-    const scope = this.recentScope();
-    if (!scope) {
-      return 0;
-    }
-    const availableKeys = new Set(
-      this.sections()
-        .flatMap((section) => section.items)
-        .filter((item) => this.isItemPermitted(item) && !item.disabled)
-        .map((item) => this.linkKey(item))
-    );
-    return this.recentService.getExploredKeys(scope).filter((key) => availableKeys.has(key)).length;
-  });
-
-  readonly explorationPercent = computed(() => {
-    const total = this.totalExplorable();
-    if (total === 0) {
-      return 0;
-    }
-    return Math.round((this.exploredCount() / total) * 100);
-  });
-
-  readonly exploredLinkKeys = computed(() => {
-    this.visitTick();
-    const scope = this.recentScope();
-    if (!scope) {
-      return new Set<string>();
-    }
-    return new Set(this.recentService.getExploredKeys(scope));
-  });
-
-  readonly showExplorationProgress = computed(
-    () => !!this.recentScope() && this.totalExplorable() > 0 && !this.hasActiveFilter()
-  );
-
   ngAfterViewInit(): void {
     requestAnimationFrame(() => this.hasEntered.set(true));
   }
@@ -187,20 +142,11 @@ export class NavHubComponent implements AfterViewInit {
     const scope = this.recentScope();
     if (scope && !item.disabled) {
       this.recentService.recordVisit(scope, item);
-      this.visitTick.update((n) => n + 1);
     }
-  }
-
-  isExplored(item: NavHubItem): boolean {
-    return this.exploredLinkKeys().has(this.linkKey(item));
   }
 
   cardEnterDelay(index: number): string {
     return `${index * 45}ms`;
-  }
-
-  private linkKey(item: NavHubItem): string {
-    return Array.isArray(item.link) ? item.link.join('/') : String(item.link);
   }
 
   private matches(item: NavHubItem, query: string): boolean {

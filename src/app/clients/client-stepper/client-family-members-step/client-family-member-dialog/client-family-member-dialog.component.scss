@@ -6,17 +6,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-.mat-form-field-hint {
-  font-size: 75%;
-  color: rgb(0 0 0 / 60%);
-  margin-top: 4px;
-  margin-bottom: 8px;
+:host {
+  display: block;
 }
 
-form {
-  padding: 0 1.5rem;
+.form-dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4, 16px);
+}
 
-  .layout-row-wrap {
-    width: 100%;
-  }
+.form-field-checkbox {
+  align-self: center;
+  min-height: var(--input-height, 48px);
 }

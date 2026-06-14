@@ -1,4 +1,4 @@
-﻿{
+{
   "APP_NAME": "Mifos® X WebApp",
   "Logged in as": "ielogojies Kā",
   "Remember me": "Atceries mani",
@@ -1204,6 +1204,7 @@
       "Contact Information": "Kontaktinformācija",
       "Contract Termination": "Līguma laušana",
       "Create Charge": "Izveidot maksu",
+      "Create Client": "Izveidot klientu",
       "Create Closure": "Izveidot slēgšanu",
       "Create Code": "Izveidot kodu",
       "Create Data Table": "Izveidojiet datu tabulu",
@@ -1578,7 +1579,11 @@
       "Deposits and Shares": "Noguldījumi un akcijas",
       "Pricing and Rules": "Cenas un noteikumi",
       "Ledger Setup": "Virsgrāmatas iestatīšana",
-      "Period Operations": "Perioda operācijas"
+      "Period Operations": "Perioda operācijas",
+      "Create Breach Configuration": "Izveidot pārkāpuma konfigurāciju",
+      "Edit Breach Configuration": "Rediģēt pārkāpuma konfigurāciju",
+      "Create Near Breach Configuration": "Izveidot tuvas pārkāpuma konfigurāciju",
+      "Edit Near Breach Configuration": "Rediģēt tuvas pārkāpuma konfigurāciju"
     },
     "inputs": {
       "# Remittance": "# Pārvedums",
@@ -3431,6 +3436,7 @@
       "Create Accounting Rule": "Izveidojiet grāmatvedības noteikumu",
       "Create Adhoc Query": "Izveidojiet Adhoc vaicājumu",
       "Create Breach": "Izveidot Pārkāpumu",
+      "Create Breach Configuration": "Izveidot pārkāpuma konfigurāciju",
       "Create Center": "Izveidot centru",
       "Create Charge": "Izveidot maksu",
       "Create Client": "Izveidot klientu",
@@ -3458,6 +3464,7 @@
       "Create Loan Product": "Izveidojiet aizdevuma produktu",
       "Create Loans Account": "Izveidojiet aizdevuma kontu",
       "Create Near Breach": "Izveidot Gandrīz Pārkāpumu",
+      "Create Near Breach Configuration": "Izveidot tuvas pārkāpuma konfigurāciju",
       "Create New GL Account": "Šī opcija ļauj izveidot jaunus GL kontus.",
       "Create Office": "Izveidojiet biroju",
       "Create Payment Type": "Izveidojiet maksājuma veidu",
@@ -3547,6 +3554,7 @@
       "Edit Adhoc Query": "Rediģēt Adhoc vaicājumu",
       "Edit Amazon S3 Configuration": "Rediģēt Amazon S3 konfigurāciju",
       "Edit Breach": "Rediģēt Pārkāpumu",
+      "Edit Breach Configuration": "Rediģēt pārkāpuma konfigurāciju",
       "Edit Cashier": "Rediģēt kasieri",
       "Edit Center": "Rediģēšanas centrs",
       "Edit Charge": "Rediģēt maksu",
@@ -3570,6 +3578,7 @@
       "Edit Hook": "Rediģēt Āķi",
       "Edit Loan Product": "Rediģēt aizdevuma produktu",
       "Edit Near Breach": "Rediģēt Gandrīz Pārkāpumu",
+      "Edit Near Breach Configuration": "Rediģēt tuvas pārkāpuma konfigurāciju",
       "Edit Notification Configuration": "Rediģēt paziņojumu konfigurāciju",
       "Edit Office": "Rediģēt Office",
       "Edit Payment Type": "Rediģēt maksājuma veidu",

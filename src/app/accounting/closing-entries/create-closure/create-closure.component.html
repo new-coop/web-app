@@ -62,7 +62,13 @@
         <button type="button" mat-raised-button [routerLink]="['../']">
           {{ 'labels.buttons.Cancel' | translate }}
         </button>
-        <button mat-raised-button color="primary" type="submit" *mifosxHasPermission="'CREATE_GLCLOSURE'">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="accountingClosureForm.invalid"
+          *mifosxHasPermission="'CREATE_GLCLOSURE'"
+        >
           {{ 'labels.buttons.Submit' | translate }}
         </button>
       </footer>

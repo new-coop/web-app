@@ -238,7 +238,7 @@ export class AccountingComponent implements AfterViewInit {
   previousStepMigrateOpeningBalances() {
     this.configurationWizardService.showMigrateOpeningBalances = false;
     this.configurationWizardService.showAccountsLinkedList = true;
-    this.router.navigate(['accounting/financial-activity-mappings']);
+    this.router.navigate(['/accounting/financial-activity-mappings']);
   }
 
   /**

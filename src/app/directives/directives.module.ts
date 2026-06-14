@@ -18,6 +18,7 @@ import { TouchOnSubmitDirective } from './touch-on-submit.directive';
 import { ValidateOnBlurDirective } from './validate-on-blur.directive';
 import { PositiveNumberDirective } from './positive-number.directive';
 import { PositiveIntegerDirective } from './positive-integer.directive';
+import { FieldIconDirective } from './field-icon/field-icon.directive';
 
 /**
  *  Directives Module
@@ -33,7 +34,8 @@ import { PositiveIntegerDirective } from './positive-integer.directive';
     ValidateOnBlurDirective,
     TouchOnSubmitDirective,
     PositiveNumberDirective,
-    PositiveIntegerDirective
+    PositiveIntegerDirective,
+    FieldIconDirective
   ],
   exports: [
     HasPermissionDirective,
@@ -42,7 +44,8 @@ import { PositiveIntegerDirective } from './positive-integer.directive';
     ValidateOnBlurDirective,
     TouchOnSubmitDirective,
     PositiveNumberDirective,
-    PositiveIntegerDirective
+    PositiveIntegerDirective,
+    FieldIconDirective
   ]
 })
 export class DirectivesModule {}

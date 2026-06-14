@@ -65,7 +65,7 @@ export class AppSidebarComponent {
       {
         label: 'Checker Inbox and Tasks',
         icon: 'fact_check',
-        link: '/checker-inbox-and-tasks/checker-inbox',
+        link: '/checker-inbox-and-tasks',
         permission: [
           'ALL_FUNCTIONS_READ',
           'READ_MAKERCHECKER',

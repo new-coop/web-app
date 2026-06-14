@@ -7,92 +7,104 @@
 -->
 
 @if (showData) {
-  <div class="tab-container mat-typography">
-    <div class="tasks-header">
-      <mat-form-field class="tasks-search-field">
+  <div class="table-card">
+    <div class="table-toolbar">
+      <mat-form-field class="toolbar-search">
         <input
           matInput
           placeholder="{{ 'labels.text.Filter by name' | translate }}"
           (keyup)="applyFilter($event.target.value)"
         />
       </mat-form-field>
-      <button
-        mat-raised-button
-        color="success"
-        *mifosxHasPermission="['APPROVE_LOAN', 'APPROVE_LOAN_CHECKER']"
-        (click)="approveLoan()"
-        class="tasks-action-btn"
-      >
-        <fa-icon icon="check" class="m-r-10"></fa-icon>{{ 'labels.buttons.Approve' | translate }}
-      </button>
+      <div class="toolbar-actions">
+        @if (selection?.hasValue()) {
+          <span class="tasks-selection-hint">
+            {{ 'labels.text.Tasks selected count' | translate: { count: selectedCount } }}
+          </span>
+        }
+        <mifosx-m3-button
+          variant="filled"
+          size="compact"
+          icon="check"
+          *mifosxHasPermission="['APPROVE_LOAN', 'APPROVE_LOAN_CHECKER']"
+          [label]="'labels.buttons.Approve' | translate"
+          (clicked)="approveLoan()"
+        />
+      </div>
     </div>
-    @for (office of officesArray; track office) {
+
+    @for (office of officesArray; track office.id) {
       @if (office.dataSource.filteredData.length > 0) {
-        <h3 class="mat-h3">{{ office.name }}</h3>
-        <table mat-table [dataSource]="office.dataSource">
-          <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox
-                (change)="$event ? masterToggle(office.loans) : null"
-                [checked]="selection.hasValue() && isAllSelected(office.loans)"
-                [indeterminate]="selection.hasValue() && !isAllSelected(office.loans)"
-                [aria-label]="checkboxLabel(office.loans)"
-              >
-              </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let row">
-              <mat-checkbox
-                (click)="$event.stopPropagation()"
-                (change)="$event ? selection.toggle(row) : null"
-                [checked]="selection.isSelected(row)"
-                [aria-label]="checkboxLabel(row)"
-              >
-              </mat-checkbox>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="clientName">
-            <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Client' | translate }}</th>
-            <td
-              mat-cell
-              *matCellDef="let loan"
-              class="view-details"
-              [routerLink]="['../../clients', loan.clientId, 'general']"
-            >
-              {{ loan.clientName }}
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="loan">
-            <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Loan' | translate }}</th>
-            <td
-              mat-cell
-              *matCellDef="let loan"
-              class="view-details"
-              [routerLink]="['../../clients', loan.clientId, 'loans-accounts', loan.id]"
-            >
-              {{ loan.loanProductName }}({{ loan.accountNo }})
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="amount">
-            <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Amount' | translate }}</th>
-            <td mat-cell *matCellDef="let loan">{{ loan.principal | formatNumber }}</td>
-          </ng-container>
-          <ng-container matColumnDef="loanPurpose">
-            <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Loan Purpose' | translate }}</th>
-            <td mat-cell *matCellDef="let loan">{{ loan.loanPurposeName }}</td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
-        </table>
+        <div class="tasks-office-section">
+          <div class="tasks-office-header">
+            <h3 class="tasks-office-title">{{ office.name }}</h3>
+            <span class="tasks-queue-count">
+              {{ 'labels.text.Tasks queue count' | translate: { count: office.loans.length } }}
+            </span>
+          </div>
+          <div class="table-scroll">
+            <table mat-table [dataSource]="office.dataSource">
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox
+                    (change)="$event ? masterToggle(office.loans) : null"
+                    [checked]="selection.hasValue() && isAllSelected(office.loans)"
+                    [indeterminate]="selection.hasValue() && !isAllSelected(office.loans)"
+                    [aria-label]="checkboxLabel(office.loans)"
+                  >
+                  </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-checkbox
+                    (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)"
+                    [aria-label]="checkboxLabel(row)"
+                  >
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="clientName">
+                <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Client' | translate }}</th>
+                <td
+                  mat-cell
+                  *matCellDef="let loan"
+                  class="view-details"
+                  [routerLink]="['../../clients', loan.clientId, 'general']"
+                >
+                  <mifosx-table-name-cell [name]="loan.clientName" />
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="loan">
+                <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Loan' | translate }}</th>
+                <td
+                  mat-cell
+                  *matCellDef="let loan"
+                  class="view-details"
+                  [routerLink]="['../../clients', loan.clientId, 'loans-accounts', loan.id]"
+                >
+                  {{ loan.loanProductName }}({{ loan.accountNo }})
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Amount' | translate }}</th>
+                <td mat-cell *matCellDef="let loan" class="numeric">{{ loan.principal | formatNumber }}</td>
+              </ng-container>
+              <ng-container matColumnDef="loanPurpose">
+                <th mat-header-cell *matHeaderCellDef>{{ 'labels.inputs.Loan Purpose' | translate }}</th>
+                <td mat-cell *matCellDef="let loan">{{ loan.loanPurposeName }}</td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
+            </table>
+          </div>
+        </div>
       }
     }
   </div>
-}
-
-@if (!showData) {
-  <div class="alert">
-    <div class="message">
-      <i class="fa fa-exclamation-circle alert-check"></i>
-      {{ 'labels.text.No pending loans for Council Approval' | translate }}
-    </div>
+} @else {
+  <div class="tasks-empty">
+    <mifosx-m3-icon name="assignment" [size]="32" />
+    <p>{{ 'labels.text.No pending loans for Council Approval' | translate }}</p>
   </div>
 }

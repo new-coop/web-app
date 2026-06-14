@@ -164,7 +164,7 @@ html {
   color: rgb(255 255 255 / 65%);
 }
 
-// Prefix/suffix affordances
+// Prefix/suffix affordances — icons live inside .mat-mdc-form-field-flex
 .mat-mdc-form-field-icon-prefix,
 .mat-mdc-form-field-icon-suffix {
   color: rgb(9 9 11 / 55%);
@@ -175,8 +175,40 @@ html {
   color: rgb(255 255 255 / 60%);
 }
 
-.mat-mdc-form-field-icon-prefix {
-  padding: 0 4px 0 8px;
+// Manual template icons (login) + auto-injected workspace icons
+.mat-mdc-form-field-icon-prefix,
+.mifosx-auto-field-icon {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  flex-shrink: 0;
+  box-sizing: content-box;
+  min-width: 20px;
+  padding: 0 var(--space-2, 8px) 0 var(--space-3, 12px);
+}
+
+.mifosx-auto-field-icon mifosx-m3-icon,
+.mat-mdc-form-field-icon-prefix mifosx-m3-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Textareas: top-align prefix so it sits beside the first line
+.mat-mdc-form-field.mifosx-has-field-icon:has(textarea.mat-mdc-input-element) {
+  .mifosx-auto-field-icon,
+  .mat-mdc-form-field-icon-prefix {
+    align-self: flex-start;
+    padding-top: var(--space-3, 12px);
+  }
+}
+
+// Selects: vertically center with the trigger
+.mat-mdc-form-field.mifosx-has-field-icon:has(mat-select) {
+  .mifosx-auto-field-icon,
+  .mat-mdc-form-field-icon-prefix {
+    padding-right: var(--space-1, 4px);
+  }
 }
 
 // Disabled
@@ -477,6 +509,194 @@ mat-card:has(form) mat-card-actions,
 }
 
 // ============================================================
+// Form dialogs — structured title, scrollable body, grid fields
+// ============================================================
+
+.form-dialog-panel,
+.mat-mdc-dialog-container:has(mifosx-form-dialog),
+.mat-mdc-dialog-container:has(mifosx-client-family-member-dialog) {
+  .mdc-dialog__surface {
+    background: var(--mifos-surface-0, #fff);
+    color: var(--mifos-text-primary, #18181b);
+    border: 1px solid var(--mifos-surface-200, #e4e4e7);
+    box-shadow:
+      0 8px 24px rgb(9 9 11 / 12%),
+      0 2px 8px rgb(9 9 11 / 6%);
+  }
+
+  .form-dialog-title,
+  .mdc-dialog__title {
+    margin: 0;
+    padding: var(--space-6, 24px) var(--space-6, 24px) var(--space-4, 16px);
+    font-size: var(--text-lg, 1.125rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    color: var(--mifos-text-primary, #18181b);
+    border-bottom: 1px solid var(--mifos-surface-200, #e4e4e7);
+  }
+
+  .form-dialog-content,
+  .mat-mdc-dialog-content {
+    padding: var(--space-5, 20px) var(--space-6, 24px) !important;
+    margin: 0;
+    max-height: min(70vh, 640px);
+    min-width: min(560px, calc(100vw - 48px));
+    color: var(--mifos-text-primary, #18181b);
+  }
+
+  .form-dialog-section-label {
+    margin: 0 0 var(--space-2, 8px);
+    font-size: var(--text-xs, 0.75rem);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mifos-text-muted, #71717a);
+  }
+
+  .form-dialog-form .form-grid + .form-dialog-section-label {
+    margin-top: var(--space-2, 8px);
+    padding-top: var(--space-4, 16px);
+    border-top: 1px solid var(--mifos-surface-100, #f4f4f5);
+  }
+
+  .form-dialog-actions,
+  .mat-mdc-dialog-actions {
+    padding: var(--space-4, 16px) var(--space-6, 24px) !important;
+    margin: 0;
+    border-top: 1px solid var(--mifos-surface-200, #e4e4e7);
+    background: var(--mifos-surface-50, #fafafa);
+
+    .mat-mdc-raised-button.mat-primary:disabled {
+      color: var(--mifos-text-muted, #71717a);
+      background: var(--mifos-surface-200, #e4e4e7);
+    }
+  }
+}
+
+.dark-theme .form-dialog-panel,
+.dark-theme .mat-mdc-dialog-container:has(mifosx-form-dialog),
+.dark-theme .mat-mdc-dialog-container:has(mifosx-client-family-member-dialog),
+.form-dialog-panel.dark-theme {
+  color-scheme: dark;
+
+  .mdc-dialog__surface {
+    background: var(--mifos-surface-0, #1c1c21);
+    color: var(--mifos-text-primary, #f4f4f5);
+    border-color: rgb(255 255 255 / 12%);
+    box-shadow: 0 12px 40px rgb(0 0 0 / 45%);
+  }
+
+  .form-dialog-title,
+  .mdc-dialog__title {
+    color: var(--mifos-text-primary, #f4f4f5);
+    border-bottom-color: rgb(255 255 255 / 10%);
+  }
+
+  .form-dialog-content,
+  .mat-mdc-dialog-content {
+    color: var(--mifos-text-primary, #f4f4f5);
+  }
+
+  .form-dialog-section-label {
+    color: var(--mifos-text-muted, #a1a1aa);
+  }
+
+  .form-dialog-form .form-grid + .form-dialog-section-label {
+    border-top-color: rgb(255 255 255 / 8%);
+  }
+
+  // Material fields inside CDK overlay do not always inherit body dark tokens.
+  .mat-mdc-form-field {
+    --mdc-outlined-text-field-label-text-color: rgb(161 161 170 / 88%);
+    --mdc-outlined-text-field-focus-label-text-color: rgb(255 255 255 / 88%);
+    --mdc-outlined-text-field-input-text-color: #f4f4f5;
+    --mdc-outlined-text-field-outline-color: rgb(255 255 255 / 18%);
+    --mdc-outlined-text-field-hover-outline-color: rgb(255 255 255 / 36%);
+    --mdc-outlined-text-field-focus-outline-color: rgb(255 255 255 / 85%);
+    --mat-select-enabled-trigger-text-color: #f4f4f5;
+    --mat-select-disabled-trigger-text-color: rgb(255 255 255 / 38%);
+    --mat-select-enabled-arrow-color: rgb(255 255 255 / 60%);
+    --mat-select-focused-arrow-color: rgb(255 255 255 / 88%);
+  }
+
+  .mat-mdc-floating-label,
+  .mat-mdc-form-field-hint {
+    color: rgb(161 161 170 / 88%);
+  }
+
+  .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+    color: rgb(255 255 255 / 88%);
+  }
+
+  .mdc-text-field--outlined .mat-mdc-text-field-wrapper {
+    background: rgb(255 255 255 / 4%);
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: rgb(255 255 255 / 18%) !important;
+  }
+
+  .mdc-text-field--outlined:hover:not(.mdc-text-field--disabled) {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: rgb(255 255 255 / 36%) !important;
+    }
+  }
+
+  .mat-mdc-input-element,
+  .mat-mdc-select-value-text {
+    color: var(--mifos-text-primary, #f4f4f5);
+  }
+
+  .mat-mdc-form-field-icon-suffix,
+  .mat-datepicker-toggle {
+    color: rgb(255 255 255 / 60%);
+  }
+
+  .mat-mdc-checkbox .mdc-label {
+    color: var(--mifos-text-primary, #f4f4f5);
+  }
+
+  .form-dialog-actions,
+  .mat-mdc-dialog-actions {
+    border-top-color: rgb(255 255 255 / 10%);
+    background: rgb(255 255 255 / 3%);
+
+    .mat-mdc-raised-button:not(.mat-primary) {
+      --mdc-protected-button-container-color: transparent;
+      --mdc-protected-button-label-text-color: var(--mifos-text-primary, #f4f4f5);
+      --mat-protected-button-state-layer-color: #fff;
+
+      background-color: transparent;
+      color: var(--mifos-text-primary, #f4f4f5);
+      border: 1px solid rgb(255 255 255 / 22%);
+      box-shadow: none;
+    }
+
+    .mat-mdc-raised-button.mat-primary:not(:disabled) {
+      --mdc-protected-button-container-color: #fafafa;
+      --mdc-protected-button-label-text-color: #09090b;
+
+      background-color: #fafafa;
+      color: #09090b;
+      box-shadow: none;
+    }
+
+    .mat-mdc-raised-button.mat-primary:disabled {
+      --mdc-protected-button-container-color: rgb(255 255 255 / 12%);
+      --mdc-protected-button-label-text-color: rgb(255 255 255 / 50%);
+
+      color: rgb(255 255 255 / 50%);
+      background: rgb(255 255 255 / 12%);
+    }
+  }
+}
+
+// ============================================================
 // Datepicker toggle
 // ============================================================
 
@@ -489,6 +709,11 @@ mat-card:has(form) mat-card-actions,
 // ============================================================
 // Select & autocomplete panels — rounded overlay, clear options
 // ============================================================
+
+// Keep select panels above dialog surfaces when opened from form dialogs.
+.cdk-overlay-pane:has(.mat-mdc-select-panel) {
+  z-index: 1002;
+}
 
 .mat-mdc-select-panel,
 .mat-mdc-autocomplete-panel {

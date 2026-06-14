@@ -32,10 +32,14 @@ import { ConfirmationDialogComponent } from 'app/shared/confirmation-dialog/conf
 
 /** Custom Services */
 import { TasksService } from '../../tasks.service';
+import { TasksQueueCountsService } from '../../tasks-queue-counts.service';
+import { TasksGamificationService } from '../../tasks-gamification.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { Dates } from 'app/core/utils/dates';
 import { TranslateService } from '@ngx-translate/core';
-import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
+import { M3ButtonComponent } from 'app/shared/m3-ui/m3-button/m3-button.component';
+import { M3IconComponent } from 'app/shared/m3-ui/m3-icon/m3-icon.component';
+import { TableNameCellComponent } from '../../../shared/ui/table-name-cell/table-name-cell.component';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { FormatNumberPipe } from '../../../pipes/format-number.pipe';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
@@ -46,7 +50,9 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   styleUrls: ['./loan-disbursal.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    FaIconComponent,
+    M3ButtonComponent,
+    M3IconComponent,
+    TableNameCellComponent,
     MatTable,
     MatColumnDef,
     MatHeaderCellDef,
@@ -70,6 +76,8 @@ export class LoanDisbursalComponent implements AfterViewInit {
   private settingsService = inject(SettingsService);
   private translateService = inject(TranslateService);
   private tasksService = inject(TasksService);
+  private queueCountsService = inject(TasksQueueCountsService);
+  private gamificationService = inject(TasksGamificationService);
   private destroyRef = inject(DestroyRef);
 
   /** Loans Data */
@@ -157,7 +165,6 @@ export class LoanDisbursalComponent implements AfterViewInit {
     };
     const selectedAccounts = this.selection.selected.length;
     const listSelectedAccounts = this.selection.selected;
-    let approvedAccounts = 0;
     this.batchRequests = [];
     let reqId = 1;
     listSelectedAccounts.forEach((element: any) => {
@@ -167,15 +174,20 @@ export class LoanDisbursalComponent implements AfterViewInit {
       this.batchRequests.push(batchData);
     });
     this.tasksService.submitBatchData(this.batchRequests).subscribe((response: any) => {
+      let successCount = 0;
       response.forEach((responseEle: any) => {
         if (responseEle.statusCode === '200') {
-          approvedAccounts++;
+          successCount++;
           responseEle.body = JSON.parse(responseEle.body);
-          if (selectedAccounts === approvedAccounts) {
+          if (selectedAccounts === successCount) {
             this.loanResource();
+            this.queueCountsService.invalidate();
           }
         }
       });
+      if (successCount > 0) {
+        this.gamificationService.recordCompletions(successCount, 'approve');
+      }
     });
   }
 
@@ -183,7 +195,7 @@ export class LoanDisbursalComponent implements AfterViewInit {
     this.tasksService.getAllLoansToBeDisbursed().subscribe((response: any) => {
       this.loans = response.pageItems;
       this.loans = this.loans.filter((account: any) => {
-        return account.status.waitingForDisbursal;
+        return account.status.waitingForDisbursal === true;
       });
       this.dataSource = new MatTableDataSource(this.loans);
       this.bindPaginator();
@@ -198,6 +210,10 @@ export class LoanDisbursalComponent implements AfterViewInit {
   applyFilter(filterValue: string = '') {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     this.paginator?.firstPage();
+  }
+
+  get selectedCount(): number {
+    return this.selection?.selected?.length ?? 0;
   }
 
   private bindPaginator() {

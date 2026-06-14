@@ -42,7 +42,7 @@ We follow a 7-step Contribution Workflow strictly. Do not deviate from it.
 2. **Branch Name Convention:** Your branch must follow `WEB-<Jira_ID>-<short-description>`.
 3. **Commits:** One Feature = One PR. If multiple commits exist, they must be squashed. Use the same naming convention for your commit: `WEB-<Jira_ID>: <Description>`.
 4. **Visual Evidence:** AI coders creating UI change requests MUST inform the user to take "Before" and "After" screenshots manually as they are required for all PR approvals.
-5. **Design Aesthetics:** Stick to the 8px grid system. Always leverage SCSS variables defined in `src/main.scss` and `src/theme/mifosx-theme.scss` rather than generating custom classes and explicit pixel values.
+5. **Design Aesthetics:** Follow the Noir design system in `.cursor/rules/mifos-x-style-guide.mdc`. Use CSS tokens from `src/theme/_design-tokens.scss` (`--mifos-*`, `--space-*`, `--text-*`) — not hardcoded hex or legacy SCSS variables. Prefer shared components (`mifosx-nav-hub`, `mifosx-m3-button`, form-workspace classes).
 
 ## File Organization Rules
 

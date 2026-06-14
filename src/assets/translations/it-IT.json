@@ -1,4 +1,4 @@
-﻿{
+{
   "APP_NAME": "Mifos® X WebApp",
   "Logged in as": "Collegato come",
   "Remember me": "Ricordati di me",
@@ -1204,6 +1204,7 @@
       "Contact Information": "Informazioni di contatto",
       "Contract Termination": "Risoluzione del contratto",
       "Create Charge": "Crea carica",
+      "Create Client": "Crea cliente",
       "Create Closure": "Crea chiusura",
       "Create Code": "Crea codice",
       "Create Data Table": "Crea tabella dati",
@@ -1578,7 +1579,11 @@
       "Deposits and Shares": "Depositi e azioni",
       "Pricing and Rules": "Prezzi e regole",
       "Ledger Setup": "Impostazione del libro mastro",
-      "Period Operations": "Operazioni di periodo"
+      "Period Operations": "Operazioni di periodo",
+      "Create Breach Configuration": "Crea configurazione della violazione",
+      "Edit Breach Configuration": "Modifica configurazione della violazione",
+      "Create Near Breach Configuration": "Crea configurazione di quasi-violazione",
+      "Edit Near Breach Configuration": "Modifica configurazione di quasi-violazione"
     },
     "inputs": {
       "# Remittance": "# Rimessa",
@@ -3431,6 +3436,7 @@
       "Create Accounting Rule": "Crea regola contabile",
       "Create Adhoc Query": "Crea query ad hoc",
       "Create Breach": "Crea Violazione",
+      "Create Breach Configuration": "Crea configurazione della violazione",
       "Create Center": "Crea centro",
       "Create Charge": "Crea carica",
       "Create Client": "Crea cliente",
@@ -3458,6 +3464,7 @@
       "Create Loan Product": "Crea prodotto di prestito",
       "Create Loans Account": "Crea un conto prestiti",
       "Create Near Breach": "Crea Quasi Violazione",
+      "Create Near Breach Configuration": "Crea configurazione di quasi-violazione",
       "Create New GL Account": "Questa opzione ti consente di creare nuovi account GL.",
       "Create Office": "Crea ufficio",
       "Create Payment Type": "Crea tipo di pagamento",
@@ -3547,6 +3554,7 @@
       "Edit Adhoc Query": "Modifica query ad hoc",
       "Edit Amazon S3 Configuration": "Modifica la configurazione di Amazon S3",
       "Edit Breach": "Modifica Violazione",
+      "Edit Breach Configuration": "Modifica configurazione della violazione",
       "Edit Cashier": "Modifica Cassiere",
       "Edit Center": "Centro modifica",
       "Edit Charge": "Modifica addebito",
@@ -3570,6 +3578,7 @@
       "Edit Hook": "Modifica gancio",
       "Edit Loan Product": "Modifica prodotto di prestito",
       "Edit Near Breach": "Modifica Quasi Violazione",
+      "Edit Near Breach Configuration": "Modifica configurazione di quasi-violazione",
       "Edit Notification Configuration": "Modifica configurazione di notifica",
       "Edit Office": "Modifica ufficio",
       "Edit Payment Type": "Modifica tipo di pagamento",

@@ -43,9 +43,12 @@ import { DatepickerBase } from 'app/shared/form-dialog/formfield/model/datepicke
 
 /** Custom Services */
 import { TasksService } from '../../tasks.service';
+import { TasksQueueCountsService } from '../../tasks-queue-counts.service';
+import { TasksGamificationService } from '../../tasks-gamification.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { Dates } from 'app/core/utils/dates';
-import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
+import { M3ButtonComponent } from 'app/shared/m3-ui/m3-button/m3-button.component';
+import { M3IconComponent } from 'app/shared/m3-ui/m3-icon/m3-icon.component';
 import { TableNameCellComponent } from '../../../shared/ui/table-name-cell/table-name-cell.component';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { AccountsFilterPipe } from '../../../pipes/accounts-filter.pipe';
@@ -57,7 +60,8 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   styleUrls: ['./client-approval.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    FaIconComponent,
+    M3ButtonComponent,
+    M3IconComponent,
     MatTable,
     MatColumnDef,
     MatHeaderCellDef,
@@ -81,6 +85,8 @@ export class ClientApprovalComponent implements AfterViewInit {
   private router = inject(Router);
   private settingsService = inject(SettingsService);
   private tasksService = inject(TasksService);
+  private queueCountsService = inject(TasksQueueCountsService);
+  private gamificationService = inject(TasksGamificationService);
   private destroyRef = inject(DestroyRef);
   private accountsFilterPipe = new AccountsFilterPipe();
 
@@ -199,7 +205,6 @@ export class ClientApprovalComponent implements AfterViewInit {
     };
     const selectedAccounts = this.selection.selected.length;
     const listSelectedAccounts = this.selection.selected;
-    let activatedAccounts = 0;
     this.batchRequests = [];
     let reqId = 1;
     listSelectedAccounts.forEach((element: any) => {
@@ -209,15 +214,19 @@ export class ClientApprovalComponent implements AfterViewInit {
       this.batchRequests.push(batchData);
     });
     this.tasksService.submitBatchData(this.batchRequests).subscribe((response: any) => {
+      let successCount = 0;
       response.forEach((responseEle: any) => {
         if (responseEle.statusCode === '200') {
-          activatedAccounts++;
+          successCount++;
           responseEle.body = JSON.parse(responseEle.body);
-          if (selectedAccounts === activatedAccounts) {
+          if (selectedAccounts === successCount) {
             this.reload();
           }
         }
       });
+      if (successCount > 0) {
+        this.gamificationService.recordCompletions(successCount, 'approve');
+      }
     });
   }
 
@@ -229,11 +238,16 @@ export class ClientApprovalComponent implements AfterViewInit {
     });
   }
 
+  get selectedCount(): number {
+    return this.selection?.selected?.length ?? 0;
+  }
+
   /**
    * Refetches data for the component
    * TODO: Replace by a custom reload component instead of hard-coded back-routing.
    */
   reload() {
+    this.queueCountsService.invalidate();
     const url: string = this.router.url;
     this.router
       .navigateByUrl(`/checker-inbox-and-tasks`, { skipLocationChange: true })

@@ -151,6 +151,8 @@ export class WebAppComponent implements OnInit, OnDestroy {
    */
 
   ngOnInit() {
+    this.themeStorageService.restoreSavedTheme();
+
     this.themingService.theme.subscribe((value: string) => {
       this.cssClass = value;
     });

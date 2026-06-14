@@ -6,18 +6,133 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-.card-heading {
-  font-size: 20px;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 16px;
+:host {
+  display: block;
 }
 
-:host-context(.dark-theme) .pending-tasks-heading {
-  color: #fff;
-  text-shadow: 0 1px 4px rgb(0 0 0 / 70%);
+.tasks-queue-filter-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  mifosx-m3-icon {
+    display: inline-flex;
+    line-height: 0;
+  }
+
+  ::ng-deep mifosx-m3-icon .m3-icon {
+    --m3-icon-duotone-color: var(--mifos-surface-500, #71717a);
+    --m3-icon-duotone-fill-color: color-mix(in srgb, var(--mifos-surface-500, #71717a) 35%, transparent);
+
+    color: var(--mifos-surface-500, #71717a);
+  }
 }
 
-mat-divider {
-  margin-bottom: 16px;
+.tasks-queue-card-icon {
+  mifosx-m3-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+  }
+
+  ::ng-deep mifosx-m3-icon .m3-icon {
+    --m3-icon-duotone-color: var(--mifos-surface-700, #3f3f46);
+    --m3-icon-duotone-fill-color: color-mix(in srgb, var(--mifos-surface-600, #52525b) 35%, transparent);
+
+    color: var(--mifos-surface-700, #3f3f46);
+  }
+}
+
+.tasks-queue-card-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  align-self: center;
+  line-height: 0;
+  opacity: 0.45;
+  transform: translateX(-2px);
+  transition:
+    opacity var(--motion-fast, 150ms) var(--ease-enter, ease-out),
+    transform var(--motion-fast, 150ms) var(--ease-enter, ease-out);
+
+  ::ng-deep mifosx-m3-icon .m3-icon {
+    --m3-icon-duotone-color: var(--mifos-surface-600, #52525b);
+    --m3-icon-duotone-fill-color: color-mix(in srgb, var(--mifos-surface-500, #71717a) 35%, transparent);
+
+    color: var(--mifos-surface-600, #52525b);
+  }
+}
+
+.tasks-queue-filter-empty ::ng-deep mifosx-m3-icon .m3-icon {
+  --m3-icon-duotone-color: var(--mifos-surface-500, #71717a);
+  --m3-icon-duotone-fill-color: color-mix(in srgb, var(--mifos-surface-400, #a1a1aa) 35%, transparent);
+
+  color: var(--mifos-surface-500, #71717a);
+}
+
+.tasks-queue-nav-item {
+  mifosx-m3-icon {
+    display: inline-flex;
+    line-height: 0;
+  }
+
+  &:not(.tasks-queue-nav-item--active) ::ng-deep mifosx-m3-icon .m3-icon {
+    --m3-icon-duotone-color: var(--mifos-surface-600, #52525b);
+
+    color: var(--mifos-surface-600, #52525b);
+  }
+
+  &.tasks-queue-nav-item--active ::ng-deep mifosx-m3-icon .m3-icon {
+    --m3-icon-duotone-color: #fff;
+    --m3-icon-duotone-fill-color: rgb(255 255 255 / 32%);
+
+    color: #fff;
+  }
+}
+
+.tasks-queue-card {
+  &:hover:not(.tasks-queue-card--active) .tasks-queue-card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  &.tasks-queue-card--active {
+    .tasks-queue-card-icon {
+      background: var(--mifos-accent-bg, #09090b);
+
+      ::ng-deep mifosx-m3-icon .m3-icon {
+        --m3-icon-duotone-color: #fff;
+        --m3-icon-duotone-fill-color: rgb(255 255 255 / 32%);
+
+        color: #fff;
+      }
+
+      ::ng-deep mifosx-m3-icon .material-symbols-filled,
+      ::ng-deep mifosx-m3-icon .m3-icon__layer--fill {
+        color: rgb(255 255 255 / 32%);
+      }
+
+      ::ng-deep mifosx-m3-icon .material-symbols-outlined,
+      ::ng-deep mifosx-m3-icon .m3-icon__layer--stroke {
+        color: #fff;
+      }
+    }
+
+    .tasks-queue-card-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+.dark-theme {
+  .tasks-queue-card:not(.tasks-queue-card--active) .tasks-queue-card-icon ::ng-deep mifosx-m3-icon .m3-icon {
+    --m3-icon-duotone-color: var(--mifos-surface-300, #d4d4d8);
+    --m3-icon-duotone-fill-color: color-mix(in srgb, var(--mifos-surface-400, #a1a1aa) 35%, transparent);
+
+    color: var(--mifos-surface-300, #d4d4d8);
+  }
 }

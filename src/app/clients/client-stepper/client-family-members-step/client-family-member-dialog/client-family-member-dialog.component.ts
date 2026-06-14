@@ -7,16 +7,18 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
   MatDialogTitle,
+  MatDialogContent,
   MatDialogActions,
   MatDialogClose
 } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 
 /** Custom Services */
 import { SettingsService } from 'app/settings/settings.service';
@@ -34,6 +36,8 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
     MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
     MatCheckbox,
     MatDialogActions,
     MatDialogClose
@@ -47,6 +51,7 @@ export class ClientFamilyMemberDialogComponent implements OnInit {
   data = inject(MAT_DIALOG_DATA);
   private settingsService = inject(SettingsService);
   private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
   /** Maximum Due Date allowed. */
   maxDate = new Date();
@@ -54,10 +59,25 @@ export class ClientFamilyMemberDialogComponent implements OnInit {
   /** Add/Edit family member form. */
   familyMemberForm: FormGroup;
 
-  ngOnInit() {
-    this.maxDate = this.settingsService.businessDate;
+  /** Catalog options for detail fields. */
+  relationshipOptions: Array<{ id: number; name: string }> = [];
+  genderOptions: Array<{ id: number; name: string }> = [];
+  professionOptions: Array<{ id: number; name: string }> = [];
+  maritalStatusOptions: Array<{ id: number; name: string }> = [];
+
+  constructor() {
     this.createFamilyMemberForm();
-    if (this.data.context === 'Edit') {
+  }
+
+  ngOnInit() {
+    this.relationshipOptions = this.data.options?.relationshipIdOptions ?? [];
+    this.genderOptions = this.data.options?.genderIdOptions ?? [];
+    this.professionOptions = this.data.options?.professionIdOptions ?? [];
+    this.maritalStatusOptions = this.data.options?.maritalStatusIdOptions ?? [];
+    this.configureOptionalCatalogControls();
+
+    this.maxDate = this.settingsService.businessDate;
+    if (this.data.isEdit) {
       this.familyMemberForm.patchValue({
         firstName: this.data.member.firstName,
         middleName: this.data.member.middleName,
@@ -79,19 +99,45 @@ export class ClientFamilyMemberDialogComponent implements OnInit {
       .valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((dateOfBirth: any) => {
         if (dateOfBirth) {
-          const age = this.calculateAge(dateOfBirth);
-          this.familyMemberForm.get('age').setValue(age);
+          this.setAgeValue(this.calculateAge(dateOfBirth));
         } else {
-          this.familyMemberForm.get('age').setValue('');
+          this.setAgeValue('');
         }
       });
 
     // If a date of birth is already set, calculate the age
     const currentDob = this.familyMemberForm.get('dateOfBirth').value;
     if (currentDob) {
-      const age = this.calculateAge(currentDob);
-      this.familyMemberForm.get('age').setValue(age);
+      this.setAgeValue(this.calculateAge(currentDob));
     }
+
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Disables optional catalog fields when their option lists are empty.
+   */
+  private configureOptionalCatalogControls(): void {
+    if (!this.professionOptions.length) {
+      this.familyMemberForm.get('professionId')?.disable({ emitEvent: false });
+    }
+    if (!this.maritalStatusOptions.length) {
+      this.familyMemberForm.get('maritalStatusId')?.disable({ emitEvent: false });
+    }
+  }
+
+  /**
+   * Updates the read-only age control without using a template disabled attribute.
+   */
+  private setAgeValue(age: number | ''): void {
+    const ageControl = this.familyMemberForm.get('age');
+    if (!ageControl) {
+      return;
+    }
+
+    ageControl.enable({ emitEvent: false });
+    ageControl.setValue(age, { emitEvent: false });
+    ageControl.disable({ emitEvent: false });
   }
 
   /**
@@ -132,15 +178,15 @@ export class ClientFamilyMemberDialogComponent implements OnInit {
       ],
       isDependent: [''],
       relationshipId: [
-        '',
+        null,
         Validators.required
       ],
       genderId: [
-        '',
+        null,
         Validators.required
       ],
-      professionId: [''],
-      maritalStatusId: [''],
+      professionId: [null],
+      maritalStatusId: [null],
       dateOfBirth: ['']
     });
   }
@@ -181,7 +227,7 @@ export class ClientFamilyMemberDialogComponent implements OnInit {
 
     // Remove empty fields
     for (const key in familyMember) {
-      if (familyMember[key] === '' || familyMember[key] === undefined) {
+      if (familyMember[key] === '' || familyMember[key] === undefined || familyMember[key] === null) {
         delete familyMember[key];
       }
     }

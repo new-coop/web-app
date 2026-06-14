@@ -7,13 +7,14 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 /** Custom Components */
 import { TranslateService } from '@ngx-translate/core';
 import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
 import { ClientFamilyMemberDialogComponent } from './client-family-member-dialog/client-family-member-dialog.component';
+import { getFormDialogConfig } from 'app/shared/form-dialog/form-dialog.config';
 import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { FindPipe } from '../../../pipes/find.pipe';
 import { DateFormatPipe } from '../../../pipes/date-format.pipe';
@@ -37,6 +38,7 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 export class ClientFamilyMembersStepComponent {
   dialog = inject(MatDialog);
   private translateService = inject(TranslateService);
+  private cdr = inject(ChangeDetectorRef);
 
   /** Cient Template */
   @Input() clientTemplate: any;
@@ -47,16 +49,19 @@ export class ClientFamilyMembersStepComponent {
    * Adds a family member.
    */
   addFamilyMember() {
-    const addFamilyMemberDialogRef = this.dialog.open(ClientFamilyMemberDialogComponent, {
-      data: {
-        context: this.translateService.instant('labels.buttons.Add'),
-        options: this.clientTemplate.familyMemberOptions
-      },
-      width: '50rem'
-    });
+    const addFamilyMemberDialogRef = this.dialog.open(
+      ClientFamilyMemberDialogComponent,
+      getFormDialogConfig({
+        data: {
+          isEdit: false,
+          options: this.clientTemplate.familyMemberOptions
+        }
+      })
+    );
     addFamilyMemberDialogRef.afterClosed().subscribe((response: any) => {
       if (response.member) {
         this.clientFamilyMembers.push(response.member);
+        this.cdr.markForCheck();
       }
     });
   }
@@ -67,17 +72,20 @@ export class ClientFamilyMembersStepComponent {
    * @param {any} index Tree Index
    */
   editFamilyMember(member: any, index: any) {
-    const addFamilyMemberDialogRef = this.dialog.open(ClientFamilyMemberDialogComponent, {
-      data: {
-        context: 'Edit',
-        member: member,
-        options: this.clientTemplate.familyMemberOptions
-      },
-      width: '50rem'
-    });
+    const addFamilyMemberDialogRef = this.dialog.open(
+      ClientFamilyMemberDialogComponent,
+      getFormDialogConfig({
+        data: {
+          isEdit: true,
+          member: member,
+          options: this.clientTemplate.familyMemberOptions
+        }
+      })
+    );
     addFamilyMemberDialogRef.afterClosed().subscribe((response: any) => {
       if (response.member) {
         this.clientFamilyMembers.splice(index, 1, response.member);
+        this.cdr.markForCheck();
       }
     });
   }
@@ -92,6 +100,7 @@ export class ClientFamilyMembersStepComponent {
     deleteFamilyMemberDialogRef.afterClosed().subscribe((response: any) => {
       if (response.delete) {
         this.clientFamilyMembers.splice(index, 1);
+        this.cdr.markForCheck();
       }
     });
   }

@@ -1,4 +1,4 @@
-﻿{
+{
   "APP_NAME": "Mifos® X WebApp",
   "Logged in as": "को रूपमा लग इन गरियो",
   "Remember me": "मलाई सम्झनुहोस्",
@@ -1203,6 +1203,7 @@
       "Contact Information": "सम्पर्क जानकारी",
       "Contract Termination": "सम्झौता समाप्ति",
       "Create Charge": "चार्ज सिर्जना गर्नुहोस्",
+      "Create Client": "ग्राहक सिर्जना गर्नुहोस्",
       "Create Closure": "बन्द सिर्जना गर्नुहोस्",
       "Create Code": "कोड सिर्जना गर्नुहोस्",
       "Create Data Table": "डाटा तालिका सिर्जना गर्नुहोस्",
@@ -1577,7 +1578,11 @@
       "Deposits and Shares": "निक्षेप र शेयरहरू",
       "Pricing and Rules": "मूल्य र नियमहरू",
       "Ledger Setup": "लेजर सेटअप",
-      "Period Operations": "अवधि सञ्चालनहरू"
+      "Period Operations": "अवधि सञ्चालनहरू",
+      "Create Breach Configuration": "उल्लंघन कन्फिगरेसन सिर्जना गर्नुहोस्",
+      "Edit Breach Configuration": "उल्लंघन कन्फिगरेसन सम्पादन गर्नुहोस्",
+      "Create Near Breach Configuration": "नजिकको उल्लङ्घन कन्फिगरेसन सिर्जना गर्नुहोस्",
+      "Edit Near Breach Configuration": "नजिकको उल्लङ्घन कन्फिगरेसन सम्पादन गर्नुहोस्"
     },
     "inputs": {
       "# Remittance": "# रेमिट्यान्स",
@@ -3431,6 +3436,7 @@
       "Create Accounting Rule": "लेखा नियम बनाउनुहोस्",
       "Create Adhoc Query": "Adhoc क्वेरी सिर्जना गर्नुहोस्",
       "Create Breach": "उल्लंघन सिर्जना गर्नुहोस्",
+      "Create Breach Configuration": "उल्लंघन कन्फिगरेसन सिर्जना गर्नुहोस्",
       "Create Center": "केन्द्र सिर्जना गर्नुहोस्",
       "Create Charge": "चार्ज सिर्जना गर्नुहोस्",
       "Create Client": "ग्राहक सिर्जना गर्नुहोस्",
@@ -3458,6 +3464,7 @@
       "Create Loan Product": "ऋण उत्पादन सिर्जना गर्नुहोस्",
       "Create Loans Account": "ऋण खाता सिर्जना गर्नुहोस्",
       "Create Near Breach": "लगभग उल्लंघन सिर्जना गर्नुहोस्",
+      "Create Near Breach Configuration": "नजिकको उल्लङ्घन कन्फिगरेसन सिर्जना गर्नुहोस्",
       "Create New GL Account": "यो विकल्पले तपाईंलाई नयाँ GL खाताहरू सिर्जना गर्न अनुमति दिन्छ।",
       "Create Office": "कार्यालय सिर्जना गर्नुहोस्",
       "Create Payment Type": "भुक्तानी प्रकार सिर्जना गर्नुहोस्",
@@ -3547,6 +3554,7 @@
       "Edit Adhoc Query": "Adhoc क्वेरी सम्पादन गर्नुहोस्",
       "Edit Amazon S3 Configuration": "Amazon S3 कन्फिगरेसन सम्पादन गर्नुहोस्",
       "Edit Breach": "उल्लंघन सम्पादन गर्नुहोस्",
+      "Edit Breach Configuration": "उल्लंघन कन्फिगरेसन सम्पादन गर्नुहोस्",
       "Edit Cashier": "क्यासियर सम्पादन गर्नुहोस्",
       "Edit Center": "केन्द्र सम्पादन गर्नुहोस्",
       "Edit Charge": "शुल्क सम्पादन गर्नुहोस्",
@@ -3570,6 +3578,7 @@
       "Edit Hook": "हुक सम्पादन गर्नुहोस्",
       "Edit Loan Product": "ऋण उत्पादन सम्पादन गर्नुहोस्",
       "Edit Near Breach": "लगभग उल्लंघन सम्पादन गर्नुहोस्",
+      "Edit Near Breach Configuration": "नजिकको उल्लङ्घन कन्फिगरेसन सम्पादन गर्नुहोस्",
       "Edit Notification Configuration": "सूचना कन्फिगरेसन सम्पादन गर्नुहोस्",
       "Edit Office": "कार्यालय सम्पादन गर्नुहोस्",
       "Edit Payment Type": "भुक्तानी प्रकार सम्पादन गर्नुहोस्",

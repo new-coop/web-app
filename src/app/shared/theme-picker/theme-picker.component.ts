@@ -7,7 +7,14 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  inject
+} from '@angular/core';
 
 /** Custom Model */
 import { Theme } from './theme.model';
@@ -45,7 +52,8 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ThemePickerComponent implements OnInit {
-  themeStorageService = inject(ThemeStorageService);
+  private themeStorageService = inject(ThemeStorageService);
+  private cdr = inject(ChangeDetectorRef);
 
   /** Default theme for the application. */
   currentTheme: Theme = {
@@ -107,5 +115,6 @@ export class ThemePickerComponent implements OnInit {
   installTheme(theme: Theme) {
     this.currentTheme = theme;
     this.themeStorageService.installTheme(theme);
+    this.cdr.markForCheck();
   }
 }

@@ -78,17 +78,24 @@ p:not(:first-of-type) {
     width: 100%;
     max-width: 320px;
 
-    [matPrefix] {
-      padding-left: 1rem;
-
-      mifosx-m3-icon {
-        margin-right: 0.75rem;
+    ::ng-deep {
+      .mdc-notched-outline__leading {
+        border-radius: 14px 0 0 14px;
+        width: 14px !important;
       }
-    }
 
-    ::ng-deep mat-hint {
-      font-size: 0.75rem;
-      color: var(--md-sys-color-on-surface-variant, #44474e);
+      .mdc-notched-outline__trailing {
+        border-radius: 0 14px 14px 0;
+      }
+
+      .mat-mdc-form-field-icon-prefix {
+        padding: 0 0.5rem 0 0.75rem;
+      }
+
+      mat-hint {
+        font-size: 0.75rem;
+        color: var(--md-sys-color-on-surface-variant, #44474e);
+      }
     }
   }
 

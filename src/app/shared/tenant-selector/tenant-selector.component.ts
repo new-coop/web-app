@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, Input } from '@angular/core';
 import { UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import { SettingsService } from 'app/settings/settings.service';
 import { AlertService } from 'app/core/alert/alert.service';
@@ -30,6 +30,9 @@ export class TenantSelectorComponent implements OnInit {
   private settingsService = inject(SettingsService);
   private alertService = inject(AlertService);
   private translateService = inject(TranslateService);
+
+  /** Appearance of the form field (fill, outline). Defaults to 'fill'. */
+  @Input() appearance: 'fill' | 'outline' = 'fill';
 
   /** Tenant selector form control. */
   tenantSelector = new UntypedFormControl();

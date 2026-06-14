@@ -10,18 +10,8 @@
   display: block;
 }
 
-[mat-dialog-content] {
-  min-width: min(480px, calc(100vw - 48px));
-  padding-top: var(--space-2, 8px) !important;
-}
-
-[mat-dialog-title] {
-  font-size: var(--text-lg, 1.125rem);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  padding-bottom: var(--space-2, 8px);
-}
-
-[mat-dialog-actions] {
-  padding-top: var(--space-4, 16px) !important;
+.form-dialog-form:not(.form-grid) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
 }

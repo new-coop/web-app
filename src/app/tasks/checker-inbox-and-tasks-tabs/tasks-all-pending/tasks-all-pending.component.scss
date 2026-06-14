@@ -1,0 +1,156 @@
+/**
+ * Copyright since 2025 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+:host {
+  display: block;
+}
+
+.tasks-all-pending-toolbar {
+  gap: var(--space-2, 8px);
+
+  .toolbar-search {
+    flex: 1;
+    max-width: none;
+  }
+}
+
+.tasks-all-pending-clear-filters {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  color: var(--mifos-surface-600, #52525b);
+  cursor: pointer;
+  padding: var(--space-1, 4px) var(--space-2, 8px);
+  border-radius: var(--radius-sm, 4px);
+
+  &:hover {
+    color: var(--mifos-text-primary, #18181b);
+    background: var(--mifos-surface-100, #f4f4f5);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-ring-width, 2px) solid var(--mifos-focus-ring, #09090b);
+    outline-offset: 2px;
+  }
+}
+
+.tasks-all-pending-entity-link {
+  font-weight: 500;
+  color: var(--mifos-text-primary, #18181b);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: var(--focus-ring-width, 2px) solid var(--mifos-focus-ring, #09090b);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm, 4px);
+  }
+}
+
+.tasks-all-pending-loading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  padding: var(--space-4, 16px) var(--space-3, 12px);
+  color: var(--mifos-surface-500, #71717a);
+  font-size: var(--text-sm, 0.875rem);
+
+  p {
+    margin: 0;
+  }
+}
+
+.tasks-all-pending-group-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.tasks-all-pending-open-queue {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1, 4px);
+  flex-shrink: 0;
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  color: var(--mifos-surface-700, #3f3f46);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--mifos-text-primary, #18181b);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-ring-width, 2px) solid var(--mifos-focus-ring, #09090b);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm, 4px);
+  }
+}
+
+.tasks-all-pending-actions-header {
+  text-align: right;
+  width: 1%;
+  white-space: nowrap;
+}
+
+.tasks-all-pending-actions-cell {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.tasks-all-pending-row-action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1, 4px);
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: 600;
+  color: var(--mifos-text-primary, #18181b);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: var(--focus-ring-width, 2px) solid var(--mifos-focus-ring, #09090b);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm, 4px);
+  }
+}
+
+.dark-theme {
+  .tasks-all-pending-clear-filters {
+    color: var(--mifos-surface-400, #a1a1aa);
+
+    &:hover {
+      color: var(--mifos-text-primary, #f4f4f5);
+      background: var(--mifos-surface-100, #3f3f46);
+    }
+  }
+
+  .tasks-all-pending-open-queue {
+    color: var(--mifos-surface-300, #d4d4d8);
+
+    &:hover {
+      color: var(--mifos-text-primary, #f4f4f5);
+    }
+  }
+
+  .tasks-all-pending-row-action {
+    color: var(--mifos-text-primary, #f4f4f5);
+  }
+}

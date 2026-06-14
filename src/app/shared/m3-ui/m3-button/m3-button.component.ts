@@ -179,6 +179,11 @@ export class M3ButtonComponent {
     }
   }
 
+  /** Material Web positions the icon slot at the end when trailing-icon is set. */
+  get trailingIconOnly(): boolean {
+    return !!this.trailingIcon && !this.icon && !this.loading;
+  }
+
   /**
    * Get container classes
    */

@@ -48,9 +48,64 @@ md-filled-tonal-button {
 .m3-button-icon-leading,
 .m3-button-icon-trailing {
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
 
   ::ng-deep .m3-icon {
     display: block;
+  }
+}
+
+// Leading/trailing icons must match button label (duotone layers ignore inherited color alone).
+md-filled-button:not(:disabled) .m3-button-icon-leading,
+md-filled-button:not(:disabled) .m3-button-icon-trailing {
+  .m3-icon {
+    --m3-icon-duotone-color: var(--md-filled-button-label-text-color, #fff);
+    --m3-icon-duotone-fill-color: rgb(255 255 255 / 32%);
+
+    color: var(--md-filled-button-label-text-color, #fff);
+  }
+
+  .material-symbols-filled,
+  .m3-icon__layer--fill {
+    color: rgb(255 255 255 / 32%);
+  }
+
+  .material-symbols-outlined,
+  .m3-icon__layer--stroke {
+    color: var(--md-filled-button-label-text-color, #fff);
+  }
+}
+
+md-outlined-button:not(:disabled) .m3-button-icon-leading,
+md-outlined-button:not(:disabled) .m3-button-icon-trailing,
+md-text-button:not(:disabled) .m3-button-icon-leading,
+md-text-button:not(:disabled) .m3-button-icon-trailing {
+  .m3-icon {
+    --m3-icon-duotone-color: currentcolor;
+    --m3-icon-duotone-fill-color: color-mix(in srgb, currentcolor 35%, transparent);
+
+    color: currentcolor;
+  }
+
+  .material-symbols-filled,
+  .m3-icon__layer--fill {
+    color: color-mix(in srgb, currentcolor 35%, transparent);
+  }
+
+  .material-symbols-outlined,
+  .m3-icon__layer--stroke {
+    color: currentcolor;
+  }
+}
+
+.dark-theme md-filled-button:not(:disabled) .m3-button-icon-leading,
+.dark-theme md-filled-button:not(:disabled) .m3-button-icon-trailing {
+  .material-symbols-filled,
+  .m3-icon__layer--fill {
+    color: color-mix(in srgb, #18181b 35%, transparent);
   }
 }
 
@@ -78,22 +133,44 @@ md-filled-tonal-button {
   md-text-button,
   md-filled-tonal-button {
     min-height: 32px;
+    box-shadow: none;
 
+    --md-filled-button-container-height: 32px;
+    --md-outlined-button-container-height: 32px;
+    --md-elevated-button-container-height: 32px;
+    --md-text-button-container-height: 32px;
+    --md-filled-tonal-button-container-height: 32px;
     --md-filled-button-leading-space: 12px;
     --md-filled-button-trailing-space: 12px;
+    --md-filled-button-with-leading-icon-leading-space: 12px;
+    --md-filled-button-with-leading-icon-trailing-space: 12px;
+    --md-filled-button-with-trailing-icon-leading-space: 14px;
+    --md-filled-button-with-trailing-icon-trailing-space: 12px;
     --md-outlined-button-leading-space: 12px;
     --md-outlined-button-trailing-space: 12px;
+    --md-outlined-button-with-leading-icon-leading-space: 12px;
+    --md-outlined-button-with-leading-icon-trailing-space: 12px;
+    --md-outlined-button-with-trailing-icon-leading-space: 14px;
+    --md-outlined-button-with-trailing-icon-trailing-space: 12px;
     --md-elevated-button-leading-space: 12px;
     --md-elevated-button-trailing-space: 12px;
     --md-text-button-leading-space: 12px;
     --md-text-button-trailing-space: 12px;
+    --md-text-button-with-leading-icon-leading-space: 12px;
+    --md-text-button-with-leading-icon-trailing-space: 12px;
     --md-filled-tonal-button-leading-space: 12px;
     --md-filled-tonal-button-trailing-space: 12px;
-    --md-filled-button-label-text-size: 13px;
-    --md-outlined-button-label-text-size: 13px;
-    --md-elevated-button-label-text-size: 13px;
-    --md-text-button-label-text-size: 13px;
-    --md-filled-tonal-button-label-text-size: 13px;
+    --md-filled-tonal-button-with-leading-icon-leading-space: 12px;
+    --md-filled-tonal-button-with-leading-icon-trailing-space: 12px;
+    --md-filled-button-label-text-size: var(--text-sm, 0.875rem);
+    --md-outlined-button-label-text-size: var(--text-sm, 0.875rem);
+    --md-elevated-button-label-text-size: var(--text-sm, 0.875rem);
+    --md-text-button-label-text-size: var(--text-sm, 0.875rem);
+    --md-filled-tonal-button-label-text-size: var(--text-sm, 0.875rem);
+  }
+
+  .m3-button-label {
+    line-height: 1.25;
   }
 }
 
@@ -128,6 +205,9 @@ md-filled-tonal-button {
   md-filled-button {
     --md-filled-button-container-color: var(--form-error-color, #dc2626);
     --md-filled-button-label-text-color: #fff;
+    --md-icon-prefix-label-text-color: #fff;
+    --m3-icon-duotone-color: #fff;
+    --m3-icon-duotone-fill-color: rgb(255 255 255 / 32%);
     --md-filled-button-hover-state-layer-color: #fff;
     --md-filled-button-focus-state-layer-color: #fff;
     --md-filled-button-pressed-state-layer-color: #fff;

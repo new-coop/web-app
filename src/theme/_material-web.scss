@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright since 2025 Mifos Initiative
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -43,12 +43,12 @@ md-filled-tonal-button {
   --md-filled-tonal-button-label-text-size: 14px;
   --md-filled-tonal-button-label-text-weight: 500;
   --md-filled-tonal-button-label-text-font: var(--font-family, 'Inter', system-ui, sans-serif);
-  // Border radius: full pill (Nubank signature)
-  --md-filled-button-container-shape: 999px;
-  --md-outlined-button-container-shape: 999px;
-  --md-elevated-button-container-shape: 999px;
-  --md-text-button-container-shape: 999px;
-  --md-filled-tonal-button-container-shape: 999px;
+  // Border radius — Noir (soft radius, not full pill)
+  --md-filled-button-container-shape: var(--radius-md, 8px);
+  --md-outlined-button-container-shape: var(--radius-md, 8px);
+  --md-elevated-button-container-shape: var(--radius-md, 8px);
+  --md-text-button-container-shape: var(--radius-md, 8px);
+  --md-filled-tonal-button-container-shape: var(--radius-md, 8px);
 
   // Padding
   --md-filled-button-leading-space: 24px;
@@ -70,8 +70,8 @@ md-filled-tonal-button {
   --md-sys-color-on-surface-variant: #44474e;
 
   // ========== FILLED BUTTON ==========
-  // Normal state
-  --md-filled-button-container-color: #18181b;
+  // Primary — near-black Noir (accent violet reserved for nav highlights)
+  --md-filled-button-container-color: var(--mifos-surface-950, #09090b);
   --md-filled-button-label-text-color: #fff;
 
   // Hover state
@@ -186,6 +186,25 @@ md-filled-tonal-button {
   --md-filled-tonal-button-disabled-container-opacity: 1;
   --md-filled-tonal-button-disabled-label-text-color: #9e9e9e;
   --md-filled-tonal-button-disabled-label-text-opacity: 1;
+}
+
+// Button icon tokens — per variant (shared block sets conflicting custom props on all types)
+md-filled-button {
+  --md-icon-prefix-label-text-color: #fff;
+  --m3-icon-duotone-color: #fff;
+  --m3-icon-duotone-fill-color: rgb(255 255 255 / 32%);
+}
+
+md-outlined-button {
+  --md-icon-prefix-label-text-color: var(--md-outlined-button-label-text-color, #18181b);
+  --m3-icon-duotone-color: var(--md-outlined-button-label-text-color, #18181b);
+  --m3-icon-duotone-fill-color: color-mix(in srgb, #18181b 35%, transparent);
+}
+
+md-text-button {
+  --md-icon-prefix-label-text-color: var(--md-text-button-label-text-color, #18181b);
+  --m3-icon-duotone-color: var(--md-text-button-label-text-color, #18181b);
+  --m3-icon-duotone-fill-color: color-mix(in srgb, #18181b 35%, transparent);
 }
 
 // Dark theme support
@@ -328,4 +347,134 @@ md-filled-tonal-button {
     --md-filled-tonal-button-disabled-label-text-color: #e3e2e6;
     --md-filled-tonal-button-disabled-label-text-opacity: 1;
   }
+
+  md-filled-button {
+    --md-icon-prefix-label-text-color: #18181b;
+    --m3-icon-duotone-color: #18181b;
+    --m3-icon-duotone-fill-color: color-mix(in srgb, #18181b 35%, transparent);
+  }
+
+  md-outlined-button {
+    --md-icon-prefix-label-text-color: var(--md-outlined-button-label-text-color, #e4e4e7);
+    --m3-icon-duotone-color: var(--md-outlined-button-label-text-color, #e4e4e7);
+    --m3-icon-duotone-fill-color: color-mix(in srgb, #e4e4e7 35%, transparent);
+  }
+
+  md-text-button {
+    --md-icon-prefix-label-text-color: var(--md-text-button-label-text-color, #e4e4e7);
+    --m3-icon-duotone-color: var(--md-text-button-label-text-color, #e4e4e7);
+    --m3-icon-duotone-fill-color: color-mix(in srgb, #e4e4e7 35%, transparent);
+  }
+}
+
+// Profile (and similar) heroes use a fixed dark gradient — not the app theme surface
+.dark-theme .profile-hero,
+.profile-hero {
+  --md-icon-prefix-label-text-color: rgb(255 255 255 / 78%);
+  --m3-icon-duotone-color: rgb(255 255 255 / 78%);
+  --m3-icon-duotone-fill-color: rgb(255 255 255 / 28%);
+
+  .hero-chip-label {
+    color: rgb(255 255 255 / 72%);
+  }
+
+  .material-symbols-outlined,
+  .material-symbols-filled,
+  .m3-icon--duotone {
+    color: var(--m3-icon-duotone-color, rgb(255 255 255 / 78%));
+  }
+
+  md-filled-tonal-button {
+    --md-sys-color-primary: #18181b;
+    --md-filled-tonal-button-container-color: #fff;
+    --md-filled-tonal-button-label-text-color: #18181b;
+    --md-filled-tonal-button-hover-state-layer-color: #18181b;
+    --md-filled-tonal-button-focus-state-layer-color: #18181b;
+    --md-filled-tonal-button-pressed-state-layer-color: #18181b;
+    --md-filled-tonal-button-icon-color: #18181b;
+    --md-icon-prefix-label-text-color: #18181b;
+    --m3-icon-duotone-color: #18181b;
+    --m3-icon-duotone-fill-color: rgb(24 24 27 / 35%);
+  }
+
+  md-outlined-button {
+    --md-sys-color-primary: #f4f4f5;
+    --md-outlined-button-outline-color: rgb(255 255 255 / 52%);
+    --md-outlined-button-label-text-color: #f4f4f5;
+    --md-outlined-button-hover-label-text-color: #fff;
+    --md-outlined-button-focus-label-text-color: #fff;
+    --md-outlined-button-pressed-label-text-color: #fff;
+    --md-outlined-button-hover-state-layer-color: #fff;
+    --md-outlined-button-focus-state-layer-color: #fff;
+    --md-outlined-button-pressed-state-layer-color: #fff;
+    --md-outlined-button-icon-color: #f4f4f5;
+    --md-outlined-button-hover-icon-color: #fff;
+    --md-outlined-button-focus-icon-color: #fff;
+    --md-outlined-button-pressed-icon-color: #fff;
+    --md-icon-prefix-label-text-color: #f4f4f5;
+    --m3-icon-duotone-color: #f4f4f5;
+    --m3-icon-duotone-fill-color: rgb(255 255 255 / 35%);
+  }
+
+  md-text-button {
+    --md-sys-color-primary: rgb(255 255 255 / 82%);
+    --md-text-button-label-text-color: rgb(255 255 255 / 82%);
+    --md-text-button-hover-label-text-color: #fff;
+    --md-text-button-focus-label-text-color: #fff;
+    --md-text-button-pressed-label-text-color: #fff;
+    --md-text-button-hover-state-layer-color: #fff;
+    --md-text-button-focus-state-layer-color: #fff;
+    --md-text-button-pressed-state-layer-color: #fff;
+    --md-text-button-icon-color: rgb(255 255 255 / 82%);
+    --md-text-button-hover-icon-color: #fff;
+    --md-text-button-focus-icon-color: #fff;
+    --md-text-button-pressed-icon-color: #fff;
+    --md-icon-prefix-label-text-color: rgb(255 255 255 / 82%);
+    --m3-icon-duotone-color: rgb(255 255 255 / 82%);
+    --m3-icon-duotone-fill-color: rgb(255 255 255 / 35%);
+  }
+}
+
+// Compact icon buttons — task toolbars, m3-button size="compact"
+.toolbar-actions md-filled-button,
+.toolbar-actions md-outlined-button,
+.toolbar-actions md-text-button,
+.m3-button--compact md-filled-button,
+.m3-button--compact md-outlined-button,
+.m3-button--compact md-elevated-button,
+.m3-button--compact md-text-button,
+.m3-button--compact md-filled-tonal-button {
+  min-height: 32px;
+  box-shadow: none;
+
+  --md-filled-button-container-height: 32px;
+  --md-outlined-button-container-height: 32px;
+  --md-elevated-button-container-height: 32px;
+  --md-text-button-container-height: 32px;
+  --md-filled-tonal-button-container-height: 32px;
+  --md-filled-button-leading-space: 12px;
+  --md-filled-button-trailing-space: 12px;
+  --md-filled-button-with-leading-icon-leading-space: 12px;
+  --md-filled-button-with-leading-icon-trailing-space: 12px;
+  --md-filled-button-with-trailing-icon-leading-space: 12px;
+  --md-filled-button-with-trailing-icon-trailing-space: 12px;
+  --md-outlined-button-leading-space: 12px;
+  --md-outlined-button-trailing-space: 12px;
+  --md-outlined-button-with-leading-icon-leading-space: 12px;
+  --md-outlined-button-with-leading-icon-trailing-space: 12px;
+  --md-elevated-button-leading-space: 12px;
+  --md-elevated-button-trailing-space: 12px;
+  --md-text-button-leading-space: 12px;
+  --md-text-button-trailing-space: 12px;
+  --md-text-button-with-leading-icon-leading-space: 12px;
+  --md-text-button-with-leading-icon-trailing-space: 12px;
+  --md-filled-tonal-button-leading-space: 12px;
+  --md-filled-tonal-button-trailing-space: 12px;
+  --md-filled-tonal-button-with-leading-icon-leading-space: 12px;
+  --md-filled-tonal-button-with-leading-icon-trailing-space: 12px;
+  --md-filled-button-label-text-size: var(--text-sm, 0.875rem);
+  --md-outlined-button-label-text-size: var(--text-sm, 0.875rem);
+  --md-elevated-button-label-text-size: var(--text-sm, 0.875rem);
+  --md-text-button-label-text-size: var(--text-sm, 0.875rem);
+  --md-filled-tonal-button-label-text-size: var(--text-sm, 0.875rem);
 }

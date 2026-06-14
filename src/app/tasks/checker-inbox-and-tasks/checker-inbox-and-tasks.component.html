@@ -6,77 +6,203 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<div class="container">
-  <mat-card class="tasks-card">
-    <mat-card-content>
-      <div class="card-heading pending-tasks-heading">{{ 'labels.heading.Pending Tasks' | translate }}</div>
-      <mat-divider></mat-divider>
-      <nav mat-tab-nav-bar class="navigation-tabs" [tabPanel]="tabPanel">
-        <a
-          mat-tab-link
-          [routerLink]="['./checker-inbox']"
-          routerLinkActive
-          #checkerInbox="routerLinkActive"
-          [active]="checkerInbox.isActive"
-          *mifosxHasPermission="['ALL_FUNCTIONS_READ', 'READ_MAKERCHECKER', 'APPROVE_LOAN', 'APPROVE_LOAN_CHECKER']"
-        >
-          {{ 'labels.inputs.Checker Inbox' | translate }}
-        </a>
-        <a
-          mat-tab-link
-          [routerLink]="['./client-approval']"
-          routerLinkActive
-          #clientApproval="routerLinkActive"
-          [active]="clientApproval.isActive"
-          *mifosxHasPermission="'READ_CLIENT'"
-        >
-          {{ 'labels.inputs.Client Approval' | translate }}
-        </a>
-        <a
-          mat-tab-link
-          [routerLink]="['./loan-approval']"
-          routerLinkActive
-          #loanApproval="routerLinkActive"
-          [active]="loanApproval.isActive"
-          *mifosxHasPermission="'READ_LOAN'"
-        >
-          {{ 'labels.inputs.Loan Approval' | translate }}
-        </a>
-        <a
-          mat-tab-link
-          [routerLink]="['./council-approval']"
-          routerLinkActive
-          #councilApproval="routerLinkActive"
-          [active]="councilApproval.isActive"
-          *mifosxHasPermission="['ALL_FUNCTIONS_READ', 'READ_MAKERCHECKER', 'APPROVE_LOAN', 'APPROVE_LOAN_CHECKER']"
-        >
-          {{ 'labels.text.Council Approval' | translate }}
-        </a>
-        <a
-          mat-tab-link
-          [routerLink]="['./loan-disbursal']"
-          routerLinkActive
-          #loanDisbursal="routerLinkActive"
-          [active]="loanDisbursal.isActive"
-          *mifosxHasPermission="'READ_LOAN'"
-        >
-          {{ 'labels.inputs.Loan Disbursal' | translate }}
-        </a>
-        <a
-          mat-tab-link
-          [routerLink]="['./reschedule-loan']"
-          routerLinkActive
-          #rescheduleLoan="routerLinkActive"
-          [active]="rescheduleLoan.isActive"
-          *mifosxHasPermission="'RESCHEDULE_LOAN'"
-        >
-          {{ 'labels.inputs.Reschedule Loan' | translate }}
-        </a>
-      </nav>
+<div class="container tasks-page">
+  <header class="tasks-page-header">
+    <div class="tasks-page-header-main">
+      <p class="tasks-page-lead">{{ 'labels.text.Tasks inbox lead' | translate }}</p>
+      @if (statusMessageKey(); as statusKey) {
+        <p class="tasks-page-status">{{ statusKey | translate }}</p>
+      }
+    </div>
+    <div class="tasks-page-header-meta">
+      @if (!countsLoading() && totalPending() > 0) {
+        <span class="tasks-total-badge">
+          {{ 'labels.text.Tasks total pending' | translate: { count: totalPending() } }}
+        </span>
+      }
+      @if (!countsLoading() && totalPending() === 0) {
+        <span class="tasks-total-badge tasks-total-badge--clear">
+          <mifosx-m3-icon name="check_circle" [size]="14" />
+          {{ 'labels.text.Tasks gamification inbox clear' | translate }}
+        </span>
+      }
+    </div>
+  </header>
 
-      <mat-tab-nav-panel #tabPanel>
-        <router-outlet></router-outlet>
-      </mat-tab-nav-panel>
-    </mat-card-content>
-  </mat-card>
+  <nav class="tasks-queue-nav" [attr.aria-label]="'labels.text.Tasks queue navigation' | translate">
+    <div class="tasks-queue-nav-toolbar">
+      <label class="tasks-queue-filter tasks-queue-filter--compact">
+        <span class="tasks-queue-filter-icon">
+          <mifosx-m3-icon name="filter_list" [size]="18" />
+        </span>
+        <input
+          type="text"
+          class="tasks-queue-filter-input"
+          [value]="queueFilter()"
+          (input)="onQueueFilterInput($any($event.target).value)"
+          [placeholder]="'labels.text.Filter task queues' | translate"
+          [attr.aria-label]="'labels.text.Filter task queues' | translate"
+        />
+        @if (queueFilter()) {
+          <button
+            type="button"
+            class="tasks-queue-filter-clear"
+            (click)="clearQueueFilter()"
+            [attr.aria-label]="'labels.buttons.Clear' | translate"
+          >
+            <mifosx-m3-icon name="close" [size]="16" />
+          </button>
+        }
+      </label>
+      <span class="tasks-queue-nav-hint">{{ 'labels.text.Tasks queue keyboard hint' | translate }}</span>
+    </div>
+
+    <div class="tasks-queue-nav-list">
+      @for (item of filteredQueues(); track item.key; let i = $index) {
+        <a
+          class="tasks-queue-nav-item"
+          [class.tasks-queue-nav-item--featured]="item.key === 'all-pending'"
+          [class.tasks-queue-nav-item--hot]="isQueueHot(item.key)"
+          [class.tasks-queue-nav-item--suggested]="isSuggestedQueue(item.key)"
+          routerLinkActive="tasks-queue-nav-item--active"
+          [routerLink]="['./', item.route]"
+          [attr.aria-keyshortcuts]="navShortcut(i) ?? null"
+        >
+          @if (navShortcut(i); as shortcut) {
+            <span class="tasks-queue-nav-item-shortcut" aria-hidden="true">{{ shortcut }}</span>
+          }
+          <mifosx-m3-icon [name]="item.icon" [size]="18" />
+          <span class="tasks-queue-nav-item-label">{{ item.labelKey | translate }}</span>
+          @if (queueCount(item.key) !== null) {
+            <span
+              class="tasks-queue-nav-item-count"
+              [class.tasks-queue-nav-item-count--has-items]="queueCount(item.key)! > 0"
+            >
+              {{ queueCount(item.key) }}
+            </span>
+          } @else {
+            <span class="tasks-queue-nav-item-count tasks-queue-nav-item-count--loading" aria-hidden="true">…</span>
+          }
+        </a>
+      } @empty {
+        <p class="tasks-queue-nav-empty">{{ 'labels.text.No task queues match your search' | translate }}</p>
+      }
+    </div>
+  </nav>
+
+  <section class="tasks-workbench">
+    @if (!isAllPendingView()) {
+      <header class="tasks-workbench-context">
+        <a class="tasks-workbench-back" routerLink="./all-pending">
+          <mifosx-m3-icon name="arrow_back" [size]="18" />
+          {{ 'labels.text.Tasks back to all pending' | translate }}
+        </a>
+        <div class="tasks-workbench-context-title">
+          <mifosx-m3-icon [name]="activeQueue().icon" [size]="20" />
+          <h2 class="tasks-workbench-context-heading">{{ activeQueue().labelKey | translate }}</h2>
+          @if (queueCount(activeQueue().key); as count) {
+            @if (count !== null) {
+              <span class="tasks-queue-count">
+                {{ 'labels.text.Tasks queue count' | translate: { count } }}
+              </span>
+            }
+          }
+        </div>
+        <p class="tasks-workbench-context-desc">{{ activeQueue().descriptionKey | translate }}</p>
+      </header>
+    }
+    <router-outlet />
+  </section>
+
+  <div class="tasks-gamification-panel">
+    <button type="button" class="tasks-gamification-summary" (click)="toggleGamification()">
+      <span class="tasks-gamification-summary-title">
+        <mifosx-m3-icon name="military_tech" [size]="18" />
+        {{ 'labels.text.Tasks gamification panel' | translate }}
+      </span>
+      <span class="tasks-gamification-summary-meta">
+        {{ 'labels.text.Tasks gamification level label' | translate: { level: gamification().level } }}
+        ·
+        {{ gamification().totalXp }} XP
+      </span>
+      <mifosx-m3-icon [name]="gamificationExpanded() ? 'expand_less' : 'expand_more'" [size]="20" />
+    </button>
+
+    @if (gamificationExpanded()) {
+      <div class="tasks-gamification-body">
+        <div class="tasks-gamification-level">
+          <span
+            class="tasks-gamification-level-badge"
+            [attr.aria-label]="
+              'labels.text.Tasks gamification level label' | translate: { level: gamification().level }
+            "
+          >
+            <mifosx-m3-icon name="military_tech" [size]="18" />
+            <span class="tasks-gamification-level-value">{{ gamification().level }}</span>
+          </span>
+          <div class="tasks-gamification-level-body">
+            <span class="tasks-gamification-level-title">{{ gamification().levelTitleKey | translate }}</span>
+            <div
+              class="tasks-gamification-xp-track"
+              role="progressbar"
+              [attr.aria-valuenow]="gamification().xpInLevel"
+              [attr.aria-valuemin]="0"
+              [attr.aria-valuemax]="100"
+              [attr.aria-label]="'labels.text.Tasks gamification xp progress' | translate"
+            >
+              <span class="tasks-gamification-xp-fill" [style.width.%]="gamification().levelProgress * 100"></span>
+            </div>
+            <span class="tasks-gamification-xp-label">
+              {{
+                'labels.text.Tasks gamification xp label'
+                  | translate: { xp: gamification().totalXp, remaining: gamification().xpToNextLevel }
+              }}
+            </span>
+          </div>
+        </div>
+
+        <div class="tasks-gamification-stats">
+          <div class="tasks-gamification-stat">
+            <mifosx-m3-icon name="local_fire_department" [size]="18" />
+            <span class="tasks-gamification-stat-value">{{ gamification().streak }}</span>
+            <span class="tasks-gamification-stat-label">{{
+              'labels.text.Tasks gamification streak label' | translate
+            }}</span>
+          </div>
+          <div class="tasks-gamification-stat">
+            <mifosx-m3-icon name="task_alt" [size]="18" />
+            <span class="tasks-gamification-stat-value">{{ gamification().totalCompleted }}</span>
+            <span class="tasks-gamification-stat-label">{{
+              'labels.text.Tasks gamification completed label' | translate
+            }}</span>
+          </div>
+          <div class="tasks-gamification-stat">
+            <mifosx-m3-icon name="today" [size]="18" />
+            <span class="tasks-gamification-stat-value"
+              >{{ gamification().todayCompleted }}/{{ gamification().dailyGoal }}</span
+            >
+            <span class="tasks-gamification-stat-label">{{
+              'labels.text.Tasks gamification daily goal label' | translate
+            }}</span>
+          </div>
+        </div>
+
+        @if (unlockedAchievements().length > 0) {
+          <div class="tasks-gamification-achievements">
+            <span class="tasks-gamification-achievements-title">{{
+              'labels.text.Tasks gamification achievements title' | translate
+            }}</span>
+            <div class="tasks-gamification-achievement-list">
+              @for (achievement of unlockedAchievements(); track achievement.id) {
+                <span class="tasks-gamification-achievement" [attr.title]="achievement.descriptionKey | translate">
+                  <mifosx-m3-icon [name]="achievement.icon" [size]="16" />
+                  <span>{{ achievement.labelKey | translate }}</span>
+                </span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
 </div>

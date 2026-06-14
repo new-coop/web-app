@@ -26,10 +26,11 @@ import {
   MatRow
 } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { MatIcon } from '@angular/material/icon';
 
 /** Custom Services */
 import { TasksService } from '../../tasks.service';
+import { TasksQueueCountsService } from '../../tasks-queue-counts.service';
+import { TasksGamificationService } from '../../tasks-gamification.service';
 import { SettingsService } from 'app/settings/settings.service';
 
 /** Dialog Components */
@@ -37,6 +38,8 @@ import { ConfirmationDialogComponent } from 'app/shared/confirmation-dialog/conf
 import { Dates } from 'app/core/utils/dates';
 import { TranslateService } from '@ngx-translate/core';
 import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
+import { M3ButtonComponent } from 'app/shared/m3-ui/m3-button/m3-button.component';
+import { M3IconComponent } from 'app/shared/m3-ui/m3-icon/m3-icon.component';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { DateFormatPipe } from '../../../pipes/date-format.pipe';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
@@ -47,7 +50,8 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   styleUrls: ['./checker-inbox.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    FaIconComponent,
+    M3ButtonComponent,
+    M3IconComponent,
     MatTable,
     MatColumnDef,
     MatHeaderCellDef,
@@ -59,8 +63,7 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
     MatHeaderRow,
     MatRowDef,
     MatRow,
-    DateFormatPipe,
-    MatIcon
+    DateFormatPipe
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -71,6 +74,8 @@ export class CheckerInboxComponent implements OnInit {
   private router = inject(Router);
   private translateService = inject(TranslateService);
   private tasksService = inject(TasksService);
+  private queueCountsService = inject(TasksQueueCountsService);
+  private gamificationService = inject(TasksGamificationService);
   private settingsService = inject(SettingsService);
   private formBuilder = inject(FormBuilder);
   private destroyRef = inject(DestroyRef);
@@ -245,6 +250,7 @@ export class CheckerInboxComponent implements OnInit {
       this.tasksService.executeMakerCheckerAction(element.id, action).subscribe((response: any) => {
         approvedAccounts++;
         if (selectedAccounts === approvedAccounts) {
+          this.gamificationService.recordCompletions(selectedAccounts, action === 'reject' ? 'reject' : 'approve');
           this.reload();
         }
       });
@@ -259,6 +265,7 @@ export class CheckerInboxComponent implements OnInit {
       this.tasksService.deleteMakerChecker(element.id).subscribe((response: any) => {
         approvedAccounts++;
         if (selectedAccounts === approvedAccounts) {
+          this.gamificationService.recordCompletions(selectedAccounts, 'delete');
           this.reload();
         }
       });
@@ -269,11 +276,16 @@ export class CheckerInboxComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  get selectedCount(): number {
+    return this.selection?.selected?.length ?? 0;
+  }
+
   /**
    * Refetches data for the component
    * TODO: Replace by a custom reload component instead of hard-coded back-routing.
    */
   reload() {
+    this.queueCountsService.invalidate();
     const url: string = this.router.url;
     this.router
       .navigateByUrl(`/checker-inbox-and-tasks`, { skipLocationChange: true })

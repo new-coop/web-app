@@ -10,13 +10,19 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@
 import { environment } from '../../../environments/environment';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 import { AuthenticationService } from 'app/core/authentication/authentication.service';
+import { M3ButtonComponent } from 'app/shared/m3-ui/m3-button/m3-button.component';
+import { M3IconComponent } from 'app/shared/m3-ui/m3-icon/m3-icon.component';
 
 @Component({
   selector: 'mifosx-warning-dialog',
   standalone: true,
   templateUrl: './warning-dialog.component.html',
   styleUrls: ['./warning-dialog.component.scss'],
-  imports: [...STANDALONE_SHARED_IMPORTS],
+  imports: [
+    ...STANDALONE_SHARED_IMPORTS,
+    M3ButtonComponent,
+    M3IconComponent
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WarningDialogComponent {
@@ -25,6 +31,7 @@ export class WarningDialogComponent {
 
   visible = !this.authenticationService.hasDialogBeenShown();
   buttonText = environment.warningDialog.buttonText;
+  dismissLabelKey = `labels.buttons.${this.buttonText}`;
 
   dismiss(): void {
     this.authenticationService.showDialog();

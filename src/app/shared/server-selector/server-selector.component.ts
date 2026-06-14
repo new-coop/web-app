@@ -13,8 +13,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 /** Custom Services */
 import { SettingsService } from 'app/settings/settings.service';
-import { MatFormField, MatLabel, MatPrefix, MatError } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
+import { MatPrefix } from '@angular/material/form-field';
+import { M3IconComponent } from 'app/shared/m3-ui/m3-icon/m3-icon.component';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
 
 /**
@@ -27,7 +27,7 @@ import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
     MatPrefix,
-    MatIcon
+    M3IconComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

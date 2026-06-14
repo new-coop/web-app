@@ -42,12 +42,10 @@
   <p>{{ 'labels.text.Please enter the OTP' | translate }}:</p>
 
   <form class="two-factor-auth-form" [formGroup]="twoFactorAuthenticationForm" (ngSubmit)="validateOTP()">
-    <mat-form-field class="two-factor-auth-input">
-      <span matPrefix>
-        <mifosx-m3-icon name="shield_person" variant="duotone" [size]="22" class="m-r-10"></mifosx-m3-icon>
-      </span>
+    <mat-form-field class="two-factor-auth-input" appearance="outline">
       <mat-label>{{ 'labels.inputs.OTP' | translate }}</mat-label>
       <input type="password" matInput autocomplete="off" required formControlName="otp" />
+      <mifosx-m3-icon matIconPrefix name="shield_person" variant="duotone" [size]="22"></mifosx-m3-icon>
       <mat-hint align="start">
         <strong>{{ 'labels.inputs.Delivery Method' | translate }}:</strong>
         {{ selectedTwoFactorAuthenticationDeliveryMethod.name }}

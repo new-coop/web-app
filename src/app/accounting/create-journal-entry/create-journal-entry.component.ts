@@ -9,6 +9,7 @@
 /** Angular Imports */
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnInit,
   TemplateRef,
@@ -61,6 +62,7 @@ export class CreateJournalEntryComponent implements OnInit, AfterViewInit {
   private dialog = inject(MatDialog);
   private configurationWizardService = inject(ConfigurationWizardService);
   private popoverService = inject(PopoverService);
+  private cdr = inject(ChangeDetectorRef);
 
   onAmountInput(event: Event): void {
     const target = event.target;
@@ -117,6 +119,8 @@ export class CreateJournalEntryComponent implements OnInit, AfterViewInit {
         this.paymentTypeData = data.paymentTypes;
         this.glAccountData = data.glAccounts;
         this.assetExternalizationConfig = data.globalConfig;
+        this.applyAssetExternalization();
+        this.cdr.markForCheck();
       }
     );
   }
@@ -127,6 +131,7 @@ export class CreateJournalEntryComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.maxDate = this.settingsService.businessDate;
     this.createJournalEntryForm();
+    this.applyAssetExternalization();
   }
 
   /**
@@ -271,10 +276,18 @@ export class CreateJournalEntryComponent implements OnInit, AfterViewInit {
         this.showPopover(this.templateCreateJournalFormRef, this.createJournalFormRef.nativeElement, 'top', true);
       });
     }
-    this.assetExternalizationEnabled = this.assetExternalizationConfig.enabled;
-    if (this.assetExternalizationEnabled) {
-      this.journalEntryForm.addControl('externalAssetOwner', new UntypedFormControl());
+  }
+
+  private applyAssetExternalization(): void {
+    if (!this.journalEntryForm || !this.assetExternalizationConfig?.enabled) {
+      return;
     }
+    if (this.journalEntryForm.contains('externalAssetOwner')) {
+      return;
+    }
+    this.assetExternalizationEnabled = true;
+    this.journalEntryForm.addControl('externalAssetOwner', new UntypedFormControl());
+    this.cdr.markForCheck();
   }
 
   /**

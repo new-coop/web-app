@@ -1,4 +1,4 @@
-﻿{
+{
   "APP_NAME": "Mifos® X WebApp",
   "Logged in as": "Conectado como",
   "Remember me": "Recordar me",
@@ -1203,6 +1203,7 @@
       "Contact Information": "Información de Contacto",
       "Contract Termination": "Terminación del contrato",
       "Create Charge": "Crear Comisión",
+      "Create Client": "Crear Cliente",
       "Create Closure": "Crear Cierre",
       "Create Code": "Crear Código",
       "Create Data Table": "Crear Tabla de Datos",
@@ -1578,7 +1579,11 @@
       "Tools": "Herramientas",
       "Loans": "Préstamos",
       "Deposits and Shares": "Depósitos y acciones",
-      "Pricing and Rules": "Precios y reglas"
+      "Pricing and Rules": "Precios y reglas",
+      "Create Breach Configuration": "Crear Configuración de Incumplimiento",
+      "Edit Breach Configuration": "Editar Configuración de Incumplimiento",
+      "Create Near Breach Configuration": "Crear Configuración de Incumplimiento Cercano",
+      "Edit Near Breach Configuration": "Editar Configuración de Incumplimiento Cercano"
     },
     "inputs": {
       "# Remittance": "# Remesa",
@@ -3433,6 +3438,7 @@
       "Create Accounting Rule": "Crear regla de contabilidad",
       "Create Adhoc Query": "Crear consulta ad hoc",
       "Create Breach": "Crear Incumplimiento",
+      "Create Breach Configuration": "Crear Configuración de Incumplimiento",
       "Create Center": "Crear centro",
       "Create Charge": "Crear cargo",
       "Create Client": "Crear cliente",
@@ -3460,6 +3466,7 @@
       "Create Loan Product": "Crear producto de Crédito",
       "Create Loans Account": "Crear cuenta de Créditos",
       "Create Near Breach": "Crear Cuasi Incumplimiento",
+      "Create Near Breach Configuration": "Crear Configuración de Incumplimiento Cercano",
       "Create New GL Account": "Esta opción le permite crear nuevas cuentas GL.",
       "Create Office": "Crear oficina",
       "Create Payment Type": "Crear tipo de pago",
@@ -3549,6 +3556,7 @@
       "Edit Adhoc Query": "Editar consulta ad hoc",
       "Edit Amazon S3 Configuration": "Editar la configuración de Amazon S3",
       "Edit Breach": "Editar Incumplimiento",
+      "Edit Breach Configuration": "Editar Configuración de Incumplimiento",
       "Edit Cashier": "Editar cajero",
       "Edit Center": "Centro de edición",
       "Edit Charge": "Editar cargo",
@@ -3572,6 +3580,7 @@
       "Edit Hook": "Editar gancho",
       "Edit Loan Product": "Editar producto de Crédito",
       "Edit Near Breach": "Editar Cuasi Incumplimiento",
+      "Edit Near Breach Configuration": "Editar Configuración de Incumplimiento Cercano",
       "Edit Notification Configuration": "Editar configuración de notificación",
       "Edit Office": "Editar oficina",
       "Edit Payment Type": "Editar tipo de pago",

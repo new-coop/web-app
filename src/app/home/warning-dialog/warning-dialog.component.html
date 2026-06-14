@@ -7,10 +7,15 @@
 -->
 
 @if (visible) {
-  <aside class="legal-notice" role="note">
+  <aside class="legal-notice" role="note" [attr.aria-label]="'labels.text.Warning message' | translate">
+    <mifosx-m3-icon class="legal-notice__icon" name="shield" variant="duotone" [size]="20" aria-hidden="true" />
     <p class="legal-notice__text">{{ 'labels.text.Warning message' | translate }}</p>
-    <button type="button" mat-button class="legal-notice__dismiss" (click)="dismiss()">
-      {{ 'labels.buttons.' + buttonText | translate }}
-    </button>
+    <mifosx-m3-button
+      class="legal-notice__dismiss"
+      variant="text"
+      size="compact"
+      [label]="dismissLabelKey | translate"
+      (clicked)="dismiss()"
+    />
   </aside>
 }

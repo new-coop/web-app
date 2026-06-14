@@ -9,6 +9,7 @@
 /** Angular Imports */
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnInit,
   TemplateRef,
@@ -105,6 +106,7 @@ export class ChartOfAccountsComponent implements AfterViewInit, OnInit {
   private treeControlService = inject(TreeControlService);
   private configurationWizardService = inject(ConfigurationWizardService);
   private popoverService = inject(PopoverService);
+  private cdr = inject(ChangeDetectorRef);
 
   /** Button toggle group form control for type of view. (list/tree) */
   viewGroup = new UntypedFormControl('listView');
@@ -172,6 +174,7 @@ export class ChartOfAccountsComponent implements AfterViewInit, OnInit {
       this.nestedTreeDataSource.data = glAccountTreeData;
       this.nestedTreeControl.expand(this.nestedTreeDataSource.data[0]);
       this.nestedTreeControl.dataNodes = glAccountTreeData;
+      this.cdr.markForCheck();
     });
   }
 

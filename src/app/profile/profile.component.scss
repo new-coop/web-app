@@ -27,6 +27,14 @@
     radial-gradient(at 85% 15%, rgb(216 180 254 / 18%) 0, transparent 50%),
     linear-gradient(135deg, #09090b 0%, #18181b 55%, #3f3f46 100%);
   color: #fff;
+
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
 }
 
 .hero-avatar-initials {
@@ -113,12 +121,14 @@
 
   mifosx-m3-icon {
     flex-shrink: 0;
-    color: rgb(255 255 255 / 65%);
+
+    --m3-icon-duotone-color: rgb(255 255 255 / 75%);
+    --m3-icon-duotone-fill-color: rgb(255 255 255 / 28%);
   }
 }
 
 .hero-chip-label {
-  color: rgb(255 255 255 / 55%);
+  color: rgb(255 255 255 / 72%);
   font-weight: 500;
 }
 
@@ -127,19 +137,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.hero-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.5rem;
-  flex-shrink: 0;
-
-  mifosx-m3-button {
-    --md-sys-color-primary: #e4e4e7;
-    --md-sys-color-on-primary: #18181b;
-  }
 }
 
 /* ===== KPI cards ===== */

@@ -30,10 +30,11 @@ const AVATAR_COLORS = [
   template: `
     <span
       class="initials-avatar"
+      [class.initials-avatar--neutral]="tone() === 'neutral'"
       [style.width.px]="size()"
       [style.height.px]="size()"
       [style.font-size.px]="size() * 0.4"
-      [style.background-color]="color()"
+      [style.background-color]="tone() === 'colorful' ? color() : null"
       [attr.aria-label]="name()"
       role="img"
     >
@@ -54,6 +55,14 @@ const AVATAR_COLORS = [
         user-select: none;
         flex-shrink: 0;
       }
+
+      .initials-avatar--neutral {
+        background-color: var(--mifos-surface-900, #18181b);
+      }
+
+      :host-context(.dark-theme) .initials-avatar--neutral {
+        background-color: var(--mifos-surface-700, #3f3f46);
+      }
     `
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -64,6 +73,9 @@ export class InitialsAvatarComponent {
 
   /** Diameter in pixels. */
   size = input<number>(32);
+
+  /** Monochrome avatar for shell chrome; colorful hash palette elsewhere. */
+  tone = input<'colorful' | 'neutral'>('colorful');
 
   initials = computed(() => {
     const parts = (this.name() || '').trim().split(/\s+/).filter(Boolean);

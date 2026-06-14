@@ -44,6 +44,7 @@
           mat-raised-button
           color="primary"
           type="submit"
+          [disabled]="periodicAccrualsForm.invalid"
           *mifosxHasPermission="'EXECUTE_PERIODICACCRUALACCOUNTING'"
         >
           <fa-icon icon="play" class="m-r-10"></fa-icon>

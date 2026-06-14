@@ -5,7 +5,12 @@
   License, v. 2.0. If a copy of the MPL was not distributed with this
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
-<mat-form-field class="flex-fill align-center" id="tenant-selector">
+<mat-form-field
+  class="flex-fill align-center"
+  id="tenant-selector"
+  [appearance]="appearance"
+  [class.outlined-variant]="appearance === 'outline'"
+>
   <mat-label>{{ 'labels.inputs.Tenant' | translate }}</mat-label>
   <mat-select [formControl]="tenantSelector" (selectionChange)="setTenantIdentifier()" class="tenantselector">
     @for (tenant of tenants; track tenant) {
@@ -14,5 +19,5 @@
       </mat-option>
     }
   </mat-select>
-  <mifosx-m3-icon matIconPrefix name="domain"></mifosx-m3-icon>
+  <mifosx-m3-icon matIconPrefix name="domain" variant="duotone" [size]="22"></mifosx-m3-icon>
 </mat-form-field>

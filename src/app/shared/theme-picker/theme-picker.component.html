@@ -6,7 +6,12 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<button mat-icon-button [matMenuTriggerFor]="themeMenu" matTooltip="{{ 'tooltips.Color Schemes' | translate }}">
+<button
+  type="button"
+  mat-icon-button
+  [matMenuTriggerFor]="themeMenu"
+  matTooltip="{{ 'tooltips.Color Schemes' | translate }}"
+>
   <fa-icon icon="fill-drip" size="lg"></fa-icon>
 </button>
 

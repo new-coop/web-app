@@ -19,6 +19,7 @@ import { SelectBase } from 'app/shared/form-dialog/formfield/model/select-base';
 import { TranslateService } from '@ngx-translate/core';
 import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
 import { FormDialogComponent } from 'app/shared/form-dialog/form-dialog.component';
+import { getFormDialogConfig } from 'app/shared/form-dialog/form-dialog.config';
 import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { STANDALONE_SHARED_IMPORTS } from 'app/standalone-shared.module';
@@ -68,9 +69,10 @@ export class ClientAddressStepComponent {
         this.translateService.instant('labels.catalogs.Client') +
         ' ' +
         this.translateService.instant('labels.heading.Address'),
-      formfields: this.getAddressFormFields()
+      formfields: this.getAddressFormFields(),
+      layout: { columns: 2 }
     };
-    const addAddressDialogRef = this.dialog.open(FormDialogComponent, { data, width: '50rem' });
+    const addAddressDialogRef = this.dialog.open(FormDialogComponent, getFormDialogConfig({ data }));
     addAddressDialogRef.afterClosed().subscribe((response: any) => {
       if (response.data) {
         const addressData = response.data.value;
@@ -99,9 +101,9 @@ export class ClientAddressStepComponent {
         ' ' +
         this.translateService.instant('labels.heading.Address'),
       formfields: this.getAddressFormFields(address),
-      layout: { addButtonText: 'Edit' }
+      layout: { columns: 2, addButtonText: 'Edit' }
     };
-    const editAddressDialogRef = this.dialog.open(FormDialogComponent, { data, width: '50rem' });
+    const editAddressDialogRef = this.dialog.open(FormDialogComponent, getFormDialogConfig({ data }));
     editAddressDialogRef.afterClosed().subscribe((response: any) => {
       if (response.data) {
         const addressData = response.data.value;

@@ -15,6 +15,8 @@ import { Route } from '../core/route/route.service';
 
 /** Custom Components */
 import { CheckerInboxAndTasksComponent } from './checker-inbox-and-tasks/checker-inbox-and-tasks.component';
+import { TasksAllPendingComponent } from './checker-inbox-and-tasks-tabs/tasks-all-pending/tasks-all-pending.component';
+import { TasksQueueRedirectComponent } from './tasks-queue-redirect.component';
 import { CheckerInboxComponent } from './checker-inbox-and-tasks-tabs/checker-inbox/checker-inbox.component';
 import { ClientApprovalComponent } from './checker-inbox-and-tasks-tabs/client-approval/client-approval.component';
 import { LoanApprovalComponent } from './checker-inbox-and-tasks-tabs/loan-approval/loan-approval.component';
@@ -43,8 +45,13 @@ const routes: Routes = [
       children: [
         {
           path: '',
-          redirectTo: 'checker-inbox',
+          component: TasksQueueRedirectComponent,
           pathMatch: 'full'
+        },
+        {
+          path: 'all-pending',
+          component: TasksAllPendingComponent,
+          data: { title: 'All Pending Tasks' }
         },
         {
           path: 'checker-inbox',

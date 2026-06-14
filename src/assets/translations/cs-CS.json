@@ -1,4 +1,4 @@
-﻿{
+{
   "APP_NAME": "Mifos® X WebApp",
   "Logged in as": "Přihlášen jako",
   "Remember me": "Zapamatuj si mě",
@@ -1204,6 +1204,7 @@
       "Contact Information": "Kontaktní informace",
       "Contract Termination": "Ukončení smlouvy",
       "Create Charge": "Vytvořit poplatek",
+      "Create Client": "Vytvořit klienta",
       "Create Closure": "Vytvořit uzavření",
       "Create Code": "Vytvořit kód",
       "Create Data Table": "Vytvořit tabulku dat",
@@ -1578,7 +1579,11 @@
       "Deposits and Shares": "Vklady a podíly",
       "Pricing and Rules": "Ceny a pravidla",
       "Ledger Setup": "Nastavení hlavní knihy",
-      "Period Operations": "Operace období"
+      "Period Operations": "Operace období",
+      "Create Breach Configuration": "Vytvořit konfiguraci porušení",
+      "Edit Breach Configuration": "Upravit konfiguraci porušení",
+      "Create Near Breach Configuration": "Vytvořit konfiguraci téměř porušení",
+      "Edit Near Breach Configuration": "Upravit konfiguraci téměř porušení"
     },
     "inputs": {
       "# Remittance": "# Remitence",
@@ -3432,6 +3437,7 @@
       "Create Accounting Rule": "Vytvořit účetní pravidlo",
       "Create Adhoc Query": "Vytvořit Adhoc dotaz",
       "Create Breach": "Vytvořit Porušení",
+      "Create Breach Configuration": "Vytvořit konfiguraci porušení",
       "Create Center": "Vytvořit centrum",
       "Create Charge": "Vytvořit poplatek",
       "Create Client": "Vytvořit klienta",
@@ -3459,6 +3465,7 @@
       "Create Loan Product": "Vytvořte produkt půjčky",
       "Create Loans Account": "Vytvořit úvěrový účet",
       "Create Near Breach": "Vytvořit Téměř Porušení",
+      "Create Near Breach Configuration": "Vytvořit konfiguraci téměř porušení",
       "Create New GL Account": "Tato možnost umožňuje vytvářet nové účty hlavní knihy.",
       "Create Office": "Vytvořit Office",
       "Create Payment Type": "Vytvořit typ platby",
@@ -3548,6 +3555,7 @@
       "Edit Adhoc Query": "Upravit Adhoc dotaz",
       "Edit Amazon S3 Configuration": "Upravte konfiguraci Amazon S3",
       "Edit Breach": "Upravit Porušení",
+      "Edit Breach Configuration": "Upravit konfiguraci porušení",
       "Edit Cashier": "Upravit Pokladník",
       "Edit Center": "Centrum úprav",
       "Edit Charge": "Upravit poplatek",
@@ -3571,6 +3579,7 @@
       "Edit Hook": "Upravit Hook",
       "Edit Loan Product": "Upravit produkt půjčky",
       "Edit Near Breach": "Upravit Téměř Porušení",
+      "Edit Near Breach Configuration": "Upravit konfiguraci téměř porušení",
       "Edit Notification Configuration": "Upravit konfiguraci oznámení",
       "Edit Office": "Upravit Office",
       "Edit Payment Type": "Upravit typ platby",

@@ -5,5 +5,58 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-// Styles are now controlled by parent component (login-form)
-// to ensure consistency with other form fields
+
+#tenant-selector {
+  &.mat-mdc-form-field {
+    .mat-mdc-form-field-icon-prefix {
+      padding: 0 0.5rem 0 0.75rem;
+    }
+
+    &.outlined-variant {
+      width: 100%;
+
+      .mdc-notched-outline__leading {
+        border-radius: 14px 0 0 14px;
+        width: 14px !important;
+      }
+
+      .mdc-notched-outline__trailing {
+        border-radius: 0 14px 14px 0;
+      }
+
+      .mat-mdc-form-field-infix {
+        padding: 12px 0;
+        min-height: 48px;
+      }
+
+      .mat-mdc-select {
+        font-size: 1rem;
+        color: var(--md-sys-color-on-surface, #1a1c1e);
+      }
+
+      .mat-mdc-floating-label {
+        color: var(--md-sys-color-on-surface-variant, #44474e);
+      }
+
+      &.mat-focused:not(.mat-form-field-invalid) {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: var(--md-sys-color-primary, #18181b);
+        }
+      }
+    }
+  }
+}
+
+:host-context(.dark-theme) {
+  #tenant-selector.outlined-variant {
+    .mat-mdc-select {
+      color: var(--md-sys-color-on-surface, #e2e2e5);
+    }
+
+    .mat-mdc-floating-label {
+      color: var(--md-sys-color-on-surface-variant, #c4c6d0);
+    }
+  }
+}

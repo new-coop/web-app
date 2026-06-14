@@ -50,7 +50,7 @@ export class KeyboardShortcutsConfiguration {
         shiftKey: false,
         altKey: false,
         key: 'i',
-        route: 'checker-inbox-and-tasks/checker-inbox'
+        route: 'checker-inbox-and-tasks'
       },
       // Collection Sheet- ctrl + alt + o
       // {

@@ -41,10 +41,13 @@ import { ConfirmationDialogComponent } from 'app/shared/confirmation-dialog/conf
 
 /** Custom Services */
 import { TasksService } from '../../tasks.service';
+import { TasksQueueCountsService } from '../../tasks-queue-counts.service';
+import { TasksGamificationService } from '../../tasks-gamification.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { Dates } from 'app/core/utils/dates';
 import { TranslateService } from '@ngx-translate/core';
-import { FaIconComponent } from 'app/shared/icons/fa-icon.component';
+import { M3ButtonComponent } from 'app/shared/m3-ui/m3-button/m3-button.component';
+import { M3IconComponent } from 'app/shared/m3-ui/m3-icon/m3-icon.component';
 import { TableNameCellComponent } from '../../../shared/ui/table-name-cell/table-name-cell.component';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { FormatNumberPipe } from '../../../pipes/format-number.pipe';
@@ -62,7 +65,8 @@ interface OfficeNode {
   styleUrls: ['./loan-approval.component.scss'],
   imports: [
     ...STANDALONE_SHARED_IMPORTS,
-    FaIconComponent,
+    M3ButtonComponent,
+    M3IconComponent,
     MatTable,
     MatColumnDef,
     MatHeaderCellDef,
@@ -88,6 +92,8 @@ export class LoanApprovalComponent implements AfterViewInit {
   private translateService = inject(TranslateService);
   private settingsService = inject(SettingsService);
   private tasksService = inject(TasksService);
+  private queueCountsService = inject(TasksQueueCountsService);
+  private gamificationService = inject(TasksGamificationService);
   private destroyRef = inject(DestroyRef);
 
   /** Offices Data */
@@ -226,7 +232,6 @@ export class LoanApprovalComponent implements AfterViewInit {
     };
     const selectedAccounts = this.selection.selected.length;
     const listSelectedAccounts = this.selection.selected;
-    let approvedAccounts = 0;
     this.batchRequests = [];
     let reqId = 1;
     listSelectedAccounts.forEach((element: any) => {
@@ -236,15 +241,19 @@ export class LoanApprovalComponent implements AfterViewInit {
       this.batchRequests.push(batchData);
     });
     this.tasksService.submitBatchData(this.batchRequests).subscribe((response: any) => {
+      let successCount = 0;
       response.forEach((responseEle: any) => {
         if (responseEle.statusCode === '200') {
-          approvedAccounts++;
+          successCount++;
           responseEle.body = JSON.parse(responseEle.body);
-          if (selectedAccounts === approvedAccounts) {
+          if (selectedAccounts === successCount) {
             this.loanResource();
           }
         }
       });
+      if (successCount > 0) {
+        this.gamificationService.recordCompletions(successCount, 'approve');
+      }
       this.reload();
     });
   }
@@ -255,6 +264,10 @@ export class LoanApprovalComponent implements AfterViewInit {
       dataSource.filter = normalizedFilter;
       dataSource.paginator?.firstPage();
     });
+  }
+
+  get selectedCount(): number {
+    return this.selection?.selected?.length ?? 0;
   }
 
   loanResource() {
@@ -273,6 +286,7 @@ export class LoanApprovalComponent implements AfterViewInit {
    * TODO: Replace by a custom reload component instead of hard-coded back-routing.
    */
   reload() {
+    this.queueCountsService.invalidate();
     const url: string = this.router.url;
     this.router
       .navigateByUrl(`/checker-inbox-and-tasks`, { skipLocationChange: true })

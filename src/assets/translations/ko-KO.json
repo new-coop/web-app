@@ -1,4 +1,4 @@
-﻿{
+{
   "APP_NAME": "Mifos® X WebApp",
   "Logged in as": "다음 계정으로 로그인됨",
   "Remember me": "날 기억해",
@@ -1204,6 +1204,7 @@
       "Contact Information": "연락처 정보",
       "Contract Termination": "계약 종료",
       "Create Charge": "청구 생성",
+      "Create Client": "클라이언트 생성",
       "Create Closure": "클로저 생성",
       "Create Code": "코드 생성",
       "Create Data Table": "데이터 테이블 생성",
@@ -1579,7 +1580,11 @@
       "Deposits and Shares": "예금 및 주식",
       "Pricing and Rules": "가격 및 규칙",
       "Ledger Setup": "원장 설정",
-      "Period Operations": "기간 작업"
+      "Period Operations": "기간 작업",
+      "Create Breach Configuration": "위반 구성 생성",
+      "Edit Breach Configuration": "위반 구성 수정",
+      "Create Near Breach Configuration": "근접 위반 구성 생성",
+      "Edit Near Breach Configuration": "근접 위반 구성 수정"
     },
     "inputs": {
       "# Remittance": "# 송금",
@@ -3432,6 +3437,7 @@
       "Create Accounting Rule": "회계 규칙 생성",
       "Create Adhoc Query": "임시 쿼리 만들기",
       "Create Breach": "위반 생성",
+      "Create Breach Configuration": "위반 구성 생성",
       "Create Center": "센터 만들기",
       "Create Charge": "청구 생성",
       "Create Client": "클라이언트 생성",
@@ -3459,6 +3465,7 @@
       "Create Loan Product": "대출상품 생성",
       "Create Loans Account": "대출 계좌 만들기",
       "Create Near Breach": "근접 위반 생성",
+      "Create Near Breach Configuration": "근접 위반 구성 생성",
       "Create New GL Account": "이 옵션을 사용하면 새 GL 계정을 만들 수 있습니다.",
       "Create Office": "사무실 만들기",
       "Create Payment Type": "결제 유형 생성",
@@ -3548,6 +3555,7 @@
       "Edit Adhoc Query": "임시 쿼리 편집",
       "Edit Amazon S3 Configuration": "Amazon S3 구성 편집",
       "Edit Breach": "위반 수정",
+      "Edit Breach Configuration": "위반 구성 수정",
       "Edit Cashier": "계산원 편집",
       "Edit Center": "편집 센터",
       "Edit Charge": "청구 수정",
@@ -3571,6 +3579,7 @@
       "Edit Hook": "후크 편집",
       "Edit Loan Product": "대출상품 수정",
       "Edit Near Breach": "근접 위반 수정",
+      "Edit Near Breach Configuration": "근접 위반 구성 수정",
       "Edit Notification Configuration": "알림 구성 편집",
       "Edit Office": "사무실 편집",
       "Edit Payment Type": "결제 유형 수정",

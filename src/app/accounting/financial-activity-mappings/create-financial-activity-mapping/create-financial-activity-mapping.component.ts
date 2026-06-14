@@ -7,7 +7,7 @@
  */
 
 /** Angular Imports */
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 
@@ -35,6 +35,7 @@ export class CreateFinancialActivityMappingComponent implements OnInit {
   private accountingService = inject(AccountingService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   /** Financial activity mapping form. */
   financialActivityMappingForm: UntypedFormGroup;
@@ -103,6 +104,7 @@ export class CreateFinancialActivityMappingComponent implements OnInit {
           this.glAccountData = this.glAccountOptions.equityAccountOptions;
           break;
       }
+      this.cdr.markForCheck();
     });
   }
 

@@ -21,22 +21,13 @@
   border-width: 0;
 }
 
-:host button.mat-mdc-icon-button {
-  color: inherit;
-  border-radius: 50%;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
-
-  &:hover {
-    background-color: rgb(9 9 11 / 8%);
-    color: #18181b;
-  }
+:host {
+  display: inline-flex;
+  align-items: center;
 }
 
-:host-context(.dark-theme) button.mat-mdc-icon-button:hover {
-  background-color: rgb(161 161 170 / 12%);
-  color: #d4d4d8;
+.notifications-trigger {
+  position: relative;
 }
 
 .mifosx-notifications-menu {

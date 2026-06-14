@@ -1,4 +1,4 @@
-﻿{
+{
   "APP_NAME": "Mifos® X WebApp",
   "Logged in as": "Imeingia kama",
   "Remember me": "Nikumbuke",
@@ -1202,6 +1202,7 @@
       "Contact Information": "Maelezo ya Mawasiliano",
       "Contract Termination": "Kusitishwa kwa Mkataba",
       "Create Charge": "Unda Malipo",
+      "Create Client": "Unda Mteja",
       "Create Closure": "Unda Kufungwa",
       "Create Code": "Unda Msimbo",
       "Create Data Table": "Unda Jedwali la Data",
@@ -1575,7 +1576,11 @@
       "Deposits and Shares": "Amana na hisa",
       "Pricing and Rules": "Bei na sheria",
       "Ledger Setup": "Usanidi wa leja",
-      "Period Operations": "Shughuli za kipindi"
+      "Period Operations": "Shughuli za kipindi",
+      "Create Breach Configuration": "Unda Usanidi wa Ukiukaji",
+      "Edit Breach Configuration": "Hariri Usanidi wa Ukiukaji",
+      "Create Near Breach Configuration": "Unda Mipangilio ya Ukiukaji wa Karibu",
+      "Edit Near Breach Configuration": "Hariri Mipangilio ya Ukiukaji wa Karibu"
     },
     "inputs": {
       "# Remittance": "# Uhawilishaji",
@@ -3428,6 +3433,7 @@
       "Create Accounting Rule": "Tengeneza Kanuni ya Uhasibu",
       "Create Adhoc Query": "Unda Hoja ya Adhoc",
       "Create Breach": "Unda Uvunjaji",
+      "Create Breach Configuration": "Unda Usanidi wa Ukiukaji",
       "Create Center": "Unda Kituo",
       "Create Charge": "Unda Malipo",
       "Create Client": "Unda Mteja",
@@ -3455,6 +3461,7 @@
       "Create Loan Product": "Tengeneza Bidhaa ya Mkopo",
       "Create Loans Account": "Unda Akaunti ya Mikopo",
       "Create Near Breach": "Unda Karibu Uvunjaji",
+      "Create Near Breach Configuration": "Unda Mipangilio ya Ukiukaji wa Karibu",
       "Create New GL Account": "Chaguo hili hukuruhusu kuunda akaunti mpya za GL.",
       "Create Office": "Unda Ofisi",
       "Create Payment Type": "Unda Aina ya Malipo",
@@ -3544,6 +3551,7 @@
       "Edit Adhoc Query": "Hariri Hoja ya Adhoc",
       "Edit Amazon S3 Configuration": "Hariri Usanidi wa Amazon S3",
       "Edit Breach": "Hariri Uvunjaji",
+      "Edit Breach Configuration": "Hariri Usanidi wa Ukiukaji",
       "Edit Cashier": "Badilisha Cashier",
       "Edit Center": "Hariri Kituo",
       "Edit Charge": "Badilisha Malipo",
@@ -3567,6 +3575,7 @@
       "Edit Hook": "Hariri Hook",
       "Edit Loan Product": "Hariri Bidhaa ya Mkopo",
       "Edit Near Breach": "Hariri Karibu Uvunjaji",
+      "Edit Near Breach Configuration": "Hariri Mipangilio ya Ukiukaji wa Karibu",
       "Edit Notification Configuration": "Badilisha Usanidi wa Arifa",
       "Edit Office": "Badilisha Ofisi",
       "Edit Payment Type": "Badilisha Aina ya Malipo",

@@ -7,9 +7,9 @@
 -->
 
 @if (showData) {
-  <div class="tab-container mat-typography">
+  <div class="table-card">
     <div class="table-toolbar">
-      <mat-form-field class="toolbar-search tasks-search-field">
+      <mat-form-field class="toolbar-search">
         <input
           matInput
           placeholder="{{ 'labels.text.Filter by name' | translate }}"
@@ -17,23 +17,31 @@
         />
       </mat-form-field>
       <div class="toolbar-actions">
-        <button
-          mat-raised-button
-          color="success"
+        @if (selection?.hasValue()) {
+          <span class="tasks-selection-hint">
+            {{ 'labels.text.Tasks selected count' | translate: { count: selectedCount } }}
+          </span>
+        }
+        <mifosx-m3-button
+          variant="filled"
+          size="compact"
+          icon="check"
           *mifosxHasPermission="['APPROVE_LOAN', 'APPROVE_LOAN_CHECKER']"
-          (click)="approveLoan()"
-          class="tasks-action-btn"
-        >
-          <fa-icon icon="check" class="m-r-10"></fa-icon>{{ 'labels.buttons.Approve' | translate }}
-        </button>
+          [label]="'labels.buttons.Approve' | translate"
+          (clicked)="approveLoan()"
+        />
       </div>
     </div>
+
     @for (office of officesArray; track office.id) {
-      <div class="table-card m-b-20">
-        <div class="table-card-header">
-          <h3 class="table-card-title">{{ office.name }}</h3>
-        </div>
-        @if (office.loans.length > 0 && officeDataSources[office.id]) {
+      @if (office.loans.length > 0 && officeDataSources[office.id]) {
+        <div class="tasks-office-section">
+          <div class="tasks-office-header">
+            <h3 class="tasks-office-title">{{ office.name }}</h3>
+            <span class="tasks-queue-count">
+              {{ 'labels.text.Tasks queue count' | translate: { count: office.loans.length } }}
+            </span>
+          </div>
           <div class="table-scroll">
             <table mat-table [dataSource]="officeDataSources[office.id]">
               <ng-container matColumnDef="select">
@@ -91,17 +99,13 @@
             </table>
           </div>
           <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
-        }
-      </div>
+        </div>
+      }
     }
   </div>
-}
-
-@if (!showData) {
-  <div class="alert">
-    <div class="message">
-      <i class="fa fa-exclamation-circle alert-check"></i>
-      {{ 'labels.text.No pending loans for approval' | translate }}
-    </div>
+} @else {
+  <div class="tasks-empty">
+    <mifosx-m3-icon name="assignment" [size]="32" />
+    <p>{{ 'labels.text.No pending loans for approval' | translate }}</p>
   </div>
 }

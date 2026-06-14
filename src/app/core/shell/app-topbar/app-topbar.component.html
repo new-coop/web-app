@@ -10,7 +10,7 @@
   <div class="topbar-left">
     <button
       type="button"
-      class="icon-button"
+      class="topbar-control topbar-control--icon"
       (click)="menuToggle.emit()"
       [attr.aria-label]="'labels.menus.Main Items' | translate"
     >
@@ -21,27 +21,34 @@
   <div class="topbar-right">
     <button
       type="button"
-      class="search-trigger"
+      class="topbar-control topbar-control--icon"
       (click)="searchOpen.emit()"
-      [attr.aria-label]="'labels.heading.Search' | translate"
+      [attr.aria-label]="('labels.heading.Search' | translate) + ' (' + searchShortcut + ')'"
+      [attr.title]="searchShortcut"
     >
-      <mifosx-m3-icon name="search" [size]="18" />
-      <kbd class="search-kbd">{{ searchShortcut }}</kbd>
+      <mifosx-m3-icon name="search" [size]="20" />
     </button>
 
     <ng-container *mifosxHasPermission="'READ_NOTIFICATION'">
-      <mifosx-notifications-tray class="topbar-notifications" />
+      <mifosx-notifications-tray />
     </ng-container>
 
     <mifosx-theme-toggle class="topbar-theme" />
 
-    <mifosx-language-selector class="topbar-language" />
+    <mifosx-language-selector class="topbar-language" [compact]="true" />
 
-    <button type="button" class="user-button" (click)="userMenu.toggle($event)" aria-haspopup="menu">
-      <mifosx-initials-avatar [name]="username" [size]="28" />
-      <span class="user-name">{{ username }}</span>
+    <button
+      type="button"
+      class="topbar-control topbar-control--text topbar-control--user"
+      (click)="userMenu.toggle($event)"
+      aria-haspopup="menu"
+      [attr.aria-label]="username"
+    >
+      <mifosx-initials-avatar tone="neutral" [name]="username" [size]="22" />
+      <span class="topbar-control-label">{{ username }}</span>
       <mifosx-m3-icon name="expand_more" [size]="16" />
     </button>
+
     <p-menu #userMenu [model]="userMenuItems" [popup]="true" appendTo="body">
       <ng-template #item let-menuItem>
         <div class="user-menu-item">

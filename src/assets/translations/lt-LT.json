@@ -1,4 +1,4 @@
-﻿{
+{
   "APP_NAME": "Mifos® X WebApp",
   "Logged in as": "prisijungęs kaip",
   "Remember me": "Prisimink mane",
@@ -1203,6 +1203,7 @@
       "Contact Information": "Kontaktinė informacija",
       "Contract Termination": "Sutarties nutraukimas",
       "Create Charge": "Sukurti mokestį",
+      "Create Client": "Sukurti klientą",
       "Create Closure": "Sukurti uždarymą",
       "Create Code": "Sukurti kodą",
       "Create Data Table": "Sukurti duomenų lentelę",
@@ -1577,7 +1578,11 @@
       "Deposits and Shares": "Indėliai ir akcijos",
       "Pricing and Rules": "Kainos ir taisyklės",
       "Ledger Setup": "Didžiosios knygos sąranka",
-      "Period Operations": "Laikotarpio operacijos"
+      "Period Operations": "Laikotarpio operacijos",
+      "Create Breach Configuration": "Sukurti pažeidimo konfigūraciją",
+      "Edit Breach Configuration": "Redaguoti pažeidimo konfigūraciją",
+      "Create Near Breach Configuration": "Sukurti artimo pažeidimo konfigūraciją",
+      "Edit Near Breach Configuration": "Redaguoti artimo pažeidimo konfigūraciją"
     },
     "inputs": {
       "# Remittance": "# Pervedimas",
@@ -3431,6 +3436,7 @@
       "Create Accounting Rule": "Sukurkite apskaitos taisyklę",
       "Create Adhoc Query": "Sukurkite Adhoc užklausą",
       "Create Breach": "Sukurti Pažeidimą",
+      "Create Breach Configuration": "Sukurti pažeidimo konfigūraciją",
       "Create Center": "Sukurti centrą",
       "Create Charge": "Sukurti mokestį",
       "Create Client": "Sukurti klientą",
@@ -3458,6 +3464,7 @@
       "Create Loan Product": "Sukurti paskolos produktą",
       "Create Loans Account": "Sukurti paskolų sąskaitą",
       "Create Near Breach": "Sukurti Beveik Pažeidimą",
+      "Create Near Breach Configuration": "Sukurti artimo pažeidimo konfigūraciją",
       "Create New GL Account": "Ši parinktis leidžia kurti naujas GL paskyras.",
       "Create Office": "Sukurkite biurą",
       "Create Payment Type": "Sukurti mokėjimo tipą",
@@ -3547,6 +3554,7 @@
       "Edit Adhoc Query": "Redaguoti Adhoc užklausą",
       "Edit Amazon S3 Configuration": "Redaguoti Amazon S3 konfigūraciją",
       "Edit Breach": "Redaguoti Pažeidimą",
+      "Edit Breach Configuration": "Redaguoti pažeidimo konfigūraciją",
       "Edit Cashier": "Redaguoti kasininką",
       "Edit Center": "Redagavimo centras",
       "Edit Charge": "Redaguoti mokestį",
@@ -3570,6 +3578,7 @@
       "Edit Hook": "Redaguoti kabliuką",
       "Edit Loan Product": "Redaguoti paskolos produktą",
       "Edit Near Breach": "Redaguoti Beveik Pažeidimą",
+      "Edit Near Breach Configuration": "Redaguoti artimo pažeidimo konfigūraciją",
       "Edit Notification Configuration": "Redaguoti pranešimų konfigūraciją",
       "Edit Office": "Redaguoti biurą",
       "Edit Payment Type": "Redaguoti mokėjimo tipą",

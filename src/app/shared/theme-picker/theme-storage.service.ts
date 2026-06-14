@@ -6,16 +6,23 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Injectable, EventEmitter, inject } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Theme } from './theme.model';
-import { ThemeManagerService } from './theme-manager.service';
+
+/** CSS variables updated when the user picks an accent / color scheme. */
+const DESIGN_TOKEN_VARS = [
+  '--md-sys-color-primary',
+  '--mifos-accent-bg',
+  '--mifos-accent-hover',
+  '--mifos-focus-ring',
+  '--focus-ring-color',
+  '--mifos-progress'
+] as const;
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeStorageService {
-  themeManagerService = inject(ThemeManagerService);
-
   private themeStorageKey = 'mifosXTheme';
   onThemeUpdate: EventEmitter<Theme>;
 
@@ -28,19 +35,39 @@ export class ThemeStorageService {
     this.onThemeUpdate.emit(mifosXTheme);
   }
 
-  getTheme(): Theme {
-    return JSON.parse(localStorage.getItem(this.themeStorageKey));
+  getTheme(): Theme | null {
+    const raw = localStorage.getItem(this.themeStorageKey);
+    if (!raw) {
+      return null;
+    }
+    try {
+      return JSON.parse(raw) as Theme;
+    } catch {
+      return null;
+    }
   }
 
   clearTheme() {
     localStorage.removeItem(this.themeStorageKey);
+    this.clearDesignTokens();
   }
 
   /**
-   * Dynamically installs the theme by adding a class to the body.
-   * @param {Theme} theme
+   * Applies a saved theme on startup (localStorage + body class + design tokens).
    */
-  installTheme(theme: Theme) {
+  restoreSavedTheme(): void {
+    const theme = this.getTheme();
+    if (theme) {
+      this.installTheme(theme, false);
+    }
+  }
+
+  /**
+   * Dynamically installs the theme by adding a class to the body and updating design tokens.
+   * @param {Theme} theme
+   * @param persist When false, reapplies without writing to localStorage (startup restore).
+   */
+  installTheme(theme: Theme, persist = true) {
     const body = document.body;
 
     // Remove any previously applied theme classes
@@ -54,9 +81,47 @@ export class ThemeStorageService {
 
     if (!theme.isDefault) {
       body.classList.add(this.getThemeClass(theme.href));
+      this.applyDesignTokens(theme);
+    } else {
+      this.clearDesignTokens();
     }
 
-    this.storeTheme(theme);
+    if (persist) {
+      this.storeTheme(theme);
+    }
+  }
+
+  private applyDesignTokens(theme: Theme): void {
+    const root = document.documentElement;
+    const hover = this.shadeColor(theme.primary, -12);
+
+    root.style.setProperty('--md-sys-color-primary', theme.primary);
+    root.style.setProperty('--mifos-accent-bg', theme.primary);
+    root.style.setProperty('--mifos-accent-hover', hover);
+    root.style.setProperty('--mifos-focus-ring', theme.primary);
+    root.style.setProperty('--focus-ring-color', theme.primary);
+    root.style.setProperty('--mifos-progress', theme.primary);
+  }
+
+  private clearDesignTokens(): void {
+    const root = document.documentElement;
+    for (const token of DESIGN_TOKEN_VARS) {
+      root.style.removeProperty(token);
+    }
+  }
+
+  /** Darken or lighten a #rrggbb color by a percentage (-100 … 100). */
+  private shadeColor(hex: string, percent: number): string {
+    const normalized = hex.replace('#', '');
+    if (normalized.length !== 6) {
+      return hex;
+    }
+    const num = parseInt(normalized, 16);
+    const amount = Math.round(2.55 * percent);
+    const r = Math.max(0, Math.min(255, (num >> 16) + amount));
+    const g = Math.max(0, Math.min(255, ((num >> 8) & 0xff) + amount));
+    const b = Math.max(0, Math.min(255, (num & 0xff) + amount));
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
   }
 
   /**
